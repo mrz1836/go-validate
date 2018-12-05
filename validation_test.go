@@ -9,6 +9,32 @@ import (
 	"testing"
 )
 
+//invalidNumericTypes is for the types not allowed (numeric tests)
+var (
+	invalidNumericTypes []reflect.Kind
+)
+
+//init load the default invalid types
+func init() {
+
+	//Build the invalid numeric types
+	invalidNumericTypes = append(
+		invalidNumericTypes,
+		reflect.Array,
+		reflect.Bool,
+		reflect.Chan,
+		reflect.Complex128,
+		reflect.Complex64,
+		reflect.Func,
+		reflect.Map,
+		reflect.Ptr,
+		reflect.Slice,
+		reflect.String,
+		reflect.Struct,
+		reflect.UnsafePointer,
+	)
+}
+
 //TestValidationMap_Atomicity
 func TestValidationMap_Atomicity(t *testing.T) {
 	vm := Map{}

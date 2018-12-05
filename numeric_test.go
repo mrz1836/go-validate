@@ -8,30 +8,6 @@ import (
 	"testing"
 )
 
-//invalidNumericTypes is for the types not allowed (numeric tests)
-var invalidNumericTypes []reflect.Kind
-
-//init load the default invalid types
-func init() {
-
-	//Build the invalid numeric types
-	invalidNumericTypes = append(
-		invalidNumericTypes,
-		reflect.Array,
-		reflect.Bool,
-		reflect.Chan,
-		reflect.Complex128,
-		reflect.Complex64,
-		reflect.Func,
-		reflect.Map,
-		reflect.Ptr,
-		reflect.Slice,
-		reflect.String,
-		reflect.Struct,
-		reflect.UnsafePointer,
-	)
-}
-
 //
 // Generic numeric struct and function tests
 //
@@ -163,7 +139,7 @@ func TestMaxValueValidation(t *testing.T) {
 }
 
 //
-// Integer tests
+// Integer tests (positive and negative)
 //
 
 //TestMinValueInt8Positive tests min value on int8
@@ -644,7 +620,7 @@ func TestMaxValueIntNegative(t *testing.T) {
 }
 
 //
-// Unsigned integer tests
+// Unsigned integer tests (positive and negative)
 //
 
 //TestMinValueUint8Positive tests min value on uint8
@@ -1088,7 +1064,7 @@ func TestMaxValueUintNegative(t *testing.T) {
 }
 
 //
-// Float tests
+// Float tests (min / max)
 //
 
 //TestMinValueFloat32 tests min value on float32

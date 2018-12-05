@@ -73,8 +73,13 @@ func (v *minLengthStringValidation) Validate(value interface{}, obj reflect.Valu
 
 //formatStringValidation type used for string pattern testing using regular expressions
 type formatStringValidation struct {
+	//Validation is the validation interface
 	Validation
-	pattern     *regexp.Regexp
+
+	//The regex pattern
+	pattern *regexp.Regexp
+
+	//The name of the pattern
 	patternName string
 }
 
