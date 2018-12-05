@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-//intValueValidation
+//intValueValidation type used for integer values
 type intValueValidation struct {
 	//Validation is the validation interface
 	Validation
@@ -22,7 +22,7 @@ type intValueValidation struct {
 	less bool
 }
 
-//Validate validate function for the intValueValidation type
+//Validate validate function for the intValueValidation type will compare the integer value (min/max)
 func (m *intValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
 
 	//Compare the value to see if it is convertible to type int64
@@ -65,7 +65,7 @@ func (m *intValueValidation) Validate(value interface{}, obj reflect.Value) *Val
 	return nil
 }
 
-//uintValueValidation
+//uintValueValidation type used for unsigned integer values
 type uintValueValidation struct {
 
 	//Validation is the validation interface
@@ -78,7 +78,7 @@ type uintValueValidation struct {
 	less bool
 }
 
-//Validate validate function for the uintValueValidation type
+//Validate validate function for the uintValueValidation type will compare the unsigned integer value (min/max)
 func (m *uintValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
 
 	//Compare the value to see if it is convertible to type int64
@@ -121,7 +121,7 @@ func (m *uintValueValidation) Validate(value interface{}, obj reflect.Value) *Va
 	return nil
 }
 
-//floatValueValidation
+//floatValueValidation type used for float values
 type floatValueValidation struct {
 
 	//Validation is the validation interface
@@ -134,7 +134,7 @@ type floatValueValidation struct {
 	less bool
 }
 
-//Validate validate function for the floatValueValidation type
+//Validate validate function for the floatValueValidation type will compare the float value (min/max)
 func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
 
 	//Compare the value to see if it is convertible to type int64
@@ -171,8 +171,8 @@ func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *V
 	return nil
 }
 
-//newMinValueValidation
-func newMinValueValidation(options string, kind reflect.Kind) (Interface, error) {
+//minValueValidation creates an interface based on the "kind" type
+func minValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	switch kind {
 	case reflect.Int:
 		fallthrough
@@ -227,8 +227,8 @@ func newMinValueValidation(options string, kind reflect.Kind) (Interface, error)
 	}
 }
 
-//newMaxValueValidation
-func newMaxValueValidation(options string, kind reflect.Kind) (Interface, error) {
+//maxValueValidation creates an interface based on the "kind" type
+func maxValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	switch kind {
 	case reflect.Int:
 		fallthrough
@@ -283,12 +283,12 @@ func newMaxValueValidation(options string, kind reflect.Kind) (Interface, error)
 	}
 }
 
-//init add the numeric validations
+//init add the numeric validations when this package is loaded
 func init() {
 
 	//Min validation is where X cannot be less then Y
-	AddValidation("min", newMinValueValidation)
+	AddValidation("min", minValueValidation)
 
 	//Max validation is where X cannot be greater than Y
-	AddValidation("max", newMaxValueValidation)
+	AddValidation("max", maxValueValidation)
 }
