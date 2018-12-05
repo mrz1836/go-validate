@@ -1,6 +1,6 @@
 // Package validation provides validations for struct fields based on a
 // validation tag
-package validation
+package govalidation
 
 import (
 	"log"

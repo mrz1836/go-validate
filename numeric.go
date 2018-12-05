@@ -1,9 +1,9 @@
 /*
-Package validation provides validations for struct fields based on a validation tag and offers additional validation functions.
+Package govalidation provides validations for struct fields based on a validation tag and offers additional validation functions.
 
 If you have any suggestions or comments, please feel free to open an issue on this project's GitHub page.
 */
-package validation
+package govalidation
 
 import (
 	"reflect"

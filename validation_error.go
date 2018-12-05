@@ -1,25 +1,44 @@
-package validation
+/*
+Package govalidation provides validations for struct fields based on a validation tag and offers additional validation functions.
+
+If you have any suggestions or comments, please feel free to open an issue on this project's GitHub page.
+*/
+package govalidation
 
 import "fmt"
 
+//ValidationError is key and message of the corresponding error
 type ValidationError struct {
-	Key     string
+
+	//Field name, key name
+	Key string
+
+	//Error message
 	Message string
 }
 
+//Error returns a string of key + message
 func (e *ValidationError) Error() string {
 	return e.Key + " " + e.Message
 }
 
+//ValidationErrors is a slice of validation errors
 type ValidationErrors []ValidationError
 
-func (e ValidationErrors) Error() string {
+//Error returns the list of errors from the slice of errors
+func (e ValidationErrors) Error() (errors string) {
+
+	//No errors?
 	if len(e) == 0 {
-		return "Empty validation.ValidationErrors"
+		return
 	}
-	err := e[0].Error()
+
+	//Get the first error
+	errors = e[0].Error()
+
+	//Add x other errors
 	if len(e) > 1 {
-		err += fmt.Sprintf(" and %d other errors.", len(e))
+		errors += fmt.Sprintf(" and %d other errors", len(e))
 	}
-	return err
+	return
 }
