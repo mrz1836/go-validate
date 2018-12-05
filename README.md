@@ -1,6 +1,6 @@
 # go-validation [![Build Status](https://travis-ci.org/BakedSoftware/go-validation.svg?branch=master)](https://travis-ci.org/BakedSoftware/go-validation)
 
-Provides validations for struct fields based on a validation tag
+Provides validations for struct fields based on a validation tag and offers additional validation functions.
 
 See godoc for more info: http://godoc.org/github.com/BakedSoftware/go-validation
 
