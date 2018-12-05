@@ -159,25 +159,24 @@ func TestEmail(t *testing.T) {
 
 	ok, errs := IsValid(object)
 	if !ok {
-		t.Log(errs)
-		t.Fatalf("Valid email (%s) should be valid", object.Email)
+		t.Fatalf("Valid email (%s) should be valid - errs: %x", object.Email, errs)
 	}
 
 	object.Email = "BaseMail0@Base.com"
 
 	ok, errs = IsValid(object)
 	if !ok {
-		t.Log(errs)
-		t.Fatalf("Valid email with a number(%s) should be valid", object.Email)
+		t.Fatalf("Valid email with a number(%s) should be valid- errs: %x", object.Email, errs)
 	}
 
 	object.Email = "BaseMail0@Base.consulting"
 
 	ok, errs = IsValid(object)
 	if !ok {
-		t.Log(errs)
-		t.Fatalf("Valid email with a new TLD(%s) should be valid", object.Email)
+		t.Fatalf("Valid email with a new TLD(%s) should be valid - errs: %x", object.Email, errs)
 	}
+
+	//todo: more regex checks for adhering to TLD specs
 
 }
 
@@ -204,10 +203,15 @@ func TestRegExp(t *testing.T) {
 	ok, errs := IsValid(object)
 
 	if !ok {
-		t.Log(errs)
-		t.Fatalf("Valid regexp (%s) should be valid", object.RegExp)
+		t.Fatalf("Valid regexp (%s) should be valid - errs: %x", object.RegExp, errs)
 	}
 }
+
+//TestCompare tests comparing fields
+//todo: finish the compare string tests
+/*func TestCompare(){
+
+}*/
 
 //
 // Generic string struct and function tests

@@ -170,7 +170,7 @@ func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *V
 }
 
 //minValueValidation creates an interface based on the "kind" type
-func minValueValidation(options string, kind reflect.Kind) (Interface, error) {
+func minValueValidation(minValue string, kind reflect.Kind) (Interface, error) {
 	switch kind {
 	case reflect.Int:
 		fallthrough
@@ -181,7 +181,7 @@ func minValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	case reflect.Int32:
 		fallthrough
 	case reflect.Int64:
-		value, err := strconv.ParseInt(options, 10, 0)
+		value, err := strconv.ParseInt(minValue, 10, 0)
 		if err != nil {
 			return nil, err
 		}
@@ -198,7 +198,7 @@ func minValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	case reflect.Uint32:
 		fallthrough
 	case reflect.Uint64:
-		value, err := strconv.ParseUint(options, 10, 0)
+		value, err := strconv.ParseUint(minValue, 10, 0)
 		if err != nil {
 			return nil, err
 		}
@@ -209,7 +209,7 @@ func minValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	case reflect.Float32:
 		fallthrough
 	case reflect.Float64:
-		value, err := strconv.ParseFloat(options, 64)
+		value, err := strconv.ParseFloat(minValue, 64)
 		if err != nil {
 			return nil, err
 		}
@@ -226,7 +226,7 @@ func minValueValidation(options string, kind reflect.Kind) (Interface, error) {
 }
 
 //maxValueValidation creates an interface based on the "kind" type
-func maxValueValidation(options string, kind reflect.Kind) (Interface, error) {
+func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
 	switch kind {
 	case reflect.Int:
 		fallthrough
@@ -237,7 +237,7 @@ func maxValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	case reflect.Int32:
 		fallthrough
 	case reflect.Int64:
-		value, err := strconv.ParseInt(options, 10, 0)
+		value, err := strconv.ParseInt(maxValue, 10, 0)
 		if err != nil {
 			return nil, err
 		}
@@ -254,7 +254,7 @@ func maxValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	case reflect.Uint32:
 		fallthrough
 	case reflect.Uint64:
-		value, err := strconv.ParseUint(options, 10, 0)
+		value, err := strconv.ParseUint(maxValue, 10, 0)
 		if err != nil {
 			return nil, err
 		}
@@ -265,7 +265,7 @@ func maxValueValidation(options string, kind reflect.Kind) (Interface, error) {
 	case reflect.Float32:
 		fallthrough
 	case reflect.Float64:
-		value, err := strconv.ParseFloat(options, 64)
+		value, err := strconv.ParseFloat(maxValue, 64)
 		if err != nil {
 			return nil, err
 		}

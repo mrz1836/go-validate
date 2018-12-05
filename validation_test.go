@@ -97,3 +97,5 @@ func TestValidation_SetFieldIndex(t *testing.T) {
 		t.Fatal("Field index was not the same as when set", index, indexNumber)
 	}
 }
+
+//todo: test the validation errors
