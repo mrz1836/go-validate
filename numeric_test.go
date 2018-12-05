@@ -15,6 +15,8 @@ var invalidNumericTypes []reflect.Kind
 
 //init load the default invalid types
 func init() {
+
+	//Build the invalid numeric types
 	invalidNumericTypes = append(
 		invalidNumericTypes,
 		reflect.Array,
@@ -33,10 +35,10 @@ func init() {
 }
 
 //
-// Generic tests
+// Generic numeric struct and function tests
 //
 
-//TestMinValueValidation
+//TestMinValueValidation - series of different tests
 func TestMinValueValidation(t *testing.T) {
 
 	//Test invalid types
@@ -65,9 +67,41 @@ func TestMinValueValidation(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
+
+	//Test making an interface
+	minInterface, err := minValueValidation("10", reflect.Int)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	//Test running the validate method
+	var testInt int32 = 1
+	testVal := reflect.ValueOf(testInt)
+	errs := minInterface.Validate(8, testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, 8 < 10")
+	}
+
+	//Test converting a string
+	errs = minInterface.Validate("ddd", testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, value is not convertible to type int64")
+	}
+
+	//Test making an interface
+	minInterface, err = minValueValidation("10", reflect.Float32)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	//Test in converting to float
+	errs = minInterface.Validate("ddd", testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, value is not convertible to type float")
+	}
 }
 
-//TestMaxValueValidation
+//TestMaxValueValidation - series of different tests
 func TestMaxValueValidation(t *testing.T) {
 
 	//Test invalid types
@@ -95,6 +129,38 @@ func TestMaxValueValidation(t *testing.T) {
 	_, err = maxValueValidation("foo", reflect.Float32)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
+	}
+
+	//Test making an interface
+	maxInterface, err := maxValueValidation("10", reflect.Int)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	//Test running the validate method
+	var testInt int32 = 1
+	testVal := reflect.ValueOf(testInt)
+	errs := maxInterface.Validate(14, testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, 14 > 10")
+	}
+
+	//Test converting a string
+	errs = maxInterface.Validate("ddd", testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, value is not convertible to type int64")
+	}
+
+	//Test making an interface
+	maxInterface, err = maxValueValidation("10", reflect.Float32)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	//Test converting a string
+	errs = maxInterface.Validate("ddd", testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, value is not convertible to type float")
 	}
 }
 

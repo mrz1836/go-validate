@@ -46,12 +46,13 @@ func TestValidation_SetFieldName(t *testing.T) {
 	}
 
 	//Set the name
-	inter.SetFieldName("test_field")
+	testField := "test_field"
+	inter.SetFieldName(testField)
 
 	//Get the name
 	name := inter.FieldName()
-	if name != "test_field" {
-		t.Fatal("Field name was not the same as when set")
+	if name != testField {
+		t.Fatal("Field name was not the same as when set", testField, name)
 	}
 }
 
@@ -63,11 +64,12 @@ func TestValidation_SetFieldIndex(t *testing.T) {
 	}
 
 	//Set the index
-	inter.SetFieldIndex(18)
+	indexNumber := 18
+	inter.SetFieldIndex(indexNumber)
 
 	//Get the index
 	index := inter.FieldIndex()
-	if index != 18 {
-		t.Fatal("Field index was not the same as when set")
+	if index != indexNumber {
+		t.Fatal("Field index was not the same as when set", index, indexNumber)
 	}
 }
