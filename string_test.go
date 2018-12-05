@@ -1,7 +1,5 @@
 /*
 Package govalidation provides validations for struct fields based on a validation tag and offers additional validation functions.
-
-If you have any suggestions or comments, please feel free to open an issue on this project's GitHub page.
 */
 package govalidation
 
@@ -18,7 +16,7 @@ type LengthTestStruct struct {
 
 type FormatTestStruct struct {
 	Email  string `validation:"format=email"`
-	Regexp string `validation:"format=regexp:Test[0-9]+"`
+	RegExp string `validation:"format=regexp:Test[0-9]+"`
 }
 
 func TestMaxLengthValid(t *testing.T) {
@@ -130,7 +128,7 @@ func TestLengthInvalid(t *testing.T) {
 func TestEmail(t *testing.T) {
 	object := FormatTestStruct{
 		Email:  "",
-		Regexp: "Test123",
+		RegExp: "Test123",
 	}
 
 	ok, _ := IsValid(object)
@@ -178,7 +176,7 @@ func TestEmail(t *testing.T) {
 
 func TestRegexp(t *testing.T) {
 	object := FormatTestStruct{
-		Regexp: "",
+		RegExp: "",
 		Email:  "valid@example.com",
 	}
 
@@ -188,25 +186,25 @@ func TestRegexp(t *testing.T) {
 		t.Fatal("Empty regexp should be invalid")
 	}
 
-	object.Regexp = "invalid"
+	object.RegExp = "invalid"
 
 	ok, _ = IsValid(object)
 
 	if ok {
-		t.Fatalf("Invalid regexp (%s) should be invalid", object.Regexp)
+		t.Fatalf("Invalid regexp (%s) should be invalid", object.RegExp)
 	}
 
-	object.Regexp = "Test123"
+	object.RegExp = "Test123"
 
 	ok, errs := IsValid(object)
 
 	if !ok {
 		t.Log(errs)
-		t.Fatalf("Valid regexp (%s) should be valid", object.Regexp)
+		t.Fatalf("Valid regexp (%s) should be valid", object.RegExp)
 	}
 }
 
-func ExampleIsValid_StringLength() {
+/*func ExampleIsValid_StringLength() {
 	type Person struct {
 		// Name must be between 1 and 5 characters inclusive
 		Name string `validation:"min_length=1 max_length=5"`
@@ -216,7 +214,7 @@ func ExampleIsValid_StringLength() {
 
 	ok, errs := IsValid(p)
 	fmt.Println(ok, errs)
-}
+}*/
 
 func ExampleIsValid_format() {
 	type Person struct {

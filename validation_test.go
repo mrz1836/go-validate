@@ -1,7 +1,5 @@
 /*
 Package govalidation provides validations for struct fields based on a validation tag and offers additional validation functions.
-
-If you have any suggestions or comments, please feel free to open an issue on this project's GitHub page.
 */
 package govalidation
 
@@ -14,7 +12,7 @@ import (
 //TestValidationMap_Atomicity
 func TestValidationMap_Atomicity(t *testing.T) {
 	vm := Map{}
-	typ := reflect.TypeOf(vm)
+	typ := reflect.TypeOf(vm) //todo: go vet: call of reflect.TypeOf copies lock value: govalidation.Map contains sync.Map contains sync.Mutex
 	wg1 := sync.WaitGroup{}
 	wg1.Add(1)
 	wg2 := sync.WaitGroup{}
