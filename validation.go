@@ -18,19 +18,19 @@ var DefaultMap = Map{}
 //Interface specifies the necessary methods a validation must implement to be compatible with this package
 type Interface interface {
 
-	//SetFieldIndex stores the index of the field the validation was applied to
+	//SetFieldIndex stores the index of the field
 	SetFieldIndex(index int)
 
-	//FieldIndex retrieves the index of the field the validation was applied to
+	//FieldIndex retrieves the index of the field
 	FieldIndex() int
 
-	//SetFieldName stores the name of the field the validation was applied to
+	//SetFieldName stores the name of the field
 	SetFieldName(name string)
 
-	//FieldName retrieves the name of the field the validation was applied to
+	//FieldName retrieves the name of the field
 	FieldName() string
 
-	//Validate determines if the value is valid. Nil is returned if it is valid
+	//Validate determines if the value is valid. The value nil is returned if it is valid
 	Validate(value interface{}, obj reflect.Value) *ValidationError
 }
 
@@ -70,7 +70,7 @@ func (v *Validation) FieldName() string {
 	return v.fieldName
 }
 
-//Validate determines if the value is valid. Nil is returned if it is valid
+//Validate determines if the value is valid. The value nil is returned if it is valid
 func (v *Validation) Validate(value interface{}, obj reflect.Value) *ValidationError {
 	return &ValidationError{
 		Key:     v.fieldName,
@@ -115,7 +115,7 @@ func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 	//Get the validations
 	validations := m.get(objectType)
 
-	//Run IsValid our value is the pointer and not nil
+	//If we are a pointer and not nil, run IsValid on it's interface
 	if objectValue.Kind() == reflect.Ptr && !objectValue.IsNil() {
 		return IsValid(objectValue.Elem().Interface())
 	}
