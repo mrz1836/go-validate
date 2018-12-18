@@ -1,7 +1,7 @@
 /*
-Package govalidation provides validations for struct fields based on a validation tag and offers additional validation functions.
+Package validation (go-validation) provides validations for struct fields based on a validation tag and offers additional validation functions.
 */
-package govalidation
+package validation
 
 import (
 	"reflect"
@@ -21,7 +21,7 @@ type intValueValidation struct {
 }
 
 //Validate is for the intValueValidation type and will compare the integer value (min/max)
-func (m *intValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (m *intValueValidation) Validate(value interface{}, obj reflect.Value) *Error {
 
 	//Compare the value to see if it is convertible to type int64
 	var compareValue int64
@@ -37,7 +37,7 @@ func (m *intValueValidation) Validate(value interface{}, obj reflect.Value) *Val
 	case int64:
 		compareValue = int64(value)
 	default:
-		return &ValidationError{
+		return &Error{
 			Key:     m.FieldName(),
 			Message: "is not convertible to type int64",
 		}
@@ -46,14 +46,14 @@ func (m *intValueValidation) Validate(value interface{}, obj reflect.Value) *Val
 	//Check min
 	if m.less {
 		if compareValue < m.value {
-			return &ValidationError{
+			return &Error{
 				Key:     m.FieldName(),
 				Message: "must be greater than or equal to " + strconv.FormatInt(m.value, 10),
 			}
 		}
 	} else { //Check max
 		if compareValue > m.value {
-			return &ValidationError{
+			return &Error{
 				Key:     m.FieldName(),
 				Message: "must be less than or equal to " + strconv.FormatInt(m.value, 10),
 			}
@@ -77,7 +77,7 @@ type uintValueValidation struct {
 }
 
 //Validate is for the uintValueValidation type and will compare the unsigned integer value (min/max)
-func (m *uintValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (m *uintValueValidation) Validate(value interface{}, obj reflect.Value) *Error {
 
 	//Compare the value to see if it is convertible to type int64
 	var compareValue uint64
@@ -93,7 +93,7 @@ func (m *uintValueValidation) Validate(value interface{}, obj reflect.Value) *Va
 	case uint64:
 		compareValue = uint64(value)
 	default:
-		return &ValidationError{
+		return &Error{
 			Key:     m.FieldName(),
 			Message: "is not convertible to type uint64",
 		}
@@ -102,14 +102,14 @@ func (m *uintValueValidation) Validate(value interface{}, obj reflect.Value) *Va
 	//Check min
 	if m.less {
 		if compareValue < m.value {
-			return &ValidationError{
+			return &Error{
 				Key:     m.FieldName(),
 				Message: "must be greater than or equal to " + strconv.FormatUint(m.value, 10),
 			}
 		}
 	} else { //Check max
 		if compareValue > m.value {
-			return &ValidationError{
+			return &Error{
 				Key:     m.FieldName(),
 				Message: "must be less than or equal to " + strconv.FormatUint(m.value, 10),
 			}
@@ -133,7 +133,7 @@ type floatValueValidation struct {
 }
 
 //Validate is for the floatValueValidation type and will compare the float value (min/max)
-func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *Error {
 
 	//Compare the value to see if it is convertible to type int64
 	var compareValue float64
@@ -143,7 +143,7 @@ func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *V
 	case float64:
 		compareValue = float64(value)
 	default:
-		return &ValidationError{
+		return &Error{
 			Key:     m.FieldName(),
 			Message: "is not convertible to type float64",
 		}
@@ -152,14 +152,14 @@ func (m *floatValueValidation) Validate(value interface{}, obj reflect.Value) *V
 	//Check min
 	if m.less {
 		if compareValue < m.value {
-			return &ValidationError{
+			return &Error{
 				Key:     m.FieldName(),
 				Message: "must be greater than or equal to " + strconv.FormatFloat(m.value, 'E', -1, 64),
 			}
 		}
 	} else { //Check max
 		if compareValue > m.value {
-			return &ValidationError{
+			return &Error{
 				Key:     m.FieldName(),
 				Message: "must be less than or equal to " + strconv.FormatFloat(m.value, 'E', -1, 64),
 			}
@@ -218,7 +218,7 @@ func minValueValidation(minValue string, kind reflect.Kind) (Interface, error) {
 			less:  true,
 		}, nil
 	default:
-		return nil, &ValidationError{
+		return nil, &Error{
 			Key:     "invalid_validation",
 			Message: "field is not of numeric type and min validation only accepts numeric types",
 		}
@@ -274,7 +274,7 @@ func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
 			less:  false,
 		}, nil
 	default:
-		return nil, &ValidationError{
+		return nil, &Error{
 			Key:     "invalid_validation",
 			Message: "field is not of numeric type and max validation only accepts numeric types",
 		}

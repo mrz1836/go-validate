@@ -12,9 +12,23 @@ type ExampleModel struct {
     Category        string  `validation:"min_length=5 max_length=10"`
     Email           string  `validation:"format=email"`
     Name            string  `validation:"format=regexp:[A-Z][a-z]{3,12}"`
-    Password        string  `validation:"compare=PasswordConf"`
-    PasswordConf    string  `json:"-"`
+    Password        string  `validation:"compare=PasswordConfirm"`
+    PasswordConfirm string  `json:"-"`
     Quantity        uint    `validation:"min=1 max=5"`
     Total           float32 `validation:"min=0"`
 }
 ```
+
+# Todo
+    - Numeric examples
+    - String Tests
+    - String examples
+    - Tests for "compare" and "regex"
+    - Examples for "compare" and "regex"
+    - Add new validation functions
+    - Add tests for validation functions
+    - Add tests for validation error
+    - Finish the readme (like go-sanitize)
+    - Leave all references to "Baked Software"
+    - Create a PR back into Baked
+    - Add codacy yml file

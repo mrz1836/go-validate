@@ -1,7 +1,7 @@
 /*
-Package govalidation provides validations for struct fields based on a validation tag and offers additional validation functions.
+Package validation (go-validation) provides validations for struct fields based on a validation tag and offers additional validation functions.
 */
-package govalidation
+package validation
 
 import (
 	"reflect"
@@ -23,17 +23,17 @@ type maxLengthStringValidation struct {
 }
 
 //Validate is for the maxLengthStringValidation type and will test the max string length
-func (v *maxLengthStringValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (v *maxLengthStringValidation) Validate(value interface{}, obj reflect.Value) *Error {
 	strValue, ok := value.(string)
 	if !ok {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "is not of type string and MaxLengthValidation only accepts strings",
 		}
 	}
 
 	if len(strValue) > v.length {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "must be no more than " + strconv.Itoa(v.length) + " characters",
 		}
@@ -52,17 +52,17 @@ type minLengthStringValidation struct {
 }
 
 //Validate is for the minLengthStringValidation type and will test the min string length
-func (v *minLengthStringValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (v *minLengthStringValidation) Validate(value interface{}, obj reflect.Value) *Error {
 	strValue, ok := value.(string)
 	if !ok {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "is not of type string and MinLengthValidation only accepts strings",
 		}
 	}
 
 	if len(strValue) < v.length {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "must be at least " + strconv.Itoa(v.length) + " characters",
 		}
@@ -84,17 +84,17 @@ type formatStringValidation struct {
 }
 
 //Validate is for the formatStringValidation type and will test the given regular expression
-func (v *formatStringValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (v *formatStringValidation) Validate(value interface{}, obj reflect.Value) *Error {
 	strValue, ok := value.(string)
 	if !ok {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "is not of type string and FormatValidation only accepts strings",
 		}
 	}
 
 	if !v.pattern.MatchString(strValue) {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "does not match " + v.patternName + " format",
 		}
@@ -113,11 +113,11 @@ type stringEqualsString struct {
 }
 
 //Validate is for the stringEqualsString type and will test the given field's value and compare
-func (v *stringEqualsString) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (v *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Error {
 
 	strValue, ok := value.(string)
 	if !ok {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "is not of type string and StringEqualsStringValidation only accepts strings",
 		}
@@ -129,7 +129,7 @@ func (v *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Val
 	//Try to set to string
 	compareFieldStrValue, ok := compareField.Interface().(string)
 	if !ok {
-		return &ValidationError{
+		return &Error{
 			Key:     v.targetFieldName,
 			Message: "is not of type string and StringEqualsValidation only accepts strings",
 		}
@@ -137,7 +137,7 @@ func (v *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Val
 
 	//Does not compare
 	if strValue != compareFieldStrValue {
-		return &ValidationError{
+		return &Error{
 			Key:     v.FieldName(),
 			Message: "is not the same as the compare field " + v.targetFieldName,
 		}
@@ -182,7 +182,7 @@ func formatValidation(options string, kind reflect.Kind) (Interface, error) {
 		pattern, err := regexp.Compile(patternStr)
 
 		if err != nil {
-			return nil, &ValidationError{Key: "regexp:", Message: err.Error()}
+			return nil, &Error{Key: "regexp:", Message: err.Error()}
 		}
 
 		return &formatStringValidation{
@@ -191,7 +191,7 @@ func formatValidation(options string, kind reflect.Kind) (Interface, error) {
 		}, nil
 	}
 
-	return nil, &ValidationError{Key: "format", Message: "Has no pattern " + options}
+	return nil, &Error{Key: "format", Message: "Has no pattern " + options}
 }
 
 //stringEqualsStringValidation creates an interface based on the field name
