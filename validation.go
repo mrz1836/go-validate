@@ -1,7 +1,7 @@
 /*
-Package validation (go-validation) provides validations for struct fields based on a validation tag and offers additional validation functions.
+Package validate (go-validate) provides validations for struct fields based on a validation tag and offers additional validation functions.
 */
-package validation
+package validate
 
 import (
 	"log"
@@ -29,7 +29,7 @@ type Interface interface {
 	FieldName() string
 
 	//Validate determines if the value is valid. The value nil is returned if it is valid
-	Validate(value interface{}, obj reflect.Value) *Error
+	Validate(value interface{}, obj reflect.Value) *ValidationError
 }
 
 //Validation is an implementation of a Interface and can be used to provide basic functionality to a new validation type through an anonymous field
@@ -69,8 +69,8 @@ func (v *Validation) FieldName() string {
 }
 
 //Validate determines if the value is valid. The value nil is returned if it is valid
-func (v *Validation) Validate(value interface{}, obj reflect.Value) *Error {
-	return &Error{
+func (v *Validation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+	return &ValidationError{
 		Key:     v.fieldName,
 		Message: "validation not implemented",
 	}
@@ -104,7 +104,7 @@ func (m *Map) AddValidation(key string, fn func(string, reflect.Kind) (Interface
 }
 
 //IsValid will either store the builder interfaces or run the IsValid based on the reflect object type
-func (m *Map) IsValid(object interface{}) (bool, []Error) {
+func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 
 	//Get the object's value and type
 	objectValue := reflect.ValueOf(object)
@@ -164,7 +164,7 @@ func (m *Map) IsValid(object interface{}) (bool, []Error) {
 	}
 
 	//Loop and build errors
-	var errors []Error
+	var errors []ValidationError
 	for _, validation := range validations {
 		field := objectValue.Field(validation.FieldIndex())
 		value := field.Interface()
@@ -186,6 +186,6 @@ func AddValidation(key string, fn func(string, reflect.Kind) (Interface, error))
 }
 
 //IsValid determines if an object is valid based on its validation tags using DefaultMap.
-func IsValid(object interface{}) (bool, []Error) {
+func IsValid(object interface{}) (bool, []ValidationError) {
 	return DefaultMap.IsValid(object)
 }

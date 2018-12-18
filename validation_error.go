@@ -1,42 +1,42 @@
 /*
-Package validation (go-validation) provides validations for struct fields based on a validation tag and offers additional validation functions.
+Package validate (go-validate) provides validations for struct fields based on a validation tag and offers additional validation functions.
 */
-package validation
+package validate
 
 import "fmt"
 
-//Error is key and message of the corresponding error
-type Error struct {
+//ValidationError is key and message of the corresponding error
+type ValidationError struct {
 
 	//Field name, key name
 	Key string
 
-	//Error message
+	//ValidationError message
 	Message string
 }
 
-//Error returns a string of key + message
-func (e *Error) Error() string {
-	return e.Key + " " + e.Message
+//ValidationError returns a string of key + message
+func (v *ValidationError) Error() string {
+	return v.Key + " " + v.Message
 }
 
-//Errors is a slice of validation errors
-type Errors []Error
+//ValidationErrors is a slice of validation errors
+type ValidationErrors []ValidationError
 
-//Error returns the list of errors from the slice of errors
-func (e Errors) Error() (errors string) {
+//ValidationError returns the list of errors from the slice of errors
+func (v ValidationErrors) Error() (errors string) {
 
 	//No errors?
-	if len(e) == 0 {
+	if len(v) == 0 {
 		return
 	}
 
 	//Get the first error
-	errors = e[0].Error()
+	errors = v[0].Error()
 
 	//Add x other errors
-	if len(e) > 1 {
-		errors += fmt.Sprintf(" and %d other errors", len(e))
+	if len(v) > 1 {
+		errors += fmt.Sprintf(" and %d other errors", len(v))
 	}
 
 	return
