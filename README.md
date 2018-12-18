@@ -19,16 +19,3 @@ type ExampleModel struct {
 }
 ```
 
-# Todo
-    - Numeric examples
-    - String Tests
-    - String examples
-    - Tests for "compare" and "regex"
-    - Examples for "compare" and "regex"
-    - Add new validation functions
-    - Add tests for validation functions
-    - Add tests for validation error
-    - Finish the readme (like go-sanitize)
-    - Leave all references to "Baked Software"
-    - Create a PR back into Baked
-    - Add codacy yml file
