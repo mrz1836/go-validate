@@ -141,85 +141,85 @@ func TestMaxValueValidation(t *testing.T) {
 
 //BenchmarkTestMinIntValue benchmarks the Min Value (valid value)
 func BenchmarkTestMinIntValue(b *testing.B) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int8 `validation:"min=20"`
 	}
-	obj := minValueTestType{
+	model := testModel{
 		Value: 21,
 	}
 
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValid(obj)
+		_, _ = IsValid(model)
 	}
 }
 
 //BenchmarkTestMinUintValue benchmarks the Min Value (valid value)
 func BenchmarkTestMinUintValue(b *testing.B) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint8 `validation:"min=20"`
 	}
-	obj := minValueTestType{
+	model := testModel{
 		Value: 21,
 	}
 
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValid(obj)
+		_, _ = IsValid(model)
 	}
 }
 
 //BenchmarkTestMinFloatValue benchmarks the Min Value (valid value)
 func BenchmarkTestMinFloatValue(b *testing.B) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value float32 `validation:"min=20"`
 	}
-	obj := minValueTestType{
+	model := testModel{
 		Value: 21.22,
 	}
 
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValid(obj)
+		_, _ = IsValid(model)
 	}
 }
 
 //BenchmarkTestMaxIntValue benchmarks the Max Value (valid value)
 func BenchmarkTestMaxIntValue(b *testing.B) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int8 `validation:"max=20"`
 	}
-	obj := maxValueTestType{
+	model := testModel{
 		Value: 19,
 	}
 
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValid(obj)
+		_, _ = IsValid(model)
 	}
 }
 
 //BenchmarkTestMaxUintValue benchmarks the Max Value (valid value)
 func BenchmarkTestMaxUintValue(b *testing.B) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint8 `validation:"max=20"`
 	}
-	obj := maxValueTestType{
+	model := testModel{
 		Value: 19,
 	}
 
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValid(obj)
+		_, _ = IsValid(model)
 	}
 }
 
 //BenchmarkTestMaxFloatValue benchmarks the Max Value (valid value)
 func BenchmarkTestMaxFloatValue(b *testing.B) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value float32 `validation:"max=20"`
 	}
-	obj := maxValueTestType{
+	model := testModel{
 		Value: 19.22,
 	}
 
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValid(obj)
+		_, _ = IsValid(model)
 	}
 }
 
@@ -293,26 +293,26 @@ func ExampleIsValid_MaxFloat() {
 
 //TestMinValueInt8Positive tests min value on int8
 func TestMinValueInt8Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int8 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -320,26 +320,26 @@ func TestMinValueInt8Positive(t *testing.T) {
 
 //TestMinValueInt8Negative tests min value on int8
 func TestMinValueInt8Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int8 `validation:"min=-20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Empty Int8(0) should be valid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as -40 is less than min -20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than -20", errs)
 	}
@@ -347,26 +347,26 @@ func TestMinValueInt8Negative(t *testing.T) {
 
 //TestMinValueInt16Positive tests min value on int16
 func TestMinValueInt16Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int16 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -374,26 +374,26 @@ func TestMinValueInt16Positive(t *testing.T) {
 
 //TestMinValueInt16Negative tests min value on int16
 func TestMinValueInt16Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int16 `validation:"min=-20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Empty Int8(0) should be valid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as -40 is less than min -20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than -20", errs)
 	}
@@ -401,26 +401,26 @@ func TestMinValueInt16Negative(t *testing.T) {
 
 //TestMinValueInt32Positive tests min value on int32
 func TestMinValueInt32Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int32 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -428,26 +428,26 @@ func TestMinValueInt32Positive(t *testing.T) {
 
 //TestMinValueInt32Negative tests min value on int32
 func TestMinValueInt32Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int32 `validation:"min=-20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Empty Int8(0) should be valid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as -40 is less than min -20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than -20", errs)
 	}
@@ -455,26 +455,26 @@ func TestMinValueInt32Negative(t *testing.T) {
 
 //TestMinValueInt64Positive tests min value on int64
 func TestMinValueInt64Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int64 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -482,26 +482,26 @@ func TestMinValueInt64Positive(t *testing.T) {
 
 //TestMinValueInt64Negative tests min value on int64
 func TestMinValueInt64Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int64 `validation:"min=-20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Empty Int8(0) should be valid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as -40 is less than min -20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than -20", errs)
 	}
@@ -509,26 +509,26 @@ func TestMinValueInt64Negative(t *testing.T) {
 
 //TestMinValueIntPositive tests min value on int
 func TestMinValueIntPositive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -536,26 +536,26 @@ func TestMinValueIntPositive(t *testing.T) {
 
 //TestMinValueIntNegative tests min value on int
 func TestMinValueIntNegative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value int `validation:"min=-20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Empty Int8(0) should be valid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as -40 is less than min -20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than -20", errs)
 	}
@@ -563,19 +563,19 @@ func TestMinValueIntNegative(t *testing.T) {
 
 //TestMaxValueInt8Positive tests max value on int8
 func TestMaxValueInt8Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int8 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -584,19 +584,19 @@ func TestMaxValueInt8Positive(t *testing.T) {
 
 //TestMaxValueInt8Negative tests max value on int8
 func TestMaxValueInt8Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int8 `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Empty Int8(0) should be invalid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
@@ -605,19 +605,19 @@ func TestMaxValueInt8Negative(t *testing.T) {
 
 //TestMaxValueInt16Positive tests max value on int16
 func TestMaxValueInt16Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int16 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -626,19 +626,19 @@ func TestMaxValueInt16Positive(t *testing.T) {
 
 //TestMaxValueInt16Negative tests max value on int16
 func TestMaxValueInt16Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int16 `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Empty Int16(0) should be invalid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
@@ -647,19 +647,19 @@ func TestMaxValueInt16Negative(t *testing.T) {
 
 //TestMaxValueInt32Positive tests max value on int32
 func TestMaxValueInt32Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int32 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -668,19 +668,19 @@ func TestMaxValueInt32Positive(t *testing.T) {
 
 //TestMaxValueInt32Negative tests max value on int32
 func TestMaxValueInt32Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int32 `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Empty Int32(0) should be invalid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
@@ -688,19 +688,19 @@ func TestMaxValueInt32Negative(t *testing.T) {
 
 //TestMaxValueInt64Positive tests max value on int64
 func TestMaxValueInt64Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int64 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -709,19 +709,19 @@ func TestMaxValueInt64Positive(t *testing.T) {
 
 //TestMaxValueInt64Negative tests max value on int64
 func TestMaxValueInt64Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int64 `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Empty Int64(0) should be invalid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
@@ -729,19 +729,19 @@ func TestMaxValueInt64Negative(t *testing.T) {
 
 //TestMaxValueIntPositive tests max value on int
 func TestMaxValueIntPositive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -750,19 +750,19 @@ func TestMaxValueIntPositive(t *testing.T) {
 
 //TestMaxValueIntNegative tests max value on int
 func TestMaxValueIntNegative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value int `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Empty Int(0) should be invalid (>= -20)")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
@@ -774,26 +774,26 @@ func TestMaxValueIntNegative(t *testing.T) {
 
 //TestMinValueUint8Positive tests min value on uint8
 func TestMinValueUint8Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint8 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -801,19 +801,19 @@ func TestMinValueUint8Positive(t *testing.T) {
 
 //TestMinValueUint8Negative tests min value on uint8
 func TestMinValueUint8Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint8 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -821,26 +821,26 @@ func TestMinValueUint8Negative(t *testing.T) {
 
 //TestMinValueUint16Positive tests min value on uint16
 func TestMinValueUint16Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint16 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -848,19 +848,19 @@ func TestMinValueUint16Positive(t *testing.T) {
 
 //TestMinValueUint16Negative tests min value on uint16
 func TestMinValueUint16Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint16 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -868,26 +868,26 @@ func TestMinValueUint16Negative(t *testing.T) {
 
 //TestMinValueUint32Positive tests min value on uint32
 func TestMinValueUint32Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint32 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -895,19 +895,19 @@ func TestMinValueUint32Positive(t *testing.T) {
 
 //TestMinValueUint32Negative tests min value on uint32
 func TestMinValueUint32Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint32 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -915,26 +915,26 @@ func TestMinValueUint32Negative(t *testing.T) {
 
 //TestMinValueUint64Positive tests min value on uint64
 func TestMinValueUint64Positive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint64 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -942,19 +942,19 @@ func TestMinValueUint64Positive(t *testing.T) {
 
 //TestMinValueUint64Negative tests min value on uint64
 func TestMinValueUint64Negative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint64 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -962,26 +962,26 @@ func TestMinValueUint64Negative(t *testing.T) {
 
 //TestMinValueUintPositive tests min value on uint
 func TestMinValueUintPositive(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
-		t.Fatal("Expected failure as min was set to 20", obj.Value)
+		t.Fatal("Expected failure as min was set to 20", model.Value)
 	}
 
-	obj.Value = 19
+	model.Value = 19
 
-	ok, _ = IsValid(obj)
+	ok, _ = IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 19 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -989,19 +989,19 @@ func TestMinValueUintPositive(t *testing.T) {
 
 //TestMinValueUintNegative tests min value on uint
 func TestMinValueUintNegative(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value uint `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1009,19 +1009,19 @@ func TestMinValueUintNegative(t *testing.T) {
 
 //TestMaxValueUint8Positive tests max value on uint8
 func TestMaxValueUint8Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint8 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -1030,19 +1030,19 @@ func TestMaxValueUint8Positive(t *testing.T) {
 
 //TestMaxValueUint8Negative tests max value on uint8
 func TestMaxValueUint8Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint8 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as 0 is less than max 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1050,19 +1050,19 @@ func TestMaxValueUint8Negative(t *testing.T) {
 
 //TestMaxValueUint16Positive tests max value on uint16
 func TestMaxValueUint16Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint16 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -1071,19 +1071,19 @@ func TestMaxValueUint16Positive(t *testing.T) {
 
 //TestMaxValueUint16Negative tests max value on uint16
 func TestMaxValueUint16Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint16 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as 0 is less than max 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1091,19 +1091,19 @@ func TestMaxValueUint16Negative(t *testing.T) {
 
 //TestMaxValueUint32Positive tests max value on uint32
 func TestMaxValueUint32Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint32 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -1112,19 +1112,19 @@ func TestMaxValueUint32Positive(t *testing.T) {
 
 //TestMaxValueUint32Negative tests max value on uint32
 func TestMaxValueUint32Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint32 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as 0 is less than max 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1132,19 +1132,19 @@ func TestMaxValueUint32Negative(t *testing.T) {
 
 //TestMaxValueUint64Positive tests max value on uint64
 func TestMaxValueUint64Positive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint64 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -1153,19 +1153,19 @@ func TestMaxValueUint64Positive(t *testing.T) {
 
 //TestMaxValueUint64Negative tests max value on uint64
 func TestMaxValueUint64Negative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint64 `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as 0 is less than max 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1173,19 +1173,19 @@ func TestMaxValueUint64Negative(t *testing.T) {
 
 //TestMaxValueUintPositive tests max value on uint
 func TestMaxValueUintPositive(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as value is less than 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
@@ -1194,19 +1194,19 @@ func TestMaxValueUintPositive(t *testing.T) {
 
 //TestMaxValueUintNegative tests max value on uint
 func TestMaxValueUintNegative(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value uint `validation:"max=20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if !ok {
 		t.Fatal("Expected success as 0 is less than max 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1218,19 +1218,19 @@ func TestMaxValueUintNegative(t *testing.T) {
 
 //TestMinValueFloat32 tests min value on float32
 func TestMinValueFloat32(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value float32 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1238,19 +1238,19 @@ func TestMinValueFloat32(t *testing.T) {
 
 //TestMinValueFloat64 tests min value on float64
 func TestMinValueFloat64(t *testing.T) {
-	type minValueTestType struct {
+	type testModel struct {
 		Value float64 `validation:"min=20"`
 	}
-	obj := minValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than min 20")
 	}
 
-	obj.Value = 40
+	model.Value = 40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1258,19 +1258,19 @@ func TestMinValueFloat64(t *testing.T) {
 
 //TestMaxValueFloat32 tests max value on float32
 func TestMaxValueFloat32(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value float32 `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than max -20")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
@@ -1278,19 +1278,19 @@ func TestMaxValueFloat32(t *testing.T) {
 
 //TestMaxValueFloat64 tests max value on float64
 func TestMaxValueFloat64(t *testing.T) {
-	type maxValueTestType struct {
+	type testModel struct {
 		Value float64 `validation:"max=-20"`
 	}
-	obj := maxValueTestType{}
+	model := testModel{}
 
-	ok, _ := IsValid(obj)
+	ok, _ := IsValid(model)
 	if ok {
 		t.Fatal("Expected failure as 0 is less than max -20")
 	}
 
-	obj.Value = -40
+	model.Value = -40
 
-	ok, errs := IsValid(obj)
+	ok, errs := IsValid(model)
 	if !ok {
 		t.Fatal("Valid: 40 is greater than 20", errs)
 	}
