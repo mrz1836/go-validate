@@ -4,6 +4,7 @@ Package validate (go-validate) provides validations for struct fields based on a
 package validate
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -220,6 +221,70 @@ func BenchmarkTestMaxFloatValue(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = IsValid(obj)
 	}
+}
+
+//ExampleIsValid_MinInt is an example for Int Value validation (min)
+func ExampleIsValid_MinInt() {
+
+	type Product struct {
+		// Quantity must more than 1
+		Quantity int8 `validation:"min=1"`
+	}
+
+	var p Product
+	// Will fail since its Quantity = 0
+
+	ok, errs := IsValid(p)
+	fmt.Println(ok, errs)
+	// Output: false [{Quantity must be greater than or equal to 1}]
+}
+
+//ExampleIsValid_MinFloat is an example for Float Value validation (min)
+func ExampleIsValid_MinFloat() {
+
+	type Product struct {
+		// Price must more than 0.01
+		Price float32 `validation:"min=0.01"`
+	}
+
+	var p Product
+	// Will fail since its Price = 0
+
+	ok, errs := IsValid(p)
+	fmt.Println(ok, errs)
+	// Output: false [{Price must be greater than or equal to 1E-02}]
+}
+
+//ExampleIsValid_MaxInt is an example for Int Value validation (max)
+func ExampleIsValid_MaxInt() {
+
+	type Product struct {
+		// Quantity must more than 1 but less than 99
+		Quantity int8 `validation:"min=1 max=99"`
+	}
+
+	var p Product
+	p.Quantity = 101 // Will fail since it's greater than 99
+
+	ok, errs := IsValid(p)
+	fmt.Println(ok, errs)
+	// Output: false [{Quantity must be less than or equal to 99}]
+}
+
+//ExampleIsValid_MaxFloat is an example for Float Value validation (max)
+func ExampleIsValid_MaxFloat() {
+
+	type Product struct {
+		// Price must more than 0.01 but less than 999.99
+		Price float32 `validation:"min=0.01 max=999.99"`
+	}
+
+	var p Product
+	p.Price = 10000.00 // Will fail since it's greater than 999.99
+
+	ok, errs := IsValid(p)
+	fmt.Println(ok, errs)
+	// Output: false [{Price must be less than or equal to 9.9999E+02}]
 }
 
 //
