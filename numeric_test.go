@@ -138,6 +138,90 @@ func TestMaxValueValidation(t *testing.T) {
 	}
 }
 
+//BenchmarkTestMinIntValue benchmarks the Min Value (valid value)
+func BenchmarkTestMinIntValue(b *testing.B) {
+	type minValueTestType struct {
+		Value int8 `validation:"min=20"`
+	}
+	obj := minValueTestType{
+		Value: 21,
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(obj)
+	}
+}
+
+//BenchmarkTestMinUintValue benchmarks the Min Value (valid value)
+func BenchmarkTestMinUintValue(b *testing.B) {
+	type minValueTestType struct {
+		Value uint8 `validation:"min=20"`
+	}
+	obj := minValueTestType{
+		Value: 21,
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(obj)
+	}
+}
+
+//BenchmarkTestMinFloatValue benchmarks the Min Value (valid value)
+func BenchmarkTestMinFloatValue(b *testing.B) {
+	type minValueTestType struct {
+		Value float32 `validation:"min=20"`
+	}
+	obj := minValueTestType{
+		Value: 21.22,
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(obj)
+	}
+}
+
+//BenchmarkTestMaxIntValue benchmarks the Max Value (valid value)
+func BenchmarkTestMaxIntValue(b *testing.B) {
+	type maxValueTestType struct {
+		Value int8 `validation:"max=20"`
+	}
+	obj := maxValueTestType{
+		Value: 19,
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(obj)
+	}
+}
+
+//BenchmarkTestMaxUintValue benchmarks the Max Value (valid value)
+func BenchmarkTestMaxUintValue(b *testing.B) {
+	type maxValueTestType struct {
+		Value uint8 `validation:"max=20"`
+	}
+	obj := maxValueTestType{
+		Value: 19,
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(obj)
+	}
+}
+
+//BenchmarkTestMaxFloatValue benchmarks the Max Value (valid value)
+func BenchmarkTestMaxFloatValue(b *testing.B) {
+	type maxValueTestType struct {
+		Value float32 `validation:"max=20"`
+	}
+	obj := maxValueTestType{
+		Value: 19.22,
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(obj)
+	}
+}
+
 //
 // Integer tests (positive and negative)
 //
