@@ -36,7 +36,7 @@ func (v ValidationErrors) Error() (errors string) {
 
 	//Add x other errors
 	if len(v) > 1 {
-		errors += fmt.Sprintf(" and %d other errors", len(v))
+		errors += fmt.Sprintf(" and %d other errors", len(v)-1)
 	}
 
 	return
