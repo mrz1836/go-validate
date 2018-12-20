@@ -14,7 +14,7 @@ var (
 	invalidNumericTypes []reflect.Kind
 )
 
-//init load the default invalid types
+//init load the default test data
 func init() {
 
 	//Build the invalid numeric types
@@ -62,7 +62,7 @@ func TestValidationMap_Atomicity(t *testing.T) {
 	wg2.Wait()
 }
 
-//TestValidation_SetFieldName
+//TestValidation_SetFieldName test setting and getting field name
 func TestValidation_SetFieldName(t *testing.T) {
 	inter, err := minValueValidation("10", reflect.Int)
 	if err != nil {
@@ -80,7 +80,7 @@ func TestValidation_SetFieldName(t *testing.T) {
 	}
 }
 
-//TestValidation_SetFieldIndex
+//TestValidation_SetFieldIndex test setting and getting field index
 func TestValidation_SetFieldIndex(t *testing.T) {
 	inter, err := minValueValidation("10", reflect.Int)
 	if err != nil {
@@ -98,4 +98,71 @@ func TestValidation_SetFieldIndex(t *testing.T) {
 	}
 }
 
-//todo: test the validation errors
+//TestValidation_Validate test using the Validate method (valid and invalid)
+func TestValidation_Validate(t *testing.T) {
+
+	//Test making an interface
+	minInterface, err := minValueValidation("10", reflect.Int)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	//Set the field name
+	minInterface.SetFieldName("field")
+
+	//Test running the validate method
+	var testInt int32 = 1
+	testVal := reflect.ValueOf(testInt)
+	errs := minInterface.Validate(8, testVal)
+	if errs == nil {
+		t.Fatal("Expected to fail, 8 < 10")
+	}
+
+	//Test failure error response
+	errs = minInterface.Validate(8, testVal)
+	if errs.Error() != "field must be greater than or equal to 10" {
+		t.Fatal("Expected to fail, 8 < 10", errs)
+	}
+}
+
+//TestValidationError_Error tests using the Error method
+func TestValidationError_Error(t *testing.T) {
+	newError := ValidationError{
+		Key:     "the_key",
+		Message: "the_message",
+	}
+
+	//test if correct
+	errorResponse := newError.Error()
+	if errorResponse != newError.Key+" "+newError.Message {
+		t.Fatal("Error response was not `key message` as expected", errorResponse)
+	}
+}
+
+//TestValidationErrors_Error tests using the Error method
+func TestValidationErrors_Error(t *testing.T) {
+	newError := ValidationError{
+		Key:     "the_key",
+		Message: "the_message",
+	}
+
+	newError2 := ValidationError{
+		Key:     "the_key2",
+		Message: "the_message2",
+	}
+
+	sliceOfErrors := ValidationErrors{}
+	sliceOfErrors = append(sliceOfErrors, newError, newError2)
+
+	//test if correct
+	errorResponse := sliceOfErrors.Error()
+	if errorResponse != newError.Key+" "+newError.Message+" and 1 other errors" {
+		t.Fatal("Error response was not `key message` as expected", errorResponse)
+	}
+}
+
+//Tests that are still needed for full package coverage
+//todo:  TestMap_AddValidation(t *testing.T)
+//todo:  TestMap_IsValid(t *testing.T)
+//todo:  TestAddValidation(t *testing.T)
+//todo:  TestIsValid(t *testing.T)
