@@ -224,7 +224,7 @@ func BenchmarkTestMaxFloatValue(b *testing.B) {
 }
 
 //ExampleIsValid_MinInt is an example for Int Value validation (min)
-func ExampleIsValid_MinInt() {
+func ExampleIsValid_minInt() {
 
 	type Product struct {
 		// Quantity must more than 1
@@ -240,7 +240,7 @@ func ExampleIsValid_MinInt() {
 }
 
 //ExampleIsValid_MinFloat is an example for Float Value validation (min)
-func ExampleIsValid_MinFloat() {
+func ExampleIsValid_minFloat() {
 
 	type Product struct {
 		// Price must more than 0.01
@@ -256,7 +256,7 @@ func ExampleIsValid_MinFloat() {
 }
 
 //ExampleIsValid_MaxInt is an example for Int Value validation (max)
-func ExampleIsValid_MaxInt() {
+func ExampleIsValid_maxInt() {
 
 	type Product struct {
 		// Quantity must more than 1 but less than 99
@@ -272,7 +272,7 @@ func ExampleIsValid_MaxInt() {
 }
 
 //ExampleIsValid_MaxFloat is an example for Float Value validation (max)
-func ExampleIsValid_MaxFloat() {
+func ExampleIsValid_maxFloat() {
 
 	type Product struct {
 		// Price must more than 0.01 but less than 999.99

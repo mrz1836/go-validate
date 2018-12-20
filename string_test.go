@@ -216,7 +216,7 @@ func BenchmarkTestMaxLength(b *testing.B) {
 }
 
 //ExampleIsValid_MaxLength is an example for max length validation (max)
-func ExampleIsValid_MaxLength() {
+func ExampleIsValid_maxLength() {
 
 	type Person struct {
 		// Gender must not be longer than 10 characters
@@ -308,7 +308,7 @@ func BenchmarkTestMinLength(b *testing.B) {
 }
 
 //ExampleIsValid_MinLength is an example for min length validation (min)
-func ExampleIsValid_MinLength() {
+func ExampleIsValid_minLength() {
 
 	type Person struct {
 		// Gender must be > 1 character
@@ -434,7 +434,7 @@ func BenchmarkTestFormatEmail(b *testing.B) {
 }
 
 //ExampleIsValid_FormatEmail is an example for format email validation
-func ExampleIsValid_FormatEmail() {
+func ExampleIsValid_formatEmail() {
 
 	type Person struct {
 		// Email must be in valid email format
@@ -494,7 +494,7 @@ func BenchmarkTestFormatRegEx(b *testing.B) {
 }
 
 //ExampleIsValid_FormatRegEx is an example for format regex validation
-func ExampleIsValid_FormatRegEx() {
+func ExampleIsValid_formatRegEx() {
 
 	type Person struct {
 		// Phone must be in valid phone regex format
@@ -595,7 +595,7 @@ func BenchmarkTestCompareString(b *testing.B) {
 }
 
 //ExampleIsValid_CompareString is an example for compare string validation
-func ExampleIsValid_CompareString() {
+func ExampleIsValid_compareString() {
 
 	type User struct {
 		// Password should match confirmation on submission
