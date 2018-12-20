@@ -12,6 +12,7 @@
 - [Benchmarks](https://github.com/mrz1836/go-validate#benchmarks)
 - [Code Standards](https://github.com/mrz1836/go-validate#code-standards)
 - [Usage](https://github.com/mrz1836/go-validate#usage)
+- [Maintainers](https://github.com/mrz1836/go-validate#maintainers)
 - [Contributing](https://github.com/mrz1836/go-validate#contributing)
 - [License](https://github.com/mrz1836/go-validate#license)
 
@@ -62,11 +63,15 @@ type ExampleModel struct {
 }
 ```
 
+## Maintainers
+
+[@kayleg](https://github.com/kayleg) - [@MrZ1836](https://github.com/mrz1836)
+
 ## Contributing
 
 View the [contributing guidelines](https://github.com/mrz1836/go-validate/blob/master/CONTRIBUTING.md) and follow the [code of conduct](https://github.com/mrz1836/go-validate/blob/master/CODE_OF_CONDUCT.md).
 
-Support the development of this project:
+Support the development of this project 🙏
 
 [![Donate](https://img.shields.io/badge/donate-bitcoin%20cash-brightgreen.svg)](https://mrz1818.com/?tab=tips&af=go-validate)
 
