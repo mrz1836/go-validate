@@ -1,6 +1,3 @@
-/*
-Package validate (go-validate) provides validations for struct fields based on a validation tag and offers additional validation functions.
-*/
 package validate
 
 import "fmt"
