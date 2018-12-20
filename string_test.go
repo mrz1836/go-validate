@@ -4,218 +4,10 @@ Package validate (go-validate) provides validations for struct fields based on a
 package validate
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
-
-//FormatTestStruct is for testing the format validation
-type FormatTestStruct struct {
-
-	//Email is an email field
-	Email string `validation:"format=email"`
-
-	//RegExp is a field using regular expression
-	RegExp string `validation:"format=regexp:Test[0-9]+"`
-}
-
-//
-// Test max length
-//
-
-//TestMaxLengthValid tests max length (valid length of characters)
-func TestMaxLengthValid(t *testing.T) {
-
-	type testModel struct {
-		Value string `validation:"max_length=5"`
-	}
-
-	model := testModel{
-		Value: "1234",
-	}
-
-	ok, errs := IsValid(model)
-	if !ok {
-		t.Fatal(errs)
-	} else if errs != nil {
-		t.Fatal(errs)
-	}
-}
-
-//TestMaxLengthInvalid tests max length (invalid length of characters)
-func TestMaxLengthInvalid(t *testing.T) {
-	type testModel struct {
-		Value string `validation:"max_length=5"`
-	}
-
-	model := testModel{
-		Value: "12345678",
-	}
-
-	ok, errs := IsValid(model)
-	if ok {
-		t.Fatal("Max length should have failed")
-	}
-
-	if len(errs) == 0 {
-		t.Fatalf("Max length errs should have 1 item not: %d", len(errs))
-	}
-}
-
-//TestMaxLengthWrongType tests to make sure only valid types
-func TestMaxLengthWrongType(t *testing.T) {
-	type testModel struct {
-		Value int64 `validation:"max_length=5"`
-	}
-
-	model := testModel{
-		Value: 1234,
-	}
-
-	ok, errs := IsValid(model)
-	if ok {
-		t.Fatal("This should have failed since max_length is for strings only")
-	}
-	if errs[0].Error() != "Value is not of type string and MaxLengthValidation only accepts strings" {
-		t.Fatal("Error was not recognized", errs)
-	}
-}
-
-//
-// Test min length
-//
-
-//TestMinLengthValid tests min length (valid length of characters)
-func TestMinLengthValid(t *testing.T) {
-
-	type testModel struct {
-		Value string `validation:"min_length=5"`
-	}
-
-	model := testModel{
-		Value: "123456",
-	}
-
-	ok, errs := IsValid(model)
-	if !ok {
-		t.Fatal(errs)
-	} else if errs != nil {
-		t.Fatal(errs)
-	}
-}
-
-//TestMinLengthInvalid tests min length (invalid length of characters)
-func TestMinLengthInvalid(t *testing.T) {
-	type testModel struct {
-		Value string `validation:"min_length=5"`
-	}
-
-	model := testModel{
-		Value: "123",
-	}
-
-	ok, errs := IsValid(model)
-	if ok {
-		t.Fatal("Min length should have failed")
-	}
-
-	if len(errs) == 0 {
-		t.Fatalf("Min length errs should have 1 item not: %d", len(errs))
-	}
-}
-
-//TestMinLengthWrongType tests to make sure only valid types
-func TestMinLengthWrongType(t *testing.T) {
-	type testModel struct {
-		Value int64 `validation:"min_length=5"`
-	}
-
-	model := testModel{
-		Value: 1234,
-	}
-
-	ok, errs := IsValid(model)
-	if ok {
-		t.Fatal("This should have failed since min_length is for strings only")
-	}
-	if errs[0].Error() != "Value is not of type string and MinLengthValidation only accepts strings" {
-		t.Fatal("Error was not recognized", errs)
-	}
-}
-
-//
-// Test format, regex
-//
-
-//TestEmail tests email format
-func TestEmail(t *testing.T) {
-	model := FormatTestStruct{
-		Email:  "",
-		RegExp: "Test123",
-	}
-
-	ok, _ := IsValid(model)
-	if ok {
-		t.Fatal("Empty email should be invalid")
-	}
-
-	model.Email = "123"
-
-	ok, _ = IsValid(model)
-	if ok {
-		t.Fatalf("Invalid email (%s) should be invalid", model.Email)
-	}
-
-	model.Email = "test@example.com"
-
-	ok, errs := IsValid(model)
-	if !ok {
-		t.Fatalf("Valid email (%s) should be valid - errs: %x", model.Email, errs)
-	}
-
-	model.Email = "BaseMail0@Base.com"
-
-	ok, errs = IsValid(model)
-	if !ok {
-		t.Fatalf("Valid email with a number(%s) should be valid- errs: %x", model.Email, errs)
-	}
-
-	model.Email = "BaseMail0@Base.consulting"
-
-	ok, errs = IsValid(model)
-	if !ok {
-		t.Fatalf("Valid email with a new TLD(%s) should be valid - errs: %x", model.Email, errs)
-	}
-
-	//todo: more regex checks for adhering to TLD specs
-
-}
-
-//TestRegExp tests regex format
-func TestRegExp(t *testing.T) {
-	model := FormatTestStruct{
-		RegExp: "",
-		Email:  "valid@example.com",
-	}
-
-	ok, _ := IsValid(model)
-	if ok {
-		t.Fatal("Empty regexp should be invalid")
-	}
-
-	model.RegExp = "invalid"
-	ok, _ = IsValid(model)
-
-	if ok {
-		t.Fatalf("Invalid regexp (%s) should be invalid", model.RegExp)
-	}
-
-	model.RegExp = "Test123"
-	ok, errs := IsValid(model)
-
-	if !ok {
-		t.Fatalf("Valid regexp (%s) should be valid - errs: %x", model.RegExp, errs)
-	}
-}
 
 //
 // Generic string struct and function tests
@@ -347,27 +139,475 @@ func TestFormatValidation(t *testing.T) {
 
 }
 
-/*func ExampleIsValid_StringLength() {
+//
+// Test max length
+//
+
+//TestMaxLengthValid tests max length (valid length of characters)
+func TestMaxLengthValid(t *testing.T) {
+
+	type testModel struct {
+		Value string `validation:"max_length=5"`
+	}
+
+	model := testModel{
+		Value: "1234",
+	}
+
+	ok, errs := IsValid(model)
+	if !ok {
+		t.Fatal(errs)
+	} else if errs != nil {
+		t.Fatal(errs)
+	}
+}
+
+//TestMaxLengthInvalid tests max length (invalid length of characters)
+func TestMaxLengthInvalid(t *testing.T) {
+	type testModel struct {
+		Value string `validation:"max_length=5"`
+	}
+
+	model := testModel{
+		Value: "12345678",
+	}
+
+	ok, errs := IsValid(model)
+	if ok {
+		t.Fatal("Max length should have failed")
+	}
+
+	if len(errs) == 0 {
+		t.Fatalf("Max length errs should have 1 item not: %d", len(errs))
+	}
+}
+
+//TestMaxLengthWrongType tests to make sure only valid types
+func TestMaxLengthWrongType(t *testing.T) {
+	type testModel struct {
+		Value int64 `validation:"max_length=5"`
+	}
+
+	model := testModel{
+		Value: 1234,
+	}
+
+	ok, errs := IsValid(model)
+	if ok {
+		t.Fatal("This should have failed since max_length is for strings only")
+	}
+	if errs[0].Error() != "Value is not of type string and MaxLengthValidation only accepts strings" {
+		t.Fatal("Error was not recognized", errs)
+	}
+}
+
+//BenchmarkTestMaxLength benchmarks the Max Length Value (valid value)
+func BenchmarkTestMaxLength(b *testing.B) {
+	type testModel struct {
+		Value string `validation:"max_length=20"`
+	}
+	model := testModel{
+		Value: "12345",
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(model)
+	}
+}
+
+//ExampleIsValid_MaxLength is an example for max length validation (max)
+func ExampleIsValid_MaxLength() {
+
 	type Person struct {
-		// Name must be between 1 and 5 characters inclusive
-		Name string `validation:"min_length=1 max_length=5"`
+		// Gender must not be longer than 10 characters
+		Gender string `validation:"max_length=10"`
 	}
 
 	var p Person
+	p.Gender = "This is invalid!" // Will fail since its > 10 characters
 
 	ok, errs := IsValid(p)
 	fmt.Println(ok, errs)
-}*/
+	// Output: false [{Gender must be no more than 10 characters}]
+}
 
-/*func ExampleIsValid_format() {
+//
+// Test min length
+//
+
+//TestMinLengthValid tests min length (valid length of characters)
+func TestMinLengthValid(t *testing.T) {
+
+	type testModel struct {
+		Value string `validation:"min_length=5"`
+	}
+
+	model := testModel{
+		Value: "123456",
+	}
+
+	ok, errs := IsValid(model)
+	if !ok {
+		t.Fatal(errs)
+	} else if errs != nil {
+		t.Fatal(errs)
+	}
+}
+
+//TestMinLengthInvalid tests min length (invalid length of characters)
+func TestMinLengthInvalid(t *testing.T) {
+	type testModel struct {
+		Value string `validation:"min_length=5"`
+	}
+
+	model := testModel{
+		Value: "123",
+	}
+
+	ok, errs := IsValid(model)
+	if ok {
+		t.Fatal("Min length should have failed")
+	}
+
+	if len(errs) == 0 {
+		t.Fatalf("Min length errs should have 1 item not: %d", len(errs))
+	}
+}
+
+//TestMinLengthWrongType tests to make sure only valid types
+func TestMinLengthWrongType(t *testing.T) {
+	type testModel struct {
+		Value int64 `validation:"min_length=5"`
+	}
+
+	model := testModel{
+		Value: 1234,
+	}
+
+	ok, errs := IsValid(model)
+	if ok {
+		t.Fatal("This should have failed since min_length is for strings only")
+	}
+	if errs[0].Error() != "Value is not of type string and MinLengthValidation only accepts strings" {
+		t.Fatal("Error was not recognized", errs)
+	}
+}
+
+//BenchmarkTestMinLength benchmarks the Min Length Value (valid value)
+func BenchmarkTestMinLength(b *testing.B) {
+	type testModel struct {
+		Value string `validation:"min_length=3"`
+	}
+	model := testModel{
+		Value: "12345",
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(model)
+	}
+}
+
+//ExampleIsValid_MinLength is an example for min length validation (min)
+func ExampleIsValid_MinLength() {
+
 	type Person struct {
-		// Email must be valid email
+		// Gender must be > 1 character
+		Gender string `validation:"min_length=1"`
+	}
+
+	var p Person
+	// Will fail since its < 1 characters
+
+	ok, errs := IsValid(p)
+	fmt.Println(ok, errs)
+	// Output: false [{Gender must be at least 1 characters}]
+}
+
+//
+// Test format, regex
+//
+
+//TestFormatEmail tests email format (invalid and valid formats)
+func TestFormatEmail(t *testing.T) {
+
+	type testModel struct {
+		Value string `validation:"format=email"`
+	}
+
+	model := testModel{
+		Value: "",
+	}
+
+	ok, _ := IsValid(model)
+	if ok {
+		t.Fatal("Empty email should be invalid")
+	}
+
+	model.Value = "123"
+
+	ok, _ = IsValid(model)
+	if ok {
+		t.Fatalf("Invalid email (%s) should be invalid", model.Value)
+	}
+
+	model.Value = "test@example.com"
+
+	ok, errs := IsValid(model)
+	if !ok {
+		t.Fatalf("Valid email (%s) should be valid - errs: %x", model.Value, errs)
+	}
+
+	model.Value = "BaseMail0@Base.com"
+
+	ok, errs = IsValid(model)
+	if !ok {
+		t.Fatalf("Valid email with a number(%s) should be valid - errs: %x", model.Value, errs)
+	}
+
+	model.Value = "BaseMail0@Base.consulting"
+
+	ok, errs = IsValid(model)
+	if !ok {
+		t.Fatalf("Valid email with a new TLD(%s) should be valid - errs: %x", model.Value, errs)
+	}
+
+	model.Value = "BaseMail0@Base.miami"
+
+	ok, errs = IsValid(model)
+	if !ok {
+		t.Fatalf("Valid email with a new TLD(%s) should be valid - errs: %x", model.Value, errs)
+	}
+
+	model.Value = "BaseMail0@Base.co.uk"
+
+	ok, errs = IsValid(model)
+	if !ok {
+		t.Fatalf("Valid email with a international TLD(%s) should be valid - errs: %x", model.Value, errs)
+	}
+
+	model.Value = "BaseMail0@email.Base.com"
+
+	ok, errs = IsValid(model)
+	if !ok {
+		t.Fatalf("Valid email with a subdomain TLD(%s) should be valid - errs: %x", model.Value, errs)
+	}
+
+	//All TLD tests are in: TestFormatEmailAcceptedTLDs
+
+}
+
+//TestFormatEmailAcceptedTLDs tests email format (all accepted TLDs)
+func TestFormatEmailAcceptedTLDs(t *testing.T) {
+
+	type testModel struct {
+		Value string `validation:"format=email"`
+	}
+
+	model := testModel{
+		Value: "",
+	}
+
+	//Loop all TLDs and try an email
+	for _, tld := range TopLevelDomains {
+
+		model.Value = "BaseMail@BaseDomain." + tld
+
+		ok, _ := IsValid(model)
+		if !ok {
+			t.Fatal("TLD should be accepted but failed", tld, model.Value)
+		}
+	}
+}
+
+//BenchmarkTestFormatEmail benchmarks the format by email (valid value)
+func BenchmarkTestFormatEmail(b *testing.B) {
+	type testModel struct {
+		Value string `validation:"format=email"`
+	}
+	model := testModel{
+		Value: "BaseMail@Base.com",
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(model)
+	}
+}
+
+//ExampleIsValid_FormatEmail is an example for format email validation
+func ExampleIsValid_FormatEmail() {
+
+	type Person struct {
+		// Email must be in valid email format
 		Email string `validation:"format=email"`
 	}
 
 	var p Person
+	// Will fail since the email is not valid
 
 	ok, errs := IsValid(p)
 	fmt.Println(ok, errs)
+	// Output: false [{Email does not match email format}]
 }
-*/
+
+//TestFormatRegExp tests regex format (invalid and valid formats)
+func TestFormatRegExp(t *testing.T) {
+	type testModel struct {
+		Value string `validation:"format=regexp:Test[0-9]+"`
+	}
+
+	model := testModel{
+		Value: "",
+	}
+
+	ok, _ := IsValid(model)
+	if ok {
+		t.Fatal("Empty regexp should be invalid")
+	}
+
+	model.Value = "invalid"
+	ok, _ = IsValid(model)
+
+	if ok {
+		t.Fatalf("Invalid regexp (%s) should be invalid", model.Value)
+	}
+
+	model.Value = "Test123"
+	ok, errs := IsValid(model)
+
+	if !ok {
+		t.Fatalf("Valid regexp (%s) should be valid - errs: %x", model.Value, errs)
+	}
+}
+
+//BenchmarkTestFormatRegEx benchmarks the format by regex (valid value)
+func BenchmarkTestFormatRegEx(b *testing.B) {
+	type testModel struct {
+		Value string `validation:"format=regexp:Test[0-9]+"`
+	}
+	model := testModel{
+		Value: "Test123",
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(model)
+	}
+}
+
+//ExampleIsValid_FormatRegEx is an example for format regex validation
+func ExampleIsValid_FormatRegEx() {
+
+	type Person struct {
+		// Phone must be in valid phone regex format
+		Phone string `validation:"format=regexp:[0-9]+"`
+	}
+
+	var p Person
+	// Will fail since the email is not valid
+
+	ok, errs := IsValid(p)
+	fmt.Println(ok, errs)
+	// Output: false [{Phone does not match regexp format}]
+}
+
+//
+// Test compare string
+//
+
+//TestCompareStringValid tests compare string (valid comparison)
+func TestCompareStringValid(t *testing.T) {
+
+	type testModel struct {
+		Value        string `validation:"compare=ValueCompare"`
+		ValueCompare string
+	}
+
+	model := testModel{
+		Value:        "123456",
+		ValueCompare: "123456",
+	}
+
+	ok, errs := IsValid(model)
+	if !ok {
+		t.Fatal(errs)
+	} else if errs != nil {
+		t.Fatal(errs)
+	}
+}
+
+//TestCompareStringInValid tests compare string (invalid comparison)
+func TestCompareStringInValid(t *testing.T) {
+
+	type testModel struct {
+		Value        string `validation:"compare=ValueCompare"`
+		ValueCompare string
+	}
+
+	model := testModel{
+		Value:        "12345",
+		ValueCompare: "123456789",
+	}
+
+	ok, errs := IsValid(model)
+	if ok {
+		t.Fatal("Compare should have failed")
+	}
+
+	if len(errs) == 0 {
+		t.Fatalf("Compare errs should have 1 item not: %d", len(errs))
+	}
+}
+
+//TestCompareStringWrongType tests to make sure only valid types
+func TestCompareStringWrongType(t *testing.T) {
+	type testModel struct {
+		Value        int64 `validation:"compare=ValueCompare"`
+		ValueCompare string
+	}
+
+	model := testModel{
+		Value:        1234,
+		ValueCompare: "123456789",
+	}
+
+	ok, errs := IsValid(model)
+	if ok {
+		t.Fatal("This should have failed since min_length is for strings only")
+	}
+	if errs[0].Error() != "Value is not of type string and StringEqualsStringValidation only accepts strings" {
+		t.Fatal("Error was not recognized", errs)
+	}
+}
+
+//BenchmarkTestCompareString benchmarks the comparing of string (valid value)
+func BenchmarkTestCompareString(b *testing.B) {
+	type testModel struct {
+		Value        string `validation:"compare=ValueCompare"`
+		ValueCompare string
+	}
+	model := testModel{
+		Value:        "Test123",
+		ValueCompare: "Test123",
+	}
+
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValid(model)
+	}
+}
+
+//ExampleIsValid_CompareString is an example for compare string validation
+func ExampleIsValid_CompareString() {
+
+	type User struct {
+		// Password should match confirmation on submission
+		Password             string `validation:"compare=PasswordConfirmation"`
+		PasswordConfirmation string
+	}
+
+	var u User //User submits a new password and confirms wrong
+	u.Password = "This"
+	u.PasswordConfirmation = "That"
+
+	ok, errs := IsValid(u)
+	fmt.Println(ok, errs)
+	// Output: false [{Password is not the same as the compare field PasswordConfirmation}]
+}
