@@ -51,7 +51,6 @@ Read more about this Go project's [code standards](https://github.com/mrz1836/go
 - View the [generic tests](https://github.com/mrz1836/go-validate/blob/master/validate_test.go)
 
 Basic model implementation:
-View the [full example model](https://github.com/mrz1836/go-validate/blob/master/examples/model/customer.go) to see how validations are used and custom validations can be added.
 ```golang
 type ExampleModel struct {
     Age             uint    `validation:"min=18"`
