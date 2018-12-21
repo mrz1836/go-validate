@@ -44,12 +44,14 @@ $ go test -bench . -benchmem
 Read more about this Go project's [code standards](https://github.com/mrz1836/go-validate/blob/master/CODE_STANDARDS.md).
 
 ## Usage
+- View the [full model example](https://github.com/mrz1836/go-validate/blob/master/examples/model/customer.go)
 - View the [numeric examples](https://github.com/mrz1836/go-validate/blob/master/numeric_test.go) or [string examples](https://github.com/mrz1836/go-validate/blob/master/string_test.go)
 - View the [numeric benchmarks](https://github.com/mrz1836/go-validate/blob/master/numeric_test.go) or [string benchmarks](https://github.com/mrz1836/go-validate/blob/master/string_test.go)
 - View the [numeric tests](https://github.com/mrz1836/go-validate/blob/master/numeric_test.go) or [string tests](https://github.com/mrz1836/go-validate/blob/master/string_test.go)
 - View the [generic tests](https://github.com/mrz1836/go-validate/blob/master/validate_test.go)
 
-Basic implementation:
+Basic model implementation:
+View the [full example model](https://github.com/mrz1836/go-validate/blob/master/examples/model/customer.go) to see how validations are used and custom validations can be added.
 ```golang
 type ExampleModel struct {
     Age             uint    `validation:"min=18"`
