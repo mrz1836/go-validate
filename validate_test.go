@@ -1,9 +1,7 @@
-/*
-Package validate (go-validate) provides validations for struct fields based on a validation tag and offers additional validation functions.
-*/
 package validate
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 	"testing"
@@ -159,6 +157,22 @@ func TestValidationErrors_Error(t *testing.T) {
 	if errorResponse != newError.Key+" "+newError.Message+" and 1 other errors" {
 		t.Fatal("Error response was not `key message` as expected", errorResponse)
 	}
+}
+
+//ExampleValidationError_Error is showing how to use the errors
+func ExampleValidationError_Error() {
+
+	type Person struct {
+		// Gender must not be longer than 10 characters
+		Gender string `validation:"max_length=10"`
+	}
+
+	var p Person
+	p.Gender = "This is invalid!" // Will fail since its > 10 characters
+
+	_, errs := IsValid(p)
+	fmt.Println(errs[0].Error())
+	// Output: Gender must be no more than 10 characters
 }
 
 //Tests that are still needed for full package coverage
