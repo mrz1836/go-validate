@@ -6,7 +6,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/mrz1836/go-validation"
+	"github.com/mrz1836/go-validate"
 )
 
 //Customer is a very basic model showing validation mixed with JSON
