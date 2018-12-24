@@ -52,6 +52,8 @@ Read more about this Go project's [code standards](https://github.com/mrz1836/go
 
 Basic model implementation:
 ```golang
+
+//ExampleModel shows inline validations via the struct tag
 type ExampleModel struct {
     Age             uint    `validation:"min=18"`
     Category        string  `validation:"min_length=5 max_length=10"`
@@ -61,6 +63,15 @@ type ExampleModel struct {
     PasswordConfirm string  `json:"-"`
     Quantity        uint    `validation:"min=1 max=5"`
     Total           float32 `validation:"min=0"`
+}
+
+//Example showing extra validation functions for additional use
+ok, err := validate.IsValidEmail("someones@email.com")
+if !ok {
+    errs = append(errs, validate.ValidationError{
+        Key:     "Email",
+        Message: err.Error(),
+    })
 }
 ```
 
