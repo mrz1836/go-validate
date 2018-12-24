@@ -2,6 +2,7 @@ package validate
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -343,7 +344,11 @@ func TestIsValidEmailErrorResponses(t *testing.T) {
 	}
 
 	email = "someone@gmail.conn"
-	if _, err = IsValidEmail(email, true); err.Error() != "email domain invalid/cannot receive mail: lookup gmail.conn: no such host" {
+	_, err = IsValidEmail(email, true)
+
+	//email domain invalid/cannot receive mail: lookup gmail.conn on 169.254.169.254:53: no such host
+	//if err.Error() != "email domain invalid/cannot receive mail: lookup gmail.conn: no such host"  {
+	if !strings.Contains(err.Error(), "email domain invalid/cannot receive mail:") {
 		t.Fatal("Error response was not as expected - Value: " + err.Error())
 	}
 }
