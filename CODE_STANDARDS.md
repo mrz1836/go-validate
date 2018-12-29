@@ -20,7 +20,7 @@ The package [golint](https://github.com/golang/lint) differs from [gofmt](https:
 How to install [golint](https://github.com/golang/lint):
 ```bash
 $ go get -u golang.org/x/lint/golint
-$ cd ../go-sanitize
+$ cd ../go-validate
 $ golint
 ```
 
@@ -29,7 +29,7 @@ $ golint
 
 How to run [vet](https://golang.org/cmd/vet/):
 ```bash
-$ cd ../go-sanitize
+$ cd ../go-validate
 $ go vet -v
 ```
 
