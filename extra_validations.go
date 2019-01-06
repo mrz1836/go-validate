@@ -47,6 +47,13 @@ var (
 		"hotmail.con", //Does not exist, but valid TLD in regex
 		"yahoo.con",   //Does not exist, but valid TLD in regex
 	}
+
+	//acceptedCountryCodes is the countries this phone number validation can currently accept
+	acceptedCountryCodes = []string{
+		"1",  //USA and CAN
+		"52", //Mexico
+		//todo: support more countries in phone number validation (@mrz)
+	}
 )
 
 //Extra validation constants
@@ -54,6 +61,30 @@ const (
 	//socialBasicRawRegex social Security number regex for validation
 	socialBasicRawRegex = `^\d{3}-\d{2}-\d{4}$`
 )
+
+//IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values
+func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (success bool, err error) {
+
+	//Empty is true and no value given?
+	if emptyValueAllowed == true && len(enum) == 0 {
+		success = true
+		return
+	}
+
+	//Check that the value is an allowed value (case insensitive)
+	for _, value := range *allowedValues {
+
+		//Compare both in lowercase
+		if strings.ToLower(enum) == strings.ToLower(value) {
+			success = true
+			return
+		}
+	}
+
+	//We must have an error
+	err = fmt.Errorf("value %s is not allowed", enum)
+	return
+}
 
 //IsValidEmail validate an email address using regex, checking name and host, and even MX record check
 func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
@@ -95,11 +126,10 @@ func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
 
 	//Invalid domains
 	//Check banned/blacklisted numbers
-	for _, value := range blacklistedDomains {
-		if host == value {
-			err = fmt.Errorf("email domain is not accepted")
-			return
-		}
+	ok, _ := IsValidEnum(host, &blacklistedDomains, false)
+	if ok {
+		err = fmt.Errorf("email domain is not accepted")
+		return
 	}
 
 	//Check for mx record or A record
@@ -170,11 +200,10 @@ func IsValidSocial(social string) (success bool, err error) {
 	}
 
 	//Check banned/blacklisted numbers
-	for _, value := range blacklistedSocials {
-		if social == value {
-			err = fmt.Errorf("social was found to be blacklisted")
-			return
-		}
+	ok, _ := IsValidEnum(social, &blacklistedSocials, false)
+	if ok {
+		err = fmt.Errorf("social was found to be blacklisted")
+		return
 	}
 
 	//All good!
@@ -182,26 +211,62 @@ func IsValidSocial(social string) (success bool, err error) {
 	return
 }
 
-//IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values.
-func IsValidEnum(fieldValue string, allowedValues *[]string, canBeEmpty bool) (success bool, err error) {
+//IsValidPhoneNumber validates a given phone number and country code
+func IsValidPhoneNumber(phone string, countryCode string) (success bool, err error) {
 
-	//Empty is true and no value given?
-	if canBeEmpty == true && len(fieldValue) == 0 {
-		success = true
+	//No country code or country code is greater than expected
+	if len(countryCode) == 0 || len(countryCode) > 3 {
+		err = fmt.Errorf("country code length is invalid")
 		return
 	}
 
-	//Check that the value is an allowed value (case insensitive)
-	for _, value := range *allowedValues {
+	//Sanitize the code
+	countryCode = string(numericRegExp.ReplaceAll([]byte(countryCode), []byte("")))
 
-		//Compare both in lowercase
-		if strings.ToLower(fieldValue) == strings.ToLower(value) {
-			success = true
-			return
-		}
+	//Country code not accepted
+	ok, _ := IsValidEnum(countryCode, &acceptedCountryCodes, false)
+	if !ok {
+		err = fmt.Errorf("country code %s is not accepted", countryCode)
+		return
 	}
 
-	//We must have an error
-	err = fmt.Errorf("value %s is not allowed", fieldValue)
+	//No phone number
+	if len(phone) == 0 {
+		err = fmt.Errorf("phone number length is invalid")
+		return
+	}
+
+	//Sanitize the phone
+	phone = string(numericRegExp.ReplaceAll([]byte(phone), []byte("")))
+
+	//Phone number format does not match the country code
+	switch countryCode {
+	case "1": //USA and CAN
+
+		//Validate the proper length
+		if len(phone) != 10 {
+			err = fmt.Errorf("phone number must be ten digits")
+			return
+		}
+
+		//todo: finish validation on NPA / NXX
+
+	case "52": //Mexico
+
+		//Validate the proper length
+		if len(phone) != 10 {
+			err = fmt.Errorf("phone number must be ten digits")
+			return
+		}
+
+		//todo: validate MX number
+
+	default:
+		err = fmt.Errorf("country code %s is not accepted", countryCode)
+		return
+	}
+
+	//All good
+	success = true
 	return
 }

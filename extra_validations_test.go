@@ -435,3 +435,102 @@ func BenchmarkIsValidEnum(b *testing.B) {
 		_, _ = IsValidEnum(testValue, &testAcceptedValues, false)
 	}
 }
+
+//TestIsValidPhoneNumber testing the phone value
+func TestIsValidPhoneNumber(t *testing.T) {
+
+	var ok bool
+	var err error
+
+	//Missing country code (too short)
+	phone := ""
+	countryCode := ""
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "country code length is invalid" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Invalid country code (too long)
+	countryCode = "6666"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "country code length is invalid" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Country code not accepted
+	countryCode = "+32"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "country code 32 is not accepted" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number missing
+	countryCode = "+1"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number length is invalid" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number not right length (USA)
+	countryCode = "+1"
+	phone = "555-444-3"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number must be ten digits" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number not right length (MX)
+	countryCode = "+52"
+	phone = "555-444-3"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number must be ten digits" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number valid
+	countryCode = "+1"
+	phone = "234-234-2345"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); !ok {
+		t.Fatal("This should have passed - phone is valid for USA", phone, countryCode, err)
+	}
+}
+
+//ExampleIsValidPhoneNumber_invalid example of an invalid phone number
+func ExampleIsValidPhoneNumber_invalid() {
+	countryCode := "+1"
+	phone := "555-444-44"
+	ok, err := IsValidPhoneNumber(phone, countryCode)
+	fmt.Println(ok, err)
+	// Output: false phone number must be ten digits
+}
+
+//ExampleIsValidPhoneNumber_valid example of an valid phone number
+func ExampleIsValidPhoneNumber_valid() {
+	countryCode := "+1"
+	phone := "234-234-2345"
+	ok, err := IsValidPhoneNumber(phone, countryCode)
+	fmt.Println(ok, err)
+	// Output: true <nil>
+}
+
+//BenchmarkIsValidPhoneNumber benchmarks the IsValidPhoneNumber (valid value)
+func BenchmarkIsValidPhoneNumber(b *testing.B) {
+	countryCode := "+1"
+	phone := "234-234-2345"
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValidPhoneNumber(phone, countryCode)
+	}
+}
