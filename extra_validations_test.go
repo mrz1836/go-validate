@@ -375,3 +375,63 @@ func BenchmarkIsValidEmail(b *testing.B) {
 		_, _ = IsValidEmail(testEmail, false)
 	}
 }
+
+//TestIsValidEnum testing the enum value in an accepted list of values
+func TestIsValidEnum(t *testing.T) {
+
+	var ok bool
+	var err error
+
+	//Invalid value
+	testEnumValue := "1"
+	testAcceptedValues := []string{"123"}
+	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); ok {
+		t.Fatal("This should have failed - value is not found", testEnumValue, testAcceptedValues, err)
+	} else if err.Error() != "value "+testEnumValue+" is not allowed" {
+		t.Fatal("error message was not as expected", err.Error())
+	}
+
+	//Valid value
+	testEnumValue = "123"
+	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); !ok {
+		t.Fatal("This should have passed - value is valid", testEnumValue, testAcceptedValues, err)
+	}
+
+	//Empty valid not allowed
+	testEnumValue = ""
+	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); ok {
+		t.Fatal("This should have failed - can be empty flag", testEnumValue, testAcceptedValues, err)
+	}
+
+	//Empty value allowed
+	testEnumValue = ""
+	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, true); !ok {
+		t.Fatal("This should have passed - can be empty flag", testEnumValue, testAcceptedValues, err)
+	}
+
+}
+
+//ExampleIsValidEnum_invalid example of an invalid enum
+func ExampleIsValidEnum_invalid() {
+	testAcceptedValues := []string{"123"}
+	ok, err := IsValidEnum("1", &testAcceptedValues, false) //Invalid
+	fmt.Println(ok, err)
+	// Output: false value 1 is not allowed
+}
+
+//ExampleIsValidEnum_valid example of an valid enum
+func ExampleIsValidEnum_valid() {
+	testAcceptedValues := []string{"123"}
+	ok, err := IsValidEnum("123", &testAcceptedValues, false) //Valid
+	fmt.Println(ok, err)
+	// Output: true <nil>
+}
+
+//BenchmarkIsValidEnum benchmarks the IsValidEnum (valid value)
+func BenchmarkIsValidEnum(b *testing.B) {
+	testValue := "1"
+	testAcceptedValues := []string{"123"}
+	for i := 0; i < b.N; i++ {
+		_, _ = IsValidEnum(testValue, &testAcceptedValues, false)
+	}
+}

@@ -181,3 +181,27 @@ func IsValidSocial(social string) (success bool, err error) {
 	success = true
 	return
 }
+
+//IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values.
+func IsValidEnum(fieldValue string, allowedValues *[]string, canBeEmpty bool) (success bool, err error) {
+
+	//Empty is true and no value given?
+	if canBeEmpty == true && len(fieldValue) == 0 {
+		success = true
+		return
+	}
+
+	//Check that the value is an allowed value (case insensitive)
+	for _, value := range *allowedValues {
+
+		//Compare both in lowercase
+		if strings.ToLower(fieldValue) == strings.ToLower(value) {
+			success = true
+			return
+		}
+	}
+
+	//We must have an error
+	err = fmt.Errorf("value %s is not allowed", fieldValue)
+	return
+}
