@@ -249,17 +249,60 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 			return
 		}
 
-		//todo: finish validation on NPA / NXX
+		//Break up the phone number into NPA-NXX-XXXX
+		npa := phone[0:3]
+		nxx := phone[3:6]
+		firstDigitOfNpa := npa[0:1]
+		firstDigitOfNxx := nxx[0:1]
+		secondThirdDigitOfNxx := nxx[1:3]
 
-	case "52": //Mexico
+		//Basic USA/CAN rules can be found: https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Modern_plan
 
-		//Validate the proper length
-		if len(phone) != 10 {
-			err = fmt.Errorf("phone number must be ten digits")
+		//NPA Cannot start with 1 or 0
+		if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
+			err = fmt.Errorf("phone number NPA cannot start with " + firstDigitOfNpa)
 			return
 		}
 
-		//todo: validate MX number
+		//NPA Cannot contain 555 as leading value
+		if npa == "555" {
+			err = fmt.Errorf("phone number NPA cannot start with " + npa)
+			return
+		}
+
+		//NXX Cannot start with 1 or 0
+		if firstDigitOfNxx == "1" || firstDigitOfNxx == "0" {
+			err = fmt.Errorf("phone number NXX cannot start with " + firstDigitOfNxx)
+			return
+		}
+
+		//NXX cannot be N11
+		if secondThirdDigitOfNxx == "11" {
+			err = fmt.Errorf("phone number NXX cannot be X" + secondThirdDigitOfNxx)
+			return
+		}
+
+	case "52": //Mexico
+
+		//Rules found so far: https://en.wikipedia.org/wiki/Telephone_numbers_in_Mexico
+
+		//Break up the phone number into NPA-NXX-XXXX
+		npa := phone[0:3]
+		firstDigitOfNpa := npa[0:1]
+
+		//Validate the proper length
+		if len(phone) != 8 && len(phone) != 10 { //2002 mexico had 8 digit numbers and went to 10 digits
+			err = fmt.Errorf("phone number must be either eight or ten digits")
+			return
+		}
+
+		//NPA Cannot start with 1 or 0
+		if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
+			err = fmt.Errorf("phone number NPA cannot start with " + firstDigitOfNpa)
+			return
+		}
+
+		//todo: validate MX number following Mexico's phone number system (not sure if there are more requirements) (@mrz)
 
 	default:
 		err = fmt.Errorf("country code %s is not accepted", countryCode)

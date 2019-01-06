@@ -471,7 +471,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 	}
 
 	//Phone number missing
-	countryCode = "+1"
+	countryCode = "+1" //USA / CAN
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
@@ -480,7 +480,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 	}
 
 	//Phone number not right length (USA)
-	countryCode = "+1"
+	countryCode = "+1" //USA / CAN
 	phone = "555-444-3"
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
@@ -490,8 +490,18 @@ func TestIsValidPhoneNumber(t *testing.T) {
 	}
 
 	//Phone number not right length (MX)
-	countryCode = "+52"
+	countryCode = "+52" //Mexico
 	phone = "555-444-3"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number must be either eight or ten digits" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number not right length (USA)
+	countryCode = "+1" //USA / CAN
+	phone = "234-444-3"
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
@@ -499,8 +509,88 @@ func TestIsValidPhoneNumber(t *testing.T) {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
+	//Phone number cannot start with 1
+	countryCode = "+1" //USA / CAN
+	phone = "123-123-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NPA cannot start with 1" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number cannot start with 0
+	countryCode = "+1" //USA / CAN
+	phone = "023-123-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NPA cannot start with 0" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number cannot start with 1
+	countryCode = "+52" //MX
+	phone = "123-123-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NPA cannot start with 1" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number cannot start with 0
+	countryCode = "+52" //MX
+	phone = "023-123-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NPA cannot start with 0" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number cannot start with 555
+	countryCode = "+1" //USA / CAN
+	phone = "555-123-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NPA cannot start with 555" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number NXX cannot start with 1
+	countryCode = "+1" //USA / CAN
+	phone = "234-123-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NXX cannot start with 1" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number NXX cannot start with 0
+	countryCode = "+1" //USA / CAN
+	phone = "234-023-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NXX cannot start with 0" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
+	//Phone number NXX cannot be X11
+	countryCode = "+1" //USA / CAN
+	phone = "234-911-1234"
+
+	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	} else if err.Error() != "phone number NXX cannot be X11" {
+		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+	}
+
 	//Phone number valid
-	countryCode = "+1"
+	countryCode = "+1" //USA / CAN
 	phone = "234-234-2345"
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); !ok {
