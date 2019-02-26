@@ -270,6 +270,16 @@ func TestIsValidEmail(t *testing.T) {
 		t.Fatal("Email value should be valid! Value: " + email)
 	}
 
+	email = "john_doe@test.com.uk"
+	if success, _ = IsValidEmail(email, false); !success {
+		t.Fatal("Email value should be valid! Value: " + email)
+	}
+
+	email = "john+doe@test.com.uk"
+	if success, _ = IsValidEmail(email, false); !success {
+		t.Fatal("Email value should be valid! Value: " + email)
+	}
+
 	//========= INVALID MX EMAILS ================
 
 	email = "d-d-d.d.dt@testthissite.com.uk"
