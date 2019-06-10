@@ -6,15 +6,15 @@
 | ![License](https://img.shields.io/github/license/mrz1836/go-validate.svg?style=flat) | [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-validate?style=flat)](https://goreportcard.com/report/github.com/mrz1836/go-validate)  | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e25f7c37ecb246fba1cabf1000aa76a3)](https://www.codacy.com/app/mrz1818/go-validate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrz1836/go-validate&amp;utm_campaign=Badge_Grade) |  [![Build Status](https://travis-ci.com/mrz1836/go-validate.svg?branch=master)](https://travis-ci.com/mrz1836/go-validate)   |  [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme) | [![Release](https://img.shields.io/github/release-pre/mrz1836/go-validate.svg?style=flat)](https://github.com/mrz1836/go-validate/releases) | [![GoDoc](https://godoc.org/github.com/mrz1836/go-validate?status.svg&style=flat)](https://godoc.org/github.com/mrz1836/go-validate) |
 
 ## Table of Contents
-- [Installation](https://github.com/mrz1836/go-validate#installation)
-- [Documentation](https://github.com/mrz1836/go-validate#documentation)
-- [Examples & Tests](https://github.com/mrz1836/go-validate#examples--tests)
-- [Benchmarks](https://github.com/mrz1836/go-validate#benchmarks)
-- [Code Standards](https://github.com/mrz1836/go-validate#code-standards)
-- [Usage](https://github.com/mrz1836/go-validate#usage)
-- [Maintainers](https://github.com/mrz1836/go-validate#maintainers)
-- [Contributing](https://github.com/mrz1836/go-validate#contributing)
-- [License](https://github.com/mrz1836/go-validate#license)
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [Examples & Tests](#examples--tests)
+- [Benchmarks](#benchmarks)
+- [Code Standards](#code-standards)
+- [Usage](#usage)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
@@ -27,7 +27,7 @@ $ go get -u github.com/mrz1836/go-validate
 You can view the generated [documentation here](https://godoc.org/github.com/mrz1836/go-validate).
 
 ## Examples & Tests
-All unit tests and examples run via [Travis CI](https://travis-ci.com/mrz1836/go-validate) and uses [Go version 1.12.x](https://golang.org/doc/go1.12). View the [deployment configuration file](https://github.com/mrz1836/go-validate/blob/master/.travis.yml).
+All unit tests and examples run via [Travis CI](https://travis-ci.com/mrz1836/go-validate) and uses [Go version 1.12.x](https://golang.org/doc/go1.12). View the [deployment configuration file](.travis.yml).
 ```bash
 $ cd ../go-validate
 $ go test ./... -v
@@ -41,14 +41,14 @@ $ go test -bench . -benchmem
 ```
 
 ## Code Standards
-Read more about this Go project's [code standards](https://github.com/mrz1836/go-validate/blob/master/CODE_STANDARDS.md).
+Read more about this Go project's [code standards](CODE_STANDARDS.md).
 
 ## Usage
-- View the [full model example](https://github.com/mrz1836/go-validate/blob/master/examples/model/customer.go)
-- View the [numeric examples](https://github.com/mrz1836/go-validate/blob/master/numeric_test.go) or [string examples](https://github.com/mrz1836/go-validate/blob/master/string_test.go)
-- View the [numeric benchmarks](https://github.com/mrz1836/go-validate/blob/master/numeric_test.go) or [string benchmarks](https://github.com/mrz1836/go-validate/blob/master/string_test.go)
-- View the [numeric tests](https://github.com/mrz1836/go-validate/blob/master/numeric_test.go) or [string tests](https://github.com/mrz1836/go-validate/blob/master/string_test.go)
-- View the [generic tests](https://github.com/mrz1836/go-validate/blob/master/validate_test.go)
+- View the [full model example](examples/model/customer.go)
+- View the [numeric examples](numeric_test.go) or [string examples](string_test.go)
+- View the [numeric benchmarks](numeric_test.go) or [string benchmarks](string_test.go)
+- View the [numeric tests](numeric_test.go) or [string tests](string_test.go)
+- View the [generic tests](validate_test.go)
 
 Basic model implementation:
 ```golang
@@ -81,7 +81,7 @@ if !ok {
 
 ## Contributing
 
-View the [contributing guidelines](https://github.com/mrz1836/go-validate/blob/master/CONTRIBUTING.md) and follow the [code of conduct](https://github.com/mrz1836/go-validate/blob/master/CODE_OF_CONDUCT.md).
+View the [contributing guidelines](CONTRIBUTING.md) and follow the [code of conduct](CODE_OF_CONDUCT.md).
 
 Support the development of this project 🙏
 
