@@ -35,7 +35,7 @@ func (c *Customer) Valid() (bool, []validate.ValidationError) {
 
 	//Showing use of a public validation method (extra validations outside of the struct built-in validations)
 	ok, err := validate.IsValidSocial(c.SocialSecurityNumber)
-	if !ok {
+	if !ok && err != nil {
 		errs = append(errs, validate.ValidationError{
 			Key:     "SocialSecurityNumber",
 			Message: err.Error(),
