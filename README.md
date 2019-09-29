@@ -27,7 +27,7 @@ $ go get -u github.com/mrz1836/go-validate
 You can view the generated [documentation here](https://godoc.org/github.com/mrz1836/go-validate).
 
 ## Examples & Tests
-All unit tests and examples run via [Travis CI](https://travis-ci.com/mrz1836/go-validate) and uses [Go version 1.12.x](https://golang.org/doc/go1.12). View the [deployment configuration file](.travis.yml).
+All unit tests and examples run via [Travis CI](https://travis-ci.com/mrz1836/go-validate) and uses [Go version 1.13.x](https://golang.org/doc/go1.13). View the [deployment configuration file](.travis.yml).
 ```bash
 $ cd ../go-validate
 $ go test ./... -v
@@ -77,7 +77,7 @@ if !ok {
 
 ## Maintainers
 
-[@kayleg](https://github.com/kayleg) - [@MrZ1836](https://github.com/mrz1836)
+[@kayleg](https://github.com/kayleg) - [@MrZ](https://github.com/mrz1836)
 
 ## Contributing
 
