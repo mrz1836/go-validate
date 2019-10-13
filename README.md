@@ -1,9 +1,12 @@
 # go-validate
 **go-validate** provides validations for struct fields based on a validation tag and offers additional validation functions.
 
-| | | | | | | |
-|-|-|-|-|-|-|-|
-| ![License](https://img.shields.io/github/license/mrz1836/go-validate.svg?style=flat) | [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-validate?style=flat)](https://goreportcard.com/report/github.com/mrz1836/go-validate)  | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e25f7c37ecb246fba1cabf1000aa76a3)](https://www.codacy.com/app/mrz1818/go-validate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrz1836/go-validate&amp;utm_campaign=Badge_Grade) |  [![Build Status](https://travis-ci.org/mrz1836/go-validate.svg?branch=master)](https://travis-ci.org/mrz1836/go-validate)   |  [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme) | [![Release](https://img.shields.io/github/release-pre/mrz1836/go-validate.svg?style=flat)](https://github.com/mrz1836/go-validate/releases) | [![GoDoc](https://godoc.org/github.com/mrz1836/go-validate?status.svg&style=flat)](https://godoc.org/github.com/mrz1836/go-validate) |
+[![Build Status](https://travis-ci.org/mrz1836/go-validate.svg?branch=master)](https://travis-ci.org/mrz1836/go-validate)
+[![Report](https://goreportcard.com/badge/github.com/mrz1836/go-validate?style=flat)](https://goreportcard.com/report/github.com/mrz1836/go-validate)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e25f7c37ecb246fba1cabf1000aa76a3)](https://www.codacy.com/app/mrz1818/go-validate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrz1836/go-validate&amp;utm_campaign=Badge_Grade)
+[![Release](https://img.shields.io/github/release-pre/mrz1836/go-validate.svg?style=flat)](https://github.com/mrz1836/go-validate/releases)
+[![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
+[![GoDoc](https://godoc.org/github.com/mrz1836/go-validate?status.svg&style=flat)](https://godoc.org/github.com/mrz1836/go-validate)
 
 ## Table of Contents
 - [Installation](#installation)
