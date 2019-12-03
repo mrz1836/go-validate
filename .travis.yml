@@ -9,8 +9,8 @@ go:
  - 1.13.x
 
 # Environment variables
-#env:
-# - GO111MODULE=on
+env:
+ - GO111MODULE=on
 
 # Only clone the most recent commit
 git:
@@ -28,4 +28,4 @@ before_script:
 script:
  - golint
  - go test -v ./...
- #- go vet (skipping for now since validation_test.go has an issue)
+ - go vet -copylocks=false
