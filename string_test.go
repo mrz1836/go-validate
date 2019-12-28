@@ -10,7 +10,7 @@ import (
 // Generic string struct and function tests
 //
 
-//TestMaxLengthValidation - series of different tests
+// TestMaxLengthValidation - series of different tests
 func TestMaxLengthValidation(t *testing.T) {
 
 	//Test invalid types
@@ -51,7 +51,7 @@ func TestMaxLengthValidation(t *testing.T) {
 	}
 }
 
-//TestMinLengthValidation - series of different tests
+// TestMinLengthValidation - series of different tests
 func TestMinLengthValidation(t *testing.T) {
 
 	//Test invalid types
@@ -92,7 +92,7 @@ func TestMinLengthValidation(t *testing.T) {
 	}
 }
 
-//TestFormatValidation - series of different tests
+// TestFormatValidation - series of different tests
 func TestFormatValidation(t *testing.T) {
 
 	//Test invalid types
@@ -140,7 +140,7 @@ func TestFormatValidation(t *testing.T) {
 // Test max length
 //
 
-//TestMaxLengthValid tests max length (valid length of characters)
+// TestMaxLengthValid tests max length (valid length of characters)
 func TestMaxLengthValid(t *testing.T) {
 
 	type testModel struct {
@@ -159,7 +159,7 @@ func TestMaxLengthValid(t *testing.T) {
 	}
 }
 
-//TestMaxLengthInvalid tests max length (invalid length of characters)
+// TestMaxLengthInvalid tests max length (invalid length of characters)
 func TestMaxLengthInvalid(t *testing.T) {
 	type testModel struct {
 		Value string `validation:"max_length=5"`
@@ -179,7 +179,7 @@ func TestMaxLengthInvalid(t *testing.T) {
 	}
 }
 
-//TestMaxLengthWrongType tests to make sure only valid types
+// TestMaxLengthWrongType tests to make sure only valid types
 func TestMaxLengthWrongType(t *testing.T) {
 	type testModel struct {
 		Value int64 `validation:"max_length=5"`
@@ -198,7 +198,7 @@ func TestMaxLengthWrongType(t *testing.T) {
 	}
 }
 
-//BenchmarkTestMaxLength benchmarks the Max Length Value (valid value)
+// BenchmarkTestMaxLength benchmarks the Max Length Value (valid value)
 func BenchmarkTestMaxLength(b *testing.B) {
 	type testModel struct {
 		Value string `validation:"max_length=20"`
@@ -212,7 +212,7 @@ func BenchmarkTestMaxLength(b *testing.B) {
 	}
 }
 
-//ExampleIsValid_MaxLength is an example for max length validation (max)
+// ExampleIsValid_MaxLength is an example for max length validation (max)
 func ExampleIsValid_maxLength() {
 
 	type Person struct {
@@ -232,7 +232,7 @@ func ExampleIsValid_maxLength() {
 // Test min length
 //
 
-//TestMinLengthValid tests min length (valid length of characters)
+// TestMinLengthValid tests min length (valid length of characters)
 func TestMinLengthValid(t *testing.T) {
 
 	type testModel struct {
@@ -251,7 +251,7 @@ func TestMinLengthValid(t *testing.T) {
 	}
 }
 
-//TestMinLengthInvalid tests min length (invalid length of characters)
+// TestMinLengthInvalid tests min length (invalid length of characters)
 func TestMinLengthInvalid(t *testing.T) {
 	type testModel struct {
 		Value string `validation:"min_length=5"`
@@ -271,7 +271,7 @@ func TestMinLengthInvalid(t *testing.T) {
 	}
 }
 
-//TestMinLengthWrongType tests to make sure only valid types
+// TestMinLengthWrongType tests to make sure only valid types
 func TestMinLengthWrongType(t *testing.T) {
 	type testModel struct {
 		Value int64 `validation:"min_length=5"`
@@ -290,7 +290,7 @@ func TestMinLengthWrongType(t *testing.T) {
 	}
 }
 
-//BenchmarkTestMinLength benchmarks the Min Length Value (valid value)
+// BenchmarkTestMinLength benchmarks the Min Length Value (valid value)
 func BenchmarkTestMinLength(b *testing.B) {
 	type testModel struct {
 		Value string `validation:"min_length=3"`
@@ -304,7 +304,7 @@ func BenchmarkTestMinLength(b *testing.B) {
 	}
 }
 
-//ExampleIsValid_MinLength is an example for min length validation (min)
+// ExampleIsValid_MinLength is an example for min length validation (min)
 func ExampleIsValid_minLength() {
 
 	type Person struct {
@@ -324,7 +324,7 @@ func ExampleIsValid_minLength() {
 // Test format, regex
 //
 
-//TestFormatEmail tests email format (invalid and valid formats)
+// TestFormatEmail tests email format (invalid and valid formats)
 func TestFormatEmail(t *testing.T) {
 
 	type testModel struct {
@@ -393,7 +393,7 @@ func TestFormatEmail(t *testing.T) {
 
 }
 
-//TestFormatEmailAcceptedTLDs tests email format (all accepted TLDs)
+// TestFormatEmailAcceptedTLDs tests email format (all accepted TLDs)
 func TestFormatEmailAcceptedTLDs(t *testing.T) {
 
 	type testModel struct {
@@ -416,7 +416,7 @@ func TestFormatEmailAcceptedTLDs(t *testing.T) {
 	}
 }
 
-//BenchmarkTestFormatEmail benchmarks the format by email (valid value)
+// BenchmarkTestFormatEmail benchmarks the format by email (valid value)
 func BenchmarkTestFormatEmail(b *testing.B) {
 	type testModel struct {
 		Value string `validation:"format=email"`
@@ -430,7 +430,7 @@ func BenchmarkTestFormatEmail(b *testing.B) {
 	}
 }
 
-//ExampleIsValid_FormatEmail is an example for format email validation
+// ExampleIsValid_FormatEmail is an example for format email validation
 func ExampleIsValid_formatEmail() {
 
 	type Person struct {
@@ -446,7 +446,7 @@ func ExampleIsValid_formatEmail() {
 	// Output: false [{Email does not match email format}]
 }
 
-//TestFormatRegExp tests regex format (invalid and valid formats)
+// TestFormatRegExp tests regex format (invalid and valid formats)
 func TestFormatRegExp(t *testing.T) {
 	type testModel struct {
 		Value string `validation:"format=regexp:Test[0-9]+"`
@@ -476,7 +476,7 @@ func TestFormatRegExp(t *testing.T) {
 	}
 }
 
-//BenchmarkTestFormatRegEx benchmarks the format by regex (valid value)
+// BenchmarkTestFormatRegEx benchmarks the format by regex (valid value)
 func BenchmarkTestFormatRegEx(b *testing.B) {
 	type testModel struct {
 		Value string `validation:"format=regexp:Test[0-9]+"`
@@ -490,7 +490,7 @@ func BenchmarkTestFormatRegEx(b *testing.B) {
 	}
 }
 
-//ExampleIsValid_FormatRegEx is an example for format regex validation
+// ExampleIsValid_FormatRegEx is an example for format regex validation
 func ExampleIsValid_formatRegEx() {
 
 	type Person struct {
@@ -510,7 +510,7 @@ func ExampleIsValid_formatRegEx() {
 // Test compare string
 //
 
-//TestCompareStringValid tests compare string (valid comparison)
+// TestCompareStringValid tests compare string (valid comparison)
 func TestCompareStringValid(t *testing.T) {
 
 	type testModel struct {
@@ -531,7 +531,7 @@ func TestCompareStringValid(t *testing.T) {
 	}
 }
 
-//TestCompareStringInValid tests compare string (invalid comparison)
+// TestCompareStringInValid tests compare string (invalid comparison)
 func TestCompareStringInValid(t *testing.T) {
 
 	type testModel struct {
@@ -554,7 +554,7 @@ func TestCompareStringInValid(t *testing.T) {
 	}
 }
 
-//TestCompareStringWrongType tests to make sure only valid types
+// TestCompareStringWrongType tests to make sure only valid types
 func TestCompareStringWrongType(t *testing.T) {
 	type testModel struct {
 		Value        int64 `validation:"compare=ValueCompare"`
@@ -575,7 +575,7 @@ func TestCompareStringWrongType(t *testing.T) {
 	}
 }
 
-//BenchmarkTestCompareString benchmarks the comparing of string (valid value)
+// BenchmarkTestCompareString benchmarks the comparing of string (valid value)
 func BenchmarkTestCompareString(b *testing.B) {
 	type testModel struct {
 		Value        string `validation:"compare=ValueCompare"`
@@ -591,7 +591,7 @@ func BenchmarkTestCompareString(b *testing.B) {
 	}
 }
 
-//ExampleIsValid_CompareString is an example for compare string validation
+// ExampleIsValid_CompareString is an example for compare string validation
 func ExampleIsValid_compareString() {
 
 	type User struct {

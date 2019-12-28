@@ -9,7 +9,7 @@ import (
 	"github.com/mrz1836/go-validate"
 )
 
-//Customer is a very basic model showing validation mixed with JSON
+// Customer is a very basic model showing validation mixed with JSON
 type Customer struct {
 	Age                  uint    `validation:"min=18" json:"age"`
 	Balance              float32 `validation:"min=0" json:"balance"`
@@ -23,17 +23,17 @@ type Customer struct {
 	SocialSecurityNumber string  `json:"-"`
 }
 
-//Valid is a custom method for the model that will run all built-in validations and also run any custom validations
+// Valid is a custom method for the model that will run all built-in validations and also run any custom validations
 func (c *Customer) Valid() (bool, []validate.ValidationError) {
 
-	//Run all validations off the struct configuration
+	// Run all validations off the struct configuration
 	_, errs := validate.IsValid(*c)
 
 	//
 	//Customize: errs (you can add/remove your own errs)
 	//
 
-	//Showing use of a public validation method (extra validations outside of the struct built-in validations)
+	// Showing use of a public validation method (extra validations outside of the struct built-in validations)
 	ok, err := validate.IsValidSocial(c.SocialSecurityNumber)
 	if !ok && err != nil {
 		errs = append(errs, validate.ValidationError{
@@ -42,22 +42,22 @@ func (c *Customer) Valid() (bool, []validate.ValidationError) {
 		})
 	}
 
-	//Return error if found
+	// Return error if found
 	return len(errs) == 0, errs
 }
 
-//Add your custom validations
+// Add your custom validations
 func init() {
 
-	//Add your own custom validations
+	// Add your own custom validations
 	//
 	//
 }
 
-//main example (just an example of validating a model's data before persisting into a database)
+// main example (just an example of validating a model's data before persisting into a database)
 func main() {
 
-	//Start with some model & data
+	// Start with some model & data
 	customer := &Customer{
 		Age:                  21,
 		Balance:              1.00,
@@ -70,7 +70,7 @@ func main() {
 		SocialSecurityNumber: "212126768",
 	}
 
-	//Validate the model - Run before saving into database
+	// Validate the model - Run before saving into database
 	_, errs := customer.Valid()
 	if errs != nil {
 		fmt.Printf("Customer validation failed! %+v", errs)
@@ -78,5 +78,5 @@ func main() {
 		fmt.Println("Customer validation succeed!")
 	}
 
-	//customer.Save() //Now save to a database
+	// customer.Save() // Now save to a database
 }

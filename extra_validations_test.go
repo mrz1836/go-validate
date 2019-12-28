@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-//TestIsValidSocial testing the social security number (invalid and valid)
+// TestIsValidSocial testing the social security number (invalid and valid)
 func TestIsValidSocial(t *testing.T) {
 
 	var ok bool
@@ -70,7 +70,7 @@ func TestIsValidSocial(t *testing.T) {
 	}
 }
 
-//TestIsValidSocialErrorResponses test the error responses
+// TestIsValidSocialErrorResponses test the error responses
 func TestIsValidSocialErrorResponses(t *testing.T) {
 	var err error
 
@@ -106,21 +106,21 @@ func TestIsValidSocialErrorResponses(t *testing.T) {
 	}
 }
 
-//ExampleIsValidSocial_invalid example of an invalid social response
+// ExampleIsValidSocial_invalid example of an invalid social response
 func ExampleIsValidSocial_invalid() {
 	ok, err := IsValidSocial("666-00-0000") //Invalid
 	fmt.Println(ok, err)
 	// Output: false social section was found invalid (cannot be 000 or 666)
 }
 
-//ExampleIsValidSocial_invalid example of a valid social response
+// ExampleIsValidSocial_invalid example of a valid social response
 func ExampleIsValidSocial_valid() {
 	ok, err := IsValidSocial("212126768") //Valid
 	fmt.Println(ok, err)
 	// Output: true <nil>
 }
 
-//BenchmarkIsValidSocial benchmarks the IsValidSocial (valid value)
+// BenchmarkIsValidSocial benchmarks the IsValidSocial (valid value)
 func BenchmarkIsValidSocial(b *testing.B) {
 	testSocialNumber := "212126768"
 
@@ -129,7 +129,7 @@ func BenchmarkIsValidSocial(b *testing.B) {
 	}
 }
 
-//TestIsValidEmail testing the email validation
+// TestIsValidEmail testing the email validation
 func TestIsValidEmail(t *testing.T) {
 
 	var success bool
@@ -317,7 +317,7 @@ func TestIsValidEmail(t *testing.T) {
 	}
 }
 
-//TestIsValidEmailErrorResponses test the error responses
+// TestIsValidEmailErrorResponses test the error responses
 func TestIsValidEmailErrorResponses(t *testing.T) {
 	var err error
 
@@ -363,21 +363,21 @@ func TestIsValidEmailErrorResponses(t *testing.T) {
 	}
 }
 
-//ExampleIsValidEmail_invalid example of an invalid email address response
+// ExampleIsValidEmail_invalid example of an invalid email address response
 func ExampleIsValidEmail_invalid() {
 	ok, err := IsValidEmail("notvalid@domain", false) //Invalid
 	fmt.Println(ok, err)
 	// Output: false email is not a valid address format
 }
 
-//ExampleIsValidEmail_valid example of a valid email address response
+// ExampleIsValidEmail_valid example of a valid email address response
 func ExampleIsValidEmail_valid() {
 	ok, err := IsValidEmail("person@gmail.com", false) //Valid
 	fmt.Println(ok, err)
 	// Output: true <nil>
 }
 
-//BenchmarkIsValidEmail benchmarks the IsValidEmail (valid value)
+// BenchmarkIsValidEmail benchmarks the IsValidEmail (valid value)
 func BenchmarkIsValidEmail(b *testing.B) {
 	testEmail := "person@gmail.com"
 
@@ -386,7 +386,7 @@ func BenchmarkIsValidEmail(b *testing.B) {
 	}
 }
 
-//TestIsValidEnum testing the enum value in an accepted list of values
+// TestIsValidEnum testing the enum value in an accepted list of values
 func TestIsValidEnum(t *testing.T) {
 
 	var ok bool
@@ -421,7 +421,7 @@ func TestIsValidEnum(t *testing.T) {
 
 }
 
-//ExampleIsValidEnum_invalid example of an invalid enum
+// ExampleIsValidEnum_invalid example of an invalid enum
 func ExampleIsValidEnum_invalid() {
 	testAcceptedValues := []string{"123"}
 	ok, err := IsValidEnum("1", &testAcceptedValues, false) //Invalid
@@ -429,7 +429,7 @@ func ExampleIsValidEnum_invalid() {
 	// Output: false value 1 is not allowed
 }
 
-//ExampleIsValidEnum_valid example of an valid enum
+// ExampleIsValidEnum_valid example of an valid enum
 func ExampleIsValidEnum_valid() {
 	testAcceptedValues := []string{"123"}
 	ok, err := IsValidEnum("123", &testAcceptedValues, false) //Valid
@@ -437,7 +437,7 @@ func ExampleIsValidEnum_valid() {
 	// Output: true <nil>
 }
 
-//BenchmarkIsValidEnum benchmarks the IsValidEnum (valid value)
+// BenchmarkIsValidEnum benchmarks the IsValidEnum (valid value)
 func BenchmarkIsValidEnum(b *testing.B) {
 	testValue := "1"
 	testAcceptedValues := []string{"123"}
@@ -446,7 +446,7 @@ func BenchmarkIsValidEnum(b *testing.B) {
 	}
 }
 
-//TestIsValidPhoneNumber testing the phone value
+// TestIsValidPhoneNumber testing the phone value
 func TestIsValidPhoneNumber(t *testing.T) {
 
 	var ok bool
@@ -608,7 +608,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 	}
 }
 
-//ExampleIsValidPhoneNumber_invalid example of an invalid phone number
+// ExampleIsValidPhoneNumber_invalid example of an invalid phone number
 func ExampleIsValidPhoneNumber_invalid() {
 	countryCode := "+1"
 	phone := "555-444-44"
@@ -617,7 +617,7 @@ func ExampleIsValidPhoneNumber_invalid() {
 	// Output: false phone number must be ten digits
 }
 
-//ExampleIsValidPhoneNumber_valid example of an valid phone number
+// ExampleIsValidPhoneNumber_valid example of an valid phone number
 func ExampleIsValidPhoneNumber_valid() {
 	countryCode := "+1"
 	phone := "234-234-2345"
@@ -626,7 +626,7 @@ func ExampleIsValidPhoneNumber_valid() {
 	// Output: true <nil>
 }
 
-//BenchmarkIsValidPhoneNumber benchmarks the IsValidPhoneNumber (valid value)
+// BenchmarkIsValidPhoneNumber benchmarks the IsValidPhoneNumber (valid value)
 func BenchmarkIsValidPhoneNumber(b *testing.B) {
 	countryCode := "+1"
 	phone := "234-234-2345"

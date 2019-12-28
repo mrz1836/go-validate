@@ -7,15 +7,15 @@ import (
 	"testing"
 )
 
-//invalidNumericTypes is for the types not allowed (numeric tests)
+// invalidNumericTypes is for the types not allowed (numeric tests)
 var (
 	invalidNumericTypes []reflect.Kind
 )
 
-//init load the default test data
+// init load the default test data
 func init() {
 
-	//Build the invalid numeric types
+	// Build the invalid numeric types
 	invalidNumericTypes = append(
 		invalidNumericTypes,
 		reflect.Array,
@@ -33,7 +33,7 @@ func init() {
 	)
 }
 
-//TestValidationMap_Atomicity
+// TestValidationMap_Atomicity
 func TestValidationMap_Atomicity(t *testing.T) {
 	vm := Map{}
 	typ := reflect.TypeOf(vm) //todo: go vet: call of reflect.TypeOf copies lock value: govalidation.Map contains sync.Map contains sync.Mutex
@@ -60,7 +60,7 @@ func TestValidationMap_Atomicity(t *testing.T) {
 	wg2.Wait()
 }
 
-//TestValidation_SetFieldName test setting and getting field name
+// TestValidation_SetFieldName test setting and getting field name
 func TestValidation_SetFieldName(t *testing.T) {
 	inter, err := minValueValidation("10", reflect.Int)
 	if err != nil {
@@ -78,7 +78,7 @@ func TestValidation_SetFieldName(t *testing.T) {
 	}
 }
 
-//TestValidation_SetFieldIndex test setting and getting field index
+// TestValidation_SetFieldIndex test setting and getting field index
 func TestValidation_SetFieldIndex(t *testing.T) {
 	inter, err := minValueValidation("10", reflect.Int)
 	if err != nil {
@@ -96,7 +96,7 @@ func TestValidation_SetFieldIndex(t *testing.T) {
 	}
 }
 
-//TestValidation_Validate test using the Validate method (valid and invalid)
+// TestValidation_Validate test using the Validate method (valid and invalid)
 func TestValidation_Validate(t *testing.T) {
 
 	//Test making an interface
@@ -123,7 +123,7 @@ func TestValidation_Validate(t *testing.T) {
 	}
 }
 
-//TestValidationError_Error tests using the Error method
+// TestValidationError_Error tests using the Error method
 func TestValidationError_Error(t *testing.T) {
 	newError := ValidationError{
 		Key:     "the_key",
@@ -137,7 +137,7 @@ func TestValidationError_Error(t *testing.T) {
 	}
 }
 
-//TestValidationErrors_Error tests using the Error method
+// TestValidationErrors_Error tests using the Error method
 func TestValidationErrors_Error(t *testing.T) {
 	newError := ValidationError{
 		Key:     "the_key",
@@ -159,7 +159,7 @@ func TestValidationErrors_Error(t *testing.T) {
 	}
 }
 
-//ExampleValidationError_Error is showing how to use the errors
+// ExampleValidationError_Error is showing how to use the errors
 func ExampleValidationError_Error() {
 
 	type Person struct {

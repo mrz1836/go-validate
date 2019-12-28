@@ -1,6 +1,6 @@
 package validate
 
-//TopLevelDomains is from ICANN for all TLDs that should be accepted
+// TopLevelDomains is from ICANN for all TLDs that should be accepted
 var TopLevelDomains = []string{
 	"AAA",
 	"AARP",

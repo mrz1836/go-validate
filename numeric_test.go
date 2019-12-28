@@ -10,7 +10,7 @@ import (
 // Generic numeric struct and function tests
 //
 
-//TestMinValueValidation - series of different tests
+// TestMinValueValidation - series of different tests
 func TestMinValueValidation(t *testing.T) {
 
 	//Test invalid types
@@ -73,7 +73,7 @@ func TestMinValueValidation(t *testing.T) {
 	}
 }
 
-//TestMaxValueValidation - series of different tests
+// TestMaxValueValidation - series of different tests
 func TestMaxValueValidation(t *testing.T) {
 
 	//Test invalid types
@@ -136,7 +136,7 @@ func TestMaxValueValidation(t *testing.T) {
 	}
 }
 
-//BenchmarkTestMinIntValue benchmarks the Min Value (valid value)
+// BenchmarkTestMinIntValue benchmarks the Min Value (valid value)
 func BenchmarkTestMinIntValue(b *testing.B) {
 	type testModel struct {
 		Value int8 `validation:"min=20"`
@@ -150,7 +150,7 @@ func BenchmarkTestMinIntValue(b *testing.B) {
 	}
 }
 
-//BenchmarkTestMinUintValue benchmarks the Min Value (valid value)
+// BenchmarkTestMinUintValue benchmarks the Min Value (valid value)
 func BenchmarkTestMinUintValue(b *testing.B) {
 	type testModel struct {
 		Value uint8 `validation:"min=20"`
@@ -164,7 +164,7 @@ func BenchmarkTestMinUintValue(b *testing.B) {
 	}
 }
 
-//BenchmarkTestMinFloatValue benchmarks the Min Value (valid value)
+// BenchmarkTestMinFloatValue benchmarks the Min Value (valid value)
 func BenchmarkTestMinFloatValue(b *testing.B) {
 	type testModel struct {
 		Value float32 `validation:"min=20"`
@@ -178,7 +178,7 @@ func BenchmarkTestMinFloatValue(b *testing.B) {
 	}
 }
 
-//BenchmarkTestMaxIntValue benchmarks the Max Value (valid value)
+// BenchmarkTestMaxIntValue benchmarks the Max Value (valid value)
 func BenchmarkTestMaxIntValue(b *testing.B) {
 	type testModel struct {
 		Value int8 `validation:"max=20"`
@@ -192,7 +192,7 @@ func BenchmarkTestMaxIntValue(b *testing.B) {
 	}
 }
 
-//BenchmarkTestMaxUintValue benchmarks the Max Value (valid value)
+// BenchmarkTestMaxUintValue benchmarks the Max Value (valid value)
 func BenchmarkTestMaxUintValue(b *testing.B) {
 	type testModel struct {
 		Value uint8 `validation:"max=20"`
@@ -206,7 +206,7 @@ func BenchmarkTestMaxUintValue(b *testing.B) {
 	}
 }
 
-//BenchmarkTestMaxFloatValue benchmarks the Max Value (valid value)
+// BenchmarkTestMaxFloatValue benchmarks the Max Value (valid value)
 func BenchmarkTestMaxFloatValue(b *testing.B) {
 	type testModel struct {
 		Value float32 `validation:"max=20"`
@@ -220,7 +220,7 @@ func BenchmarkTestMaxFloatValue(b *testing.B) {
 	}
 }
 
-//ExampleIsValid_MinInt is an example for Int Value validation (min)
+// ExampleIsValid_MinInt is an example for Int Value validation (min)
 func ExampleIsValid_minInt() {
 
 	type Product struct {
@@ -236,7 +236,7 @@ func ExampleIsValid_minInt() {
 	// Output: false [{Quantity must be greater than or equal to 1}]
 }
 
-//ExampleIsValid_MinFloat is an example for Float Value validation (min)
+// ExampleIsValid_MinFloat is an example for Float Value validation (min)
 func ExampleIsValid_minFloat() {
 
 	type Product struct {
@@ -252,7 +252,7 @@ func ExampleIsValid_minFloat() {
 	// Output: false [{Price must be greater than or equal to 1E-02}]
 }
 
-//ExampleIsValid_MaxInt is an example for Int Value validation (max)
+// ExampleIsValid_MaxInt is an example for Int Value validation (max)
 func ExampleIsValid_maxInt() {
 
 	type Product struct {
@@ -268,7 +268,7 @@ func ExampleIsValid_maxInt() {
 	// Output: false [{Quantity must be less than or equal to 99}]
 }
 
-//ExampleIsValid_MaxFloat is an example for Float Value validation (max)
+// ExampleIsValid_MaxFloat is an example for Float Value validation (max)
 func ExampleIsValid_maxFloat() {
 
 	type Product struct {
@@ -288,7 +288,7 @@ func ExampleIsValid_maxFloat() {
 // Integer tests (positive and negative)
 //
 
-//TestMinValueInt8Positive tests min value on int8
+// TestMinValueInt8Positive tests min value on int8
 func TestMinValueInt8Positive(t *testing.T) {
 	type testModel struct {
 		Value int8 `validation:"min=20"`
@@ -315,7 +315,7 @@ func TestMinValueInt8Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueInt8Negative tests min value on int8
+// TestMinValueInt8Negative tests min value on int8
 func TestMinValueInt8Negative(t *testing.T) {
 	type testModel struct {
 		Value int8 `validation:"min=-20"`
@@ -342,7 +342,7 @@ func TestMinValueInt8Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueInt16Positive tests min value on int16
+// TestMinValueInt16Positive tests min value on int16
 func TestMinValueInt16Positive(t *testing.T) {
 	type testModel struct {
 		Value int16 `validation:"min=20"`
@@ -369,7 +369,7 @@ func TestMinValueInt16Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueInt16Negative tests min value on int16
+// TestMinValueInt16Negative tests min value on int16
 func TestMinValueInt16Negative(t *testing.T) {
 	type testModel struct {
 		Value int16 `validation:"min=-20"`
@@ -396,7 +396,7 @@ func TestMinValueInt16Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueInt32Positive tests min value on int32
+// TestMinValueInt32Positive tests min value on int32
 func TestMinValueInt32Positive(t *testing.T) {
 	type testModel struct {
 		Value int32 `validation:"min=20"`
@@ -423,7 +423,7 @@ func TestMinValueInt32Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueInt32Negative tests min value on int32
+// TestMinValueInt32Negative tests min value on int32
 func TestMinValueInt32Negative(t *testing.T) {
 	type testModel struct {
 		Value int32 `validation:"min=-20"`
@@ -450,7 +450,7 @@ func TestMinValueInt32Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueInt64Positive tests min value on int64
+// TestMinValueInt64Positive tests min value on int64
 func TestMinValueInt64Positive(t *testing.T) {
 	type testModel struct {
 		Value int64 `validation:"min=20"`
@@ -477,7 +477,7 @@ func TestMinValueInt64Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueInt64Negative tests min value on int64
+// TestMinValueInt64Negative tests min value on int64
 func TestMinValueInt64Negative(t *testing.T) {
 	type testModel struct {
 		Value int64 `validation:"min=-20"`
@@ -504,7 +504,7 @@ func TestMinValueInt64Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueIntPositive tests min value on int
+// TestMinValueIntPositive tests min value on int
 func TestMinValueIntPositive(t *testing.T) {
 	type testModel struct {
 		Value int `validation:"min=20"`
@@ -531,7 +531,7 @@ func TestMinValueIntPositive(t *testing.T) {
 	}
 }
 
-//TestMinValueIntNegative tests min value on int
+// TestMinValueIntNegative tests min value on int
 func TestMinValueIntNegative(t *testing.T) {
 	type testModel struct {
 		Value int `validation:"min=-20"`
@@ -558,7 +558,7 @@ func TestMinValueIntNegative(t *testing.T) {
 	}
 }
 
-//TestMaxValueInt8Positive tests max value on int8
+// TestMaxValueInt8Positive tests max value on int8
 func TestMaxValueInt8Positive(t *testing.T) {
 	type testModel struct {
 		Value int8 `validation:"max=20"`
@@ -579,7 +579,7 @@ func TestMaxValueInt8Positive(t *testing.T) {
 
 }
 
-//TestMaxValueInt8Negative tests max value on int8
+// TestMaxValueInt8Negative tests max value on int8
 func TestMaxValueInt8Negative(t *testing.T) {
 	type testModel struct {
 		Value int8 `validation:"max=-20"`
@@ -600,7 +600,7 @@ func TestMaxValueInt8Negative(t *testing.T) {
 
 }
 
-//TestMaxValueInt16Positive tests max value on int16
+// TestMaxValueInt16Positive tests max value on int16
 func TestMaxValueInt16Positive(t *testing.T) {
 	type testModel struct {
 		Value int16 `validation:"max=20"`
@@ -621,7 +621,7 @@ func TestMaxValueInt16Positive(t *testing.T) {
 
 }
 
-//TestMaxValueInt16Negative tests max value on int16
+// TestMaxValueInt16Negative tests max value on int16
 func TestMaxValueInt16Negative(t *testing.T) {
 	type testModel struct {
 		Value int16 `validation:"max=-20"`
@@ -642,7 +642,7 @@ func TestMaxValueInt16Negative(t *testing.T) {
 
 }
 
-//TestMaxValueInt32Positive tests max value on int32
+// TestMaxValueInt32Positive tests max value on int32
 func TestMaxValueInt32Positive(t *testing.T) {
 	type testModel struct {
 		Value int32 `validation:"max=20"`
@@ -663,7 +663,7 @@ func TestMaxValueInt32Positive(t *testing.T) {
 
 }
 
-//TestMaxValueInt32Negative tests max value on int32
+// TestMaxValueInt32Negative tests max value on int32
 func TestMaxValueInt32Negative(t *testing.T) {
 	type testModel struct {
 		Value int32 `validation:"max=-20"`
@@ -683,7 +683,7 @@ func TestMaxValueInt32Negative(t *testing.T) {
 	}
 }
 
-//TestMaxValueInt64Positive tests max value on int64
+// TestMaxValueInt64Positive tests max value on int64
 func TestMaxValueInt64Positive(t *testing.T) {
 	type testModel struct {
 		Value int64 `validation:"max=20"`
@@ -704,7 +704,7 @@ func TestMaxValueInt64Positive(t *testing.T) {
 
 }
 
-//TestMaxValueInt64Negative tests max value on int64
+// TestMaxValueInt64Negative tests max value on int64
 func TestMaxValueInt64Negative(t *testing.T) {
 	type testModel struct {
 		Value int64 `validation:"max=-20"`
@@ -724,7 +724,7 @@ func TestMaxValueInt64Negative(t *testing.T) {
 	}
 }
 
-//TestMaxValueIntPositive tests max value on int
+// TestMaxValueIntPositive tests max value on int
 func TestMaxValueIntPositive(t *testing.T) {
 	type testModel struct {
 		Value int `validation:"max=20"`
@@ -745,7 +745,7 @@ func TestMaxValueIntPositive(t *testing.T) {
 
 }
 
-//TestMaxValueIntNegative tests max value on int
+// TestMaxValueIntNegative tests max value on int
 func TestMaxValueIntNegative(t *testing.T) {
 	type testModel struct {
 		Value int `validation:"max=-20"`
@@ -769,7 +769,7 @@ func TestMaxValueIntNegative(t *testing.T) {
 // Unsigned integer tests (positive and negative)
 //
 
-//TestMinValueUint8Positive tests min value on uint8
+// TestMinValueUint8Positive tests min value on uint8
 func TestMinValueUint8Positive(t *testing.T) {
 	type testModel struct {
 		Value uint8 `validation:"min=20"`
@@ -796,7 +796,7 @@ func TestMinValueUint8Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueUint8Negative tests min value on uint8
+// TestMinValueUint8Negative tests min value on uint8
 func TestMinValueUint8Negative(t *testing.T) {
 	type testModel struct {
 		Value uint8 `validation:"min=20"`
@@ -816,7 +816,7 @@ func TestMinValueUint8Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueUint16Positive tests min value on uint16
+// TestMinValueUint16Positive tests min value on uint16
 func TestMinValueUint16Positive(t *testing.T) {
 	type testModel struct {
 		Value uint16 `validation:"min=20"`
@@ -843,7 +843,7 @@ func TestMinValueUint16Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueUint16Negative tests min value on uint16
+// TestMinValueUint16Negative tests min value on uint16
 func TestMinValueUint16Negative(t *testing.T) {
 	type testModel struct {
 		Value uint16 `validation:"min=20"`
@@ -863,7 +863,7 @@ func TestMinValueUint16Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueUint32Positive tests min value on uint32
+// TestMinValueUint32Positive tests min value on uint32
 func TestMinValueUint32Positive(t *testing.T) {
 	type testModel struct {
 		Value uint32 `validation:"min=20"`
@@ -890,7 +890,7 @@ func TestMinValueUint32Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueUint32Negative tests min value on uint32
+// TestMinValueUint32Negative tests min value on uint32
 func TestMinValueUint32Negative(t *testing.T) {
 	type testModel struct {
 		Value uint32 `validation:"min=20"`
@@ -910,7 +910,7 @@ func TestMinValueUint32Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueUint64Positive tests min value on uint64
+// TestMinValueUint64Positive tests min value on uint64
 func TestMinValueUint64Positive(t *testing.T) {
 	type testModel struct {
 		Value uint64 `validation:"min=20"`
@@ -937,7 +937,7 @@ func TestMinValueUint64Positive(t *testing.T) {
 	}
 }
 
-//TestMinValueUint64Negative tests min value on uint64
+// TestMinValueUint64Negative tests min value on uint64
 func TestMinValueUint64Negative(t *testing.T) {
 	type testModel struct {
 		Value uint64 `validation:"min=20"`
@@ -957,7 +957,7 @@ func TestMinValueUint64Negative(t *testing.T) {
 	}
 }
 
-//TestMinValueUintPositive tests min value on uint
+// TestMinValueUintPositive tests min value on uint
 func TestMinValueUintPositive(t *testing.T) {
 	type testModel struct {
 		Value uint `validation:"min=20"`
@@ -984,7 +984,7 @@ func TestMinValueUintPositive(t *testing.T) {
 	}
 }
 
-//TestMinValueUintNegative tests min value on uint
+// TestMinValueUintNegative tests min value on uint
 func TestMinValueUintNegative(t *testing.T) {
 	type testModel struct {
 		Value uint `validation:"min=20"`
@@ -1004,7 +1004,7 @@ func TestMinValueUintNegative(t *testing.T) {
 	}
 }
 
-//TestMaxValueUint8Positive tests max value on uint8
+// TestMaxValueUint8Positive tests max value on uint8
 func TestMaxValueUint8Positive(t *testing.T) {
 	type testModel struct {
 		Value uint8 `validation:"max=20"`
@@ -1025,7 +1025,7 @@ func TestMaxValueUint8Positive(t *testing.T) {
 
 }
 
-//TestMaxValueUint8Negative tests max value on uint8
+// TestMaxValueUint8Negative tests max value on uint8
 func TestMaxValueUint8Negative(t *testing.T) {
 	type testModel struct {
 		Value uint8 `validation:"max=20"`
@@ -1045,7 +1045,7 @@ func TestMaxValueUint8Negative(t *testing.T) {
 	}
 }
 
-//TestMaxValueUint16Positive tests max value on uint16
+// TestMaxValueUint16Positive tests max value on uint16
 func TestMaxValueUint16Positive(t *testing.T) {
 	type testModel struct {
 		Value uint16 `validation:"max=20"`
@@ -1066,7 +1066,7 @@ func TestMaxValueUint16Positive(t *testing.T) {
 
 }
 
-//TestMaxValueUint16Negative tests max value on uint16
+// TestMaxValueUint16Negative tests max value on uint16
 func TestMaxValueUint16Negative(t *testing.T) {
 	type testModel struct {
 		Value uint16 `validation:"max=20"`
@@ -1086,7 +1086,7 @@ func TestMaxValueUint16Negative(t *testing.T) {
 	}
 }
 
-//TestMaxValueUint32Positive tests max value on uint32
+// TestMaxValueUint32Positive tests max value on uint32
 func TestMaxValueUint32Positive(t *testing.T) {
 	type testModel struct {
 		Value uint32 `validation:"max=20"`
@@ -1107,7 +1107,7 @@ func TestMaxValueUint32Positive(t *testing.T) {
 
 }
 
-//TestMaxValueUint32Negative tests max value on uint32
+// TestMaxValueUint32Negative tests max value on uint32
 func TestMaxValueUint32Negative(t *testing.T) {
 	type testModel struct {
 		Value uint32 `validation:"max=20"`
@@ -1127,7 +1127,7 @@ func TestMaxValueUint32Negative(t *testing.T) {
 	}
 }
 
-//TestMaxValueUint64Positive tests max value on uint64
+// TestMaxValueUint64Positive tests max value on uint64
 func TestMaxValueUint64Positive(t *testing.T) {
 	type testModel struct {
 		Value uint64 `validation:"max=20"`
@@ -1148,7 +1148,7 @@ func TestMaxValueUint64Positive(t *testing.T) {
 
 }
 
-//TestMaxValueUint64Negative tests max value on uint64
+// TestMaxValueUint64Negative tests max value on uint64
 func TestMaxValueUint64Negative(t *testing.T) {
 	type testModel struct {
 		Value uint64 `validation:"max=20"`
@@ -1168,7 +1168,7 @@ func TestMaxValueUint64Negative(t *testing.T) {
 	}
 }
 
-//TestMaxValueUintPositive tests max value on uint
+// TestMaxValueUintPositive tests max value on uint
 func TestMaxValueUintPositive(t *testing.T) {
 	type testModel struct {
 		Value uint `validation:"max=20"`
@@ -1189,7 +1189,7 @@ func TestMaxValueUintPositive(t *testing.T) {
 
 }
 
-//TestMaxValueUintNegative tests max value on uint
+// TestMaxValueUintNegative tests max value on uint
 func TestMaxValueUintNegative(t *testing.T) {
 	type testModel struct {
 		Value uint `validation:"max=20"`
@@ -1213,7 +1213,7 @@ func TestMaxValueUintNegative(t *testing.T) {
 // Float tests (min / max)
 //
 
-//TestMinValueFloat32 tests min value on float32
+// TestMinValueFloat32 tests min value on float32
 func TestMinValueFloat32(t *testing.T) {
 	type testModel struct {
 		Value float32 `validation:"min=20"`
@@ -1233,7 +1233,7 @@ func TestMinValueFloat32(t *testing.T) {
 	}
 }
 
-//TestMinValueFloat64 tests min value on float64
+// TestMinValueFloat64 tests min value on float64
 func TestMinValueFloat64(t *testing.T) {
 	type testModel struct {
 		Value float64 `validation:"min=20"`
@@ -1253,7 +1253,7 @@ func TestMinValueFloat64(t *testing.T) {
 	}
 }
 
-//TestMaxValueFloat32 tests max value on float32
+// TestMaxValueFloat32 tests max value on float32
 func TestMaxValueFloat32(t *testing.T) {
 	type testModel struct {
 		Value float32 `validation:"max=-20"`
@@ -1273,7 +1273,7 @@ func TestMaxValueFloat32(t *testing.T) {
 	}
 }
 
-//TestMaxValueFloat64 tests max value on float64
+// TestMaxValueFloat64 tests max value on float64
 func TestMaxValueFloat64(t *testing.T) {
 	type testModel struct {
 		Value float64 `validation:"max=-20"`
