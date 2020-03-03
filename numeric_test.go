@@ -13,7 +13,7 @@ import (
 // TestMinValueValidation - series of different tests
 func TestMinValueValidation(t *testing.T) {
 
-	//Test invalid types
+	// Test invalid types
 	var err error
 	for i := 0; i < len(invalidNumericTypes); i++ {
 		_, err = minValueValidation("10", invalidNumericTypes[i])
@@ -22,31 +22,31 @@ func TestMinValueValidation(t *testing.T) {
 		}
 	}
 
-	//Fail if string submitted or Parse int fails
+	// Fail if string submitted or Parse int fails
 	_, err = minValueValidation("foo", reflect.Int)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Fail if string submitted or Parse uint fails
+	// Fail if string submitted or Parse uint fails
 	_, err = minValueValidation("foo", reflect.Uint64)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Fail if string submitted or Parse float fails
+	// Fail if string submitted or Parse float fails
 	_, err = minValueValidation("foo", reflect.Float32)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	minInterface, err := minValueValidation("10", reflect.Int)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test running the validate method
+	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := minInterface.Validate(8, testVal)
@@ -54,19 +54,19 @@ func TestMinValueValidation(t *testing.T) {
 		t.Fatal("Expected to fail, 8 < 10")
 	}
 
-	//Test converting a string
+	// Test converting a string
 	errs = minInterface.Validate("ddd", testVal)
 	if errs == nil {
 		t.Fatal("Expected to fail, value is not convertible to type int64")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	minInterface, err = minValueValidation("10", reflect.Float32)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test in converting to float
+	// Test in converting to float
 	errs = minInterface.Validate("ddd", testVal)
 	if errs == nil {
 		t.Fatal("Expected to fail, value is not convertible to type float")
@@ -76,7 +76,7 @@ func TestMinValueValidation(t *testing.T) {
 // TestMaxValueValidation - series of different tests
 func TestMaxValueValidation(t *testing.T) {
 
-	//Test invalid types
+	// Test invalid types
 	var err error
 	for i := 0; i < len(invalidNumericTypes); i++ {
 		_, err = maxValueValidation("10", invalidNumericTypes[i])
@@ -85,31 +85,31 @@ func TestMaxValueValidation(t *testing.T) {
 		}
 	}
 
-	//Fail if string submitted or Parse int fails
+	// Fail if string submitted or Parse int fails
 	_, err = maxValueValidation("foo", reflect.Int)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Fail if string submitted or Parse uint fails
+	// Fail if string submitted or Parse uint fails
 	_, err = maxValueValidation("foo", reflect.Uint64)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Fail if string submitted or Parse float fails
+	// Fail if string submitted or Parse float fails
 	_, err = maxValueValidation("foo", reflect.Float32)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	maxInterface, err := maxValueValidation("10", reflect.Int)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test running the validate method
+	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := maxInterface.Validate(14, testVal)
@@ -117,19 +117,19 @@ func TestMaxValueValidation(t *testing.T) {
 		t.Fatal("Expected to fail, 14 > 10")
 	}
 
-	//Test converting a string
+	// Test converting a string
 	errs = maxInterface.Validate("ddd", testVal)
 	if errs == nil {
 		t.Fatal("Expected to fail, value is not convertible to type int64")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	maxInterface, err = maxValueValidation("10", reflect.Float32)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test converting a string
+	// Test converting a string
 	errs = maxInterface.Validate("ddd", testVal)
 	if errs == nil {
 		t.Fatal("Expected to fail, value is not convertible to type float")

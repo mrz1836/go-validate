@@ -40,11 +40,11 @@ var (
 
 	// blacklistedDomains known blacklisted domains for email addresses
 	blacklistedDomains = []string{
-		"aol.con",     //Does not exist, but valid TLD in regex
-		"example.com", //Invalid domain - used for testing but should not work in production
-		"gmail.con",   //Does not exist, but valid TLD in regex
-		"hotmail.con", //Does not exist, but valid TLD in regex
-		"yahoo.con",   //Does not exist, but valid TLD in regex
+		"aol.con",     // Does not exist, but valid TLD in regex
+		"example.com", // Invalid domain - used for testing but should not work in production
+		"gmail.con",   // Does not exist, but valid TLD in regex
+		"hotmail.con", // Does not exist, but valid TLD in regex
+		"yahoo.con",   // Does not exist, but valid TLD in regex
 	}
 
 	// acceptedCountryCodes is the countries this phone number validation can currently accept
@@ -63,7 +63,7 @@ const (
 // IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values
 func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (success bool, err error) {
 
-	//Empty is true and no value given?
+	// Empty is true and no value given?
 	if emptyValueAllowed == true && len(enum) == 0 {
 		success = true
 		return
@@ -129,7 +129,7 @@ func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
 		return
 	}
 
-	//Check for mx record or A record
+	// Check for mx record or A record
 	if mxCheck {
 		if _, err = net.LookupMX(host); err != nil {
 			if _, err = net.LookupIP(host); err != nil {
@@ -277,7 +277,7 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 			return
 		}
 
-	case "52": //Mexico
+	case "52": // Mexico
 
 		// Rules found so far: https://en.wikipedia.org/wiki/Telephone_numbers_in_Mexico
 
@@ -286,7 +286,7 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 		firstDigitOfNpa := npa[0:1]
 
 		// Validate the proper length
-		if len(phone) != 8 && len(phone) != 10 { //2002 mexico had 8 digit numbers and went to 10 digits
+		if len(phone) != 8 && len(phone) != 10 { // 2002 mexico had 8 digit numbers and went to 10 digits
 			err = fmt.Errorf("phone number must be either eight or ten digits")
 			return
 		}
@@ -297,7 +297,7 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 			return
 		}
 
-		//todo: validate MX number following Mexico's phone number system (not sure if there are more requirements) (@mrz)
+		// todo: validate MX number following Mexico's phone number system (not sure if there are more requirements) (@mrz)
 
 	default:
 		err = fmt.Errorf("country code %s is not accepted", countryCode)

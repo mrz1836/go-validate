@@ -13,22 +13,22 @@ import (
 // TestMaxLengthValidation - series of different tests
 func TestMaxLengthValidation(t *testing.T) {
 
-	//Test invalid types
+	// Test invalid types
 	var err error
 
-	//Fail if string submitted or Parse int fails
+	// Fail if string submitted or Parse int fails
 	_, err = maxLengthValidation("foo", reflect.Int)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	maxInterface, err := maxLengthValidation("10", reflect.Int)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test running the validate method
+	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := maxInterface.Validate("this should fail", testVal)
@@ -36,14 +36,14 @@ func TestMaxLengthValidation(t *testing.T) {
 		t.Fatal("Expected to fail, 8 < 10")
 	}
 
-	//Test converting a string
+	// Test converting a string
 	var invalidSlice []int
 	errs = maxInterface.Validate(invalidSlice, testVal)
 	if errs == nil {
 		t.Fatal("Expected to fail, value is not of type string and MaxLengthValidation only accepts strings")
 	}
 
-	//Test converting an unsigned int
+	// Test converting an unsigned int
 	var invalid uint64
 	errs = maxInterface.Validate(invalid, testVal)
 	if errs == nil {
@@ -54,22 +54,22 @@ func TestMaxLengthValidation(t *testing.T) {
 // TestMinLengthValidation - series of different tests
 func TestMinLengthValidation(t *testing.T) {
 
-	//Test invalid types
+	// Test invalid types
 	var err error
 
-	//Fail if string submitted or Parse int fails
+	// Fail if string submitted or Parse int fails
 	_, err = minLengthValidation("foo", reflect.Int)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	minInterface, err := minLengthValidation("10", reflect.Int)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test running the validate method
+	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := minInterface.Validate("this", testVal)
@@ -77,14 +77,14 @@ func TestMinLengthValidation(t *testing.T) {
 		t.Fatal("Expected to fail", "10", "this")
 	}
 
-	//Test converting a string
+	// Test converting a string
 	var invalidSlice []int
 	errs = minInterface.Validate(invalidSlice, testVal)
 	if errs == nil {
 		t.Fatal("Expected to fail, value is not of type string and MinLengthValidation only accepts strings")
 	}
 
-	//Test converting an unsigned int
+	// Test converting an unsigned int
 	var invalid uint64
 	errs = minInterface.Validate(invalid, testVal)
 	if errs == nil {
@@ -95,22 +95,22 @@ func TestMinLengthValidation(t *testing.T) {
 // TestFormatValidation - series of different tests
 func TestFormatValidation(t *testing.T) {
 
-	//Test invalid types
+	// Test invalid types
 	var err error
 
-	//Fail if string submitted or Parse int fails
+	// Fail if string submitted or Parse int fails
 	_, err = formatValidation("doesNotExist", reflect.String)
 	if err == nil {
 		t.Fatal("Expected to fail - foo is a string and not a number")
 	}
 
-	//Test making an interface
+	// Test making an interface
 	formatInterface, err := formatValidation("email", reflect.String)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	//Test running the validate method
+	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := formatInterface.Validate("this works?", testVal)
@@ -389,7 +389,7 @@ func TestFormatEmail(t *testing.T) {
 		t.Fatalf("Valid email with a subdomain TLD(%s) should be valid - errs: %x", model.Value, errs)
 	}
 
-	//All TLD tests are in: TestFormatEmailAcceptedTLDs
+	// All TLD tests are in: TestFormatEmailAcceptedTLDs
 
 }
 
@@ -404,7 +404,7 @@ func TestFormatEmailAcceptedTLDs(t *testing.T) {
 		Value: "",
 	}
 
-	//Loop all TLDs and try an email
+	// Loop all TLDs and try an email
 	for _, tld := range TopLevelDomains {
 
 		model.Value = "BaseMail@BaseDomain." + tld
@@ -600,7 +600,7 @@ func ExampleIsValid_compareString() {
 		PasswordConfirmation string
 	}
 
-	var u User //User submits a new password and confirms wrong
+	var u User // User submits a new password and confirms wrong
 	u.Password = "This"
 	u.PasswordConfirmation = "That"
 

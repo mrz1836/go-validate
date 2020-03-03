@@ -30,7 +30,7 @@ func (c *Customer) Valid() (bool, []validate.ValidationError) {
 	_, errs := validate.IsValid(*c)
 
 	//
-	//Customize: errs (you can add/remove your own errs)
+	// Customize: errs (you can add/remove your own errs)
 	//
 
 	// Showing use of a public validation method (extra validations outside of the struct built-in validations)

@@ -120,10 +120,10 @@ func (s *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Val
 		}
 	}
 
-	//Set field name
+	// Set field name
 	compareField := obj.FieldByName(s.targetFieldName)
 
-	//Try to set to string
+	// Try to set to string
 	compareFieldStrValue, ok := compareField.Interface().(string)
 	if !ok {
 		return &ValidationError{
@@ -132,7 +132,7 @@ func (s *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Val
 		}
 	}
 
-	//Does not compare
+	// Does not compare
 	if strValue != compareFieldStrValue {
 		return &ValidationError{
 			Key:     s.FieldName(),

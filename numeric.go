@@ -32,7 +32,7 @@ func (i *intValueValidation) Validate(value interface{}, obj reflect.Value) *Val
 	case int32:
 		compareValue = int64(value)
 	case int64:
-		compareValue = int64(value)
+		compareValue = value
 	default:
 		return &ValidationError{
 			Key:     i.FieldName(),
@@ -88,7 +88,7 @@ func (u *uintValueValidation) Validate(value interface{}, obj reflect.Value) *Va
 	case uint32:
 		compareValue = uint64(value)
 	case uint64:
-		compareValue = uint64(value)
+		compareValue = value
 	default:
 		return &ValidationError{
 			Key:     u.FieldName(),
@@ -138,7 +138,7 @@ func (f *floatValueValidation) Validate(value interface{}, obj reflect.Value) *V
 	case float32:
 		compareValue = float64(value)
 	case float64:
-		compareValue = float64(value)
+		compareValue = value
 	default:
 		return &ValidationError{
 			Key:     f.FieldName(),
