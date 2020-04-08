@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+const (
+	// socialBasicRawRegex social Security number regex for validation
+	socialBasicRawRegex = `^\d{3}-\d{2}-\d{4}$`
+)
+
 var (
 
 	// blacklistedSocials known blacklisted socials (exclude automatically)
@@ -43,6 +48,7 @@ var (
 		"aol.con",     // Does not exist, but valid TLD in regex
 		"example.com", // Invalid domain - used for testing but should not work in production
 		"gmail.con",   // Does not exist, but valid TLD in regex
+		"gnail.com",   // Does not exist, but valid TLD in regex
 		"hotmail.con", // Does not exist, but valid TLD in regex
 		"yahoo.con",   // Does not exist, but valid TLD in regex
 	}
@@ -53,11 +59,9 @@ var (
 		"52", // Mexico
 		// todo: support more countries in phone number validation (@mrz)
 	}
-)
 
-const (
-	// socialBasicRawRegex social Security number regex for validation
-	socialBasicRawRegex = `^\d{3}-\d{2}-\d{4}$`
+	// dnsRegEx is the regex for a DNS name
+	dnsRegEx = regexp.MustCompile(`^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[._]?$`)
 )
 
 // IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values
@@ -126,6 +130,12 @@ func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
 	// Check banned/blacklisted numbers
 	if ok, _ := IsValidEnum(host, &blacklistedDomains, false); ok {
 		err = fmt.Errorf("email domain is not accepted")
+		return
+	}
+
+	// Validate the host
+	if ok := IsValidHost(host); !ok {
+		err = fmt.Errorf("email domain is not a valid host")
 		return
 	}
 
@@ -307,4 +317,34 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 	// All good
 	success = true
 	return
+}
+
+// IsValidHost checks if the string is a valid IP (both v4 and v6) or a valid DNS name
+func IsValidHost(host string) bool {
+	return IsValidIP(host) || IsValidDNSName(host)
+}
+
+// IsValidIP checks if a string is either IP version 4 or 6. Alias for `net.ParseIP`
+func IsValidIP(ipAddress string) bool {
+	return net.ParseIP(ipAddress) != nil
+}
+
+// IsValidIPv4 check if the string is an IP version 4.
+func IsValidIPv4(ipAddress string) bool {
+	ip := net.ParseIP(ipAddress)
+	return ip != nil && strings.Contains(ipAddress, ".")
+}
+
+// IsValidIPv6 check if the string is an IP version 6.
+func IsValidIPv6(ipAddress string) bool {
+	ip := net.ParseIP(ipAddress)
+	return ip != nil && strings.Contains(ipAddress, ":")
+}
+
+// IsValidDNSName will validate the given string as a DNS name
+func IsValidDNSName(dnsName string) bool {
+	if dnsName == "" || len(strings.Replace(dnsName, ".", "", -1)) > 255 {
+		return false
+	}
+	return !IsValidIP(dnsName) && dnsRegEx.MatchString(dnsName)
 }
