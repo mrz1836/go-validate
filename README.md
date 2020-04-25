@@ -2,8 +2,9 @@
 **go-validate** provides validations for struct fields based on a validation tag and offers additional validation functions
 
 [![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-validate)](https://golang.org/)
-[![Build Status](https://travis-ci.com/mrz1836/go-validate.svg?branch=master)](https://travis-ci.com/mrz1836/go-validate)
+[![Build Status](https://travis-ci.org/mrz1836/go-validate.svg?branch=master)](https://travis-ci.org/mrz1836/go-validate)
 [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-validate?style=flat)](https://goreportcard.com/report/github.com/mrz1836/go-validate)
+[![codecov](https://codecov.io/gh/mrz1836/go-validate/branch/master/graph/badge.svg)](https://codecov.io/gh/mrz1836/go-validate)
 [![Release](https://img.shields.io/github/release-pre/mrz1836/go-validate.svg?style=flat)](https://github.com/mrz1836/go-validate/releases)
 [![GoDoc](https://godoc.org/github.com/mrz1836/go-validate?status.svg&style=flat)](https://pkg.go.dev/github.com/mrz1836/go-validate)
 
@@ -86,16 +87,15 @@ $ make bench
 Read more about this Go project's [code standards](CODE_STANDARDS.md).
 
 ## Usage
-- View the [full model example](examples/model/customer.go)
-- View the [numeric examples](numeric_test.go) or [string examples](string_test.go)
-- View the [numeric benchmarks](numeric_test.go) or [string benchmarks](string_test.go)
-- View the [numeric tests](numeric_test.go) or [string tests](string_test.go)
-- View the [generic tests](validate_test.go)
+- [Full model example](examples/model/customer.go)
+- [Numeric examples](numeric_test.go) or [string examples](string_test.go)
+- [Numeric benchmarks](numeric_test.go) or [string benchmarks](string_test.go)
+- [Numeric tests](numeric_test.go) or [string tests](string_test.go)
+- [Generic tests](validate_test.go)
 
 Basic model implementation:
-```golang
-
-//ExampleModel shows inline validations via the struct tag
+```go
+// ExampleModel shows inline validations via the struct tag
 type ExampleModel struct {
     Age             uint    `validation:"min=18"`
     Category        string  `validation:"min_length=5 max_length=10"`
@@ -107,7 +107,7 @@ type ExampleModel struct {
     Total           float32 `validation:"min=0"`
 }
 
-//Example showing extra validation functions for additional use
+// Example showing extra validation functions for additional use
 ok, err := validate.IsValidEmail("someones@email.com")
 if !ok {
     errs = append(errs, validate.ValidationError{
