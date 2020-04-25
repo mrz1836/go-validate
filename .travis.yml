@@ -23,7 +23,7 @@ notifications:
 # Run all scripts
 script:
  - golint
- - go vet
+ - go vet -copylocks=false
  - go test -race -coverprofile=coverage.txt -covermode=atomic
 
 # After build success
