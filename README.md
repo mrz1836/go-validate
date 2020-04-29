@@ -2,7 +2,7 @@
 **go-validate** provides validations for struct fields based on a validation tag and offers additional validation functions
 
 [![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-validate)](https://golang.org/)
-[![Build Status](https://travis-ci.org/mrz1836/go-validate.svg?branch=master)](https://travis-ci.org/mrz1836/go-validate)
+[![Build Status](https://travis-ci.com/mrz1836/go-validate.svg?branch=master)](https://travis-ci.com/mrz1836/go-validate)
 [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-validate?style=flat)](https://goreportcard.com/report/github.com/mrz1836/go-validate)
 [![codecov](https://codecov.io/gh/mrz1836/go-validate/branch/master/graph/badge.svg)](https://codecov.io/gh/mrz1836/go-validate)
 [![Release](https://img.shields.io/github/release-pre/mrz1836/go-validate.svg?style=flat)](https://github.com/mrz1836/go-validate/releases)
