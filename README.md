@@ -1,5 +1,5 @@
 # go-validate
-**go-validate** provides validations for struct fields based on a validation tag and offers additional validation functions
+> Validations for struct fields based on a validation tag and offers additional validation functions
 
 [![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-validate)](https://golang.org/)
 [![Build Status](https://travis-ci.com/mrz1836/go-validate.svg?branch=master)](https://travis-ci.com/mrz1836/go-validate)
@@ -22,8 +22,8 @@
 ## Installation
 
 **go-validate** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy).
-```bash
-$ go get -u github.com/mrz1836/go-validate
+```shell script
+go get -u github.com/mrz1836/go-validate
 ```
 
 ## Documentation
@@ -43,8 +43,8 @@ Use `make release-snap` to create a snapshot version of the release, and finally
 <summary><strong><code>Makefile Commands</code></strong></summary>
 
 View all `makefile` commands
-```bash
-$ make help
+```shell script
+make help
 ```
 
 List of all current commands:
@@ -73,14 +73,14 @@ vet                            Run the Go vet application
 
 ## Examples & Tests
 All unit tests and examples run via [Travis CI](https://travis-ci.org/mrz1836/go-validate) and uses [Go version 1.14.x](https://golang.org/doc/go1.14). View the [deployment configuration file](.travis.yml).
-```bash
-$ make test
+```shell script
+make test
 ```
 
 ## Benchmarks
 Run the Go benchmarks:
-```bash
-$ make bench
+```shell script
+make bench
 ```
 
 ## Code Standards
