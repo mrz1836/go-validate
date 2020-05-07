@@ -94,4 +94,4 @@ update-releaser:  ## Update the goreleaser application
 	@brew upgrade goreleaser
 
 vet: ## Run the Go vet application
-	@go vet -v
+	@go vet -v -copylocks=false
