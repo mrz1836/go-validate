@@ -1,2 +1,2 @@
 job:
-  script: "go test ./..."
+  script: "make test"
