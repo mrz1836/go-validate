@@ -331,14 +331,12 @@ func IsValidIP(ipAddress string) bool {
 
 // IsValidIPv4 check if the string is an IP version 4.
 func IsValidIPv4(ipAddress string) bool {
-	ip := net.ParseIP(ipAddress)
-	return ip != nil && strings.Contains(ipAddress, ".")
+	return net.ParseIP(ipAddress) != nil && strings.Contains(ipAddress, ".")
 }
 
 // IsValidIPv6 check if the string is an IP version 6.
 func IsValidIPv6(ipAddress string) bool {
-	ip := net.ParseIP(ipAddress)
-	return ip != nil && strings.Contains(ipAddress, ":")
+	return net.ParseIP(ipAddress) != nil && strings.Contains(ipAddress, ":")
 }
 
 // IsValidDNSName will validate the given string as a DNS name
