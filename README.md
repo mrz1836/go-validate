@@ -91,7 +91,7 @@ vet                    Run the Go vet application (custom)
 <br/>
 
 ## Examples & Tests
-All unit tests and examples run via [Travis CI](https://travis-ci.org/mrz1836/go-validate) and uses [Go version 1.14.x](https://golang.org/doc/go1.14). View the [deployment configuration file](.travis.yml).
+All unit tests and examples run via [Travis CI](https://travis-ci.org/mrz1836/go-validate) and uses [Go version 1.15.x](https://golang.org/doc/go1.15). View the [deployment configuration file](.travis.yml).
 ```shell script
 make test
 ```
