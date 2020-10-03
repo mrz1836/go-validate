@@ -168,16 +168,6 @@ func (f *floatValueValidation) Validate(value interface{}, obj reflect.Value) *V
 
 // minValueValidation creates an interface based on the "kind" type
 func minValueValidation(minValue string, kind reflect.Kind) (Interface, error) {
-	return getInterfaceFromKind(minValue, kind)
-}
-
-// maxValueValidation creates an interface based on the "kind" type
-func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
-	return getInterfaceFromKind(maxValue, kind)
-}
-
-// getInterfaceFromKind creates an interface based on the "kind" type
-func getInterfaceFromKind(value string, kind reflect.Kind) (Interface, error) {
 	switch kind {
 	case reflect.Int:
 		fallthrough
@@ -188,7 +178,63 @@ func getInterfaceFromKind(value string, kind reflect.Kind) (Interface, error) {
 	case reflect.Int32:
 		fallthrough
 	case reflect.Int64:
-		value, err := strconv.ParseInt(value, 10, 0)
+		value, err := strconv.ParseInt(minValue, 10, 0)
+		if err != nil {
+			return nil, err
+		}
+		return &intValueValidation{
+			value: value,
+			less:  true,
+		}, nil
+	case reflect.Uint:
+		fallthrough
+	case reflect.Uint8:
+		fallthrough
+	case reflect.Uint16:
+		fallthrough
+	case reflect.Uint32:
+		fallthrough
+	case reflect.Uint64:
+		value, err := strconv.ParseUint(minValue, 10, 0)
+		if err != nil {
+			return nil, err
+		}
+		return &uintValueValidation{
+			value: value,
+			less:  true,
+		}, nil
+	case reflect.Float32:
+		fallthrough
+	case reflect.Float64:
+		value, err := strconv.ParseFloat(minValue, 64)
+		if err != nil {
+			return nil, err
+		}
+		return &floatValueValidation{
+			value: value,
+			less:  true,
+		}, nil
+	default:
+		return nil, &ValidationError{
+			Key:     "invalid_validation",
+			Message: "field is not of numeric type and min validation only accepts numeric types",
+		}
+	}
+}
+
+// maxValueValidation creates an interface based on the "kind" type
+func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
+	switch kind {
+	case reflect.Int:
+		fallthrough
+	case reflect.Int8:
+		fallthrough
+	case reflect.Int16:
+		fallthrough
+	case reflect.Int32:
+		fallthrough
+	case reflect.Int64:
+		value, err := strconv.ParseInt(maxValue, 10, 0)
 		if err != nil {
 			return nil, err
 		}
@@ -205,7 +251,7 @@ func getInterfaceFromKind(value string, kind reflect.Kind) (Interface, error) {
 	case reflect.Uint32:
 		fallthrough
 	case reflect.Uint64:
-		value, err := strconv.ParseUint(value, 10, 0)
+		value, err := strconv.ParseUint(maxValue, 10, 0)
 		if err != nil {
 			return nil, err
 		}
@@ -216,7 +262,7 @@ func getInterfaceFromKind(value string, kind reflect.Kind) (Interface, error) {
 	case reflect.Float32:
 		fallthrough
 	case reflect.Float64:
-		value, err := strconv.ParseFloat(value, 64)
+		value, err := strconv.ParseFloat(maxValue, 64)
 		if err != nil {
 			return nil, err
 		}
@@ -227,7 +273,7 @@ func getInterfaceFromKind(value string, kind reflect.Kind) (Interface, error) {
 	default:
 		return nil, &ValidationError{
 			Key:     "invalid_validation",
-			Message: "field is not of numeric type and min/max validation only accepts numeric types",
+			Message: "field is not of numeric type and max validation only accepts numeric types",
 		}
 	}
 }
