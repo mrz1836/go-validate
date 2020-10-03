@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+const testPhone = "234-234-2345"
+const testMxCountryCode = "+52"
+const emailInvalidFormatError = "email is not a valid address format"
+
 // TestIsValidSocial testing the social security number (invalid and valid)
 func TestIsValidSocial(t *testing.T) {
 
@@ -293,7 +297,8 @@ func TestIsValidEmail(t *testing.T) {
 	}
 
 	email = "yolanda@615.yt@gmail.com"
-	if success, err := IsValidEmail(email, true); success {
+	var err error
+	if success, err = IsValidEmail(email, true); success {
 		t.Fatal("Email value should be invalid! Value: "+email, success, err)
 	}
 
@@ -327,17 +332,17 @@ func TestIsValidEmailErrorResponses(t *testing.T) {
 	}
 
 	email = "test@"
-	if _, err = IsValidEmail(email, false); err != nil && err.Error() != "email is not a valid address format" {
+	if _, err = IsValidEmail(email, false); err != nil && err.Error() != emailInvalidFormatError {
 		t.Fatal("Error response was not as expected - Value: " + err.Error())
 	}
 
 	email = "test.some"
-	if _, err = IsValidEmail(email, false); err != nil && err.Error() != "email is not a valid address format" {
+	if _, err = IsValidEmail(email, false); err != nil && err.Error() != emailInvalidFormatError {
 		t.Fatal("Error response was not as expected - Value: " + err.Error())
 	}
 
 	email = "@this.com"
-	if _, err = IsValidEmail(email, false); err != nil && err.Error() != "email is not a valid address format" {
+	if _, err = IsValidEmail(email, false); err != nil && err.Error() != emailInvalidFormatError {
 		t.Fatal("Error response was not as expected - Value: " + err.Error())
 	}
 
@@ -416,6 +421,13 @@ func TestIsValidEnum(t *testing.T) {
 	// Empty value allowed
 	testEnumValue = ""
 	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, true); !ok {
+		t.Fatal("This should have passed - can be empty flag", testEnumValue, testAcceptedValues, err)
+	}
+
+	// Test case insensitive
+	testEnumValue = "mystring"
+	testAcceptedValues = []string{"myString"}
+	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); !ok {
 		t.Fatal("This should have passed - can be empty flag", testEnumValue, testAcceptedValues, err)
 	}
 
@@ -500,13 +512,12 @@ func TestIsValidPhoneNumber(t *testing.T) {
 	}
 
 	// Phone number not right length (MX)
-	countryCode = "+52" // Mexico
 	phone = "555-444-3"
 
-	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
-		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	if ok, err = IsValidPhoneNumber(phone, testMxCountryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, testMxCountryCode, err)
 	} else if err != nil && err.Error() != "phone number must be either eight or ten digits" {
-		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+		t.Fatal("error message was not as expected", phone, testMxCountryCode, err.Error())
 	}
 
 	// Phone number not right length (USA)
@@ -540,23 +551,21 @@ func TestIsValidPhoneNumber(t *testing.T) {
 	}
 
 	// Phone number cannot start with 1
-	countryCode = "+52" // MX
 	phone = "123-123-1234"
 
-	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
-		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	if ok, err = IsValidPhoneNumber(phone, testMxCountryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, testMxCountryCode, err)
 	} else if err != nil && err.Error() != "phone number NPA cannot start with 1" {
-		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+		t.Fatal("error message was not as expected", phone, testMxCountryCode, err.Error())
 	}
 
 	// Phone number cannot start with 0
-	countryCode = "+52" // MX
 	phone = "023-123-1234"
 
-	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
-		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
+	if ok, err = IsValidPhoneNumber(phone, testMxCountryCode); ok {
+		t.Fatal("This should have failed - phone is invalid for USA", phone, testMxCountryCode, err)
 	} else if err != nil && err.Error() != "phone number NPA cannot start with 0" {
-		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
+		t.Fatal("error message was not as expected", phone, testMxCountryCode, err.Error())
 	}
 
 	// Phone number cannot start with 555
@@ -601,10 +610,9 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	// Phone number valid
 	countryCode = "+1" // USA / CAN
-	phone = "234-234-2345"
 
-	if ok, err = IsValidPhoneNumber(phone, countryCode); !ok {
-		t.Fatal("This should have passed - phone is valid for USA", phone, countryCode, err)
+	if ok, err = IsValidPhoneNumber(testPhone, countryCode); !ok {
+		t.Fatal("This should have passed - phone is valid for USA", testPhone, countryCode, err)
 	}
 }
 
@@ -620,8 +628,7 @@ func ExampleIsValidPhoneNumber_invalid() {
 // ExampleIsValidPhoneNumber_valid example of an valid phone number
 func ExampleIsValidPhoneNumber_valid() {
 	countryCode := "+1"
-	phone := "234-234-2345"
-	ok, err := IsValidPhoneNumber(phone, countryCode)
+	ok, err := IsValidPhoneNumber(testPhone, countryCode)
 	fmt.Println(ok, err)
 	// Output: true <nil>
 }
@@ -629,9 +636,8 @@ func ExampleIsValidPhoneNumber_valid() {
 // BenchmarkIsValidPhoneNumber benchmarks the IsValidPhoneNumber (valid value)
 func BenchmarkIsValidPhoneNumber(b *testing.B) {
 	countryCode := "+1"
-	phone := "234-234-2345"
 	for i := 0; i < b.N; i++ {
-		_, _ = IsValidPhoneNumber(phone, countryCode)
+		_, _ = IsValidPhoneNumber(testPhone, countryCode)
 	}
 }
 

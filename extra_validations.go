@@ -68,7 +68,7 @@ var (
 func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (success bool, err error) {
 
 	// Empty is true and no value given?
-	if emptyValueAllowed == true && len(enum) == 0 {
+	if emptyValueAllowed && len(enum) == 0 {
 		success = true
 		return
 	}
@@ -77,7 +77,7 @@ func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (
 	for _, value := range *allowedValues {
 
 		// Compare both in lowercase
-		if strings.ToLower(enum) == strings.ToLower(value) {
+		if strings.EqualFold(enum, value) {
 			success = true
 			return
 		}

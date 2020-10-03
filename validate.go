@@ -43,9 +43,6 @@ type Validation struct {
 
 	// fieldName is the field name
 	fieldName string
-
-	// options for the validation
-	options string
 }
 
 // SetFieldIndex stores the index of the field the validation was applied to
