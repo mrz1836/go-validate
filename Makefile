@@ -29,6 +29,3 @@ release:: ## Runs common.release then runs godocs
 
 run-examples: ## Runs all the examples
 	@go run examples/model/customer.go
-
-vet: ## Run the Go vet application (custom)
-	@go vet -v -copylocks=false
