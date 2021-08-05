@@ -281,7 +281,7 @@ func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
 // init add the numeric validations when this package is loaded
 func init() {
 
-	// Min validation is where X cannot be less then Y
+	// Min validation is where X cannot be less than Y
 	AddValidation("min", minValueValidation)
 
 	// Max validation is where X cannot be greater than Y

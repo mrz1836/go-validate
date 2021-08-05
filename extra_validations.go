@@ -261,7 +261,7 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 		firstDigitOfNxx := nxx[0:1]
 		secondThirdDigitOfNxx := nxx[1:3]
 
-		// Basic USA/CAN rules can be found: https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Modern_plan
+		// Basic USA/CAN rule can be found: https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Modern_plan
 
 		// NPA Cannot start with 1 or 0
 		if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
@@ -296,7 +296,7 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 		firstDigitOfNpa := npa[0:1]
 
 		// Validate the proper length
-		if len(phone) != 8 && len(phone) != 10 { // 2002 mexico had 8 digit numbers and went to 10 digits
+		if len(phone) != 8 && len(phone) != 10 { // 2002 mexico had 8-digit numbers and went to 10 digits
 			err = fmt.Errorf("phone number must be either eight or ten digits")
 			return
 		}

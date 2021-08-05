@@ -424,7 +424,7 @@ func TestIsValidEnum(t *testing.T) {
 		t.Fatal("This should have passed - can be empty flag", testEnumValue, testAcceptedValues, err)
 	}
 
-	// Test case insensitive
+	// Test case-insensitive
 	testEnumValue = "mystring"
 	testAcceptedValues = []string{"myString"}
 	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); !ok {
@@ -625,7 +625,7 @@ func ExampleIsValidPhoneNumber_invalid() {
 	// Output: false phone number must be ten digits
 }
 
-// ExampleIsValidPhoneNumber_valid example of an valid phone number
+// ExampleIsValidPhoneNumber_valid example of a valid phone number
 func ExampleIsValidPhoneNumber_valid() {
 	countryCode := "+1"
 	ok, err := IsValidPhoneNumber(testPhone, countryCode)

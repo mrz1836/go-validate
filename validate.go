@@ -32,7 +32,8 @@ type Interface interface {
 	Validate(value interface{}, obj reflect.Value) *ValidationError
 }
 
-// Validation is an implementation of a Interface and can be used to provide basic functionality to a new validation type through an anonymous field
+// Validation is an implementation of an Interface and can be used to provide basic functionality
+// to a new validation type through an anonymous field
 type Validation struct {
 
 	// Name of the validation
@@ -100,7 +101,7 @@ func (m *Map) AddValidation(key string, fn func(string, reflect.Kind) (Interface
 	m.validationNameToBuilder.Store(key, fn)
 }
 
-// IsValid will either store the builder interfaces or run the IsValid based on the reflect object type
+// IsValid will either store the builder interfaces or run the IsValid based on the reflection object type
 func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 
 	// Get the object's value and type
