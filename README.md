@@ -155,8 +155,8 @@ if !ok {
 
 ## Maintainers
 | [<img src="https://github.com/mrz1836.png" height="50" alt="MrZ" />](https://github.com/mrz1836) | [<img src="https://github.com/kayleg.png" height="50" alt="kayleg" />](https://github.com/kayleg) |
-|:---:|:---:|
-| [MrZ](https://github.com/mrz1836) | [kayleg](https://github.com/kayleg) |
+|:------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------:|
+|                                [MrZ](https://github.com/mrz1836)                                 |                                [kayleg](https://github.com/kayleg)                                |
 
 <br/>
 
@@ -173,4 +173,4 @@ or by making a [**bitcoin donation**](https://mrz1818.com/?tab=tips&af=go-valida
 
 ## License
 
-![License](https://img.shields.io/github/license/mrz1836/go-validate.svg?style=flat)
+[![License](https://img.shields.io/github/license/mrz1836/go-validate.svg?style=flat)](LICENSE)
