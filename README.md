@@ -2,7 +2,7 @@
 > Validations for struct fields based on a validation tag and offers additional validation functions
 
 [![Release](https://img.shields.io/github/release-pre/mrz1836/go-validate.svg?logo=github&style=flat)](https://github.com/mrz1836/go-validate/releases)
-[![Build Status](https://img.shields.io/github/workflow/status/mrz1836/go-validate/run-go-tests?logo=github&v=3)](https://github.com/mrz1836/go-validate/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/mrz1836/go-validate/run-tests.yml?branch=master&logo=github&v=3)](https://github.com/mrz1836/go-validate/actions)
 [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-validate?style=flat)](https://goreportcard.com/report/github.com/mrz1836/go-validate)
 [![codecov](https://codecov.io/gh/mrz1836/go-validate/branch/master/graph/badge.svg)](https://codecov.io/gh/mrz1836/go-validate)
 [![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-validate)](https://golang.org/)
