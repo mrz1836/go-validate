@@ -18,8 +18,8 @@ changelog:
 # ---------------------------
 # Builder
 # ---------------------------
-build:
-  skip: true
+builds:
+  - skip: true
 
 # ---------------------------
 # Github Release
