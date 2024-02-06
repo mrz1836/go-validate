@@ -34,7 +34,7 @@ func init() {
 }
 
 // TestValidationMap_Atomicity
-func TestValidationMap_Atomicity(t *testing.T) {
+func TestValidationMap_Atomicity(_ *testing.T) {
 	vm := Map{}
 	typ := reflect.TypeOf(vm) // todo: go vet: call of reflect.TypeOf copies lock value: govalidation.Map contains sync.Map contains sync.Mutex
 	wg1 := sync.WaitGroup{}

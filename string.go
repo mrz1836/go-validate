@@ -20,7 +20,7 @@ type maxLengthStringValidation struct {
 }
 
 // Validate is for the maxLengthStringValidation type and will test the max string length
-func (m *maxLengthStringValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (m *maxLengthStringValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
 	strValue, ok := value.(string)
 	if !ok {
 		return &ValidationError{
@@ -49,7 +49,7 @@ type minLengthStringValidation struct {
 }
 
 // Validate is for the minLengthStringValidation type and will test the min string length
-func (m *minLengthStringValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (m *minLengthStringValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
 	strValue, ok := value.(string)
 	if !ok {
 		return &ValidationError{
@@ -81,7 +81,7 @@ type formatStringValidation struct {
 }
 
 // Validate is for the formatStringValidation type and will test the given regular expression
-func (f *formatStringValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (f *formatStringValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
 	strValue, ok := value.(string)
 	if !ok {
 		return &ValidationError{
@@ -144,7 +144,7 @@ func (s *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Val
 }
 
 // maxLengthValidation creates an interface based on the max length value
-func maxLengthValidation(maxLength string, kind reflect.Kind) (Interface, error) {
+func maxLengthValidation(maxLength string, _ reflect.Kind) (Interface, error) {
 	length, err := strconv.ParseInt(maxLength, 10, 0)
 	if err != nil {
 		return nil, err
@@ -156,7 +156,7 @@ func maxLengthValidation(maxLength string, kind reflect.Kind) (Interface, error)
 }
 
 // minLengthValidation creates an interface based on the minimum length value
-func minLengthValidation(minLength string, kind reflect.Kind) (Interface, error) {
+func minLengthValidation(minLength string, _ reflect.Kind) (Interface, error) {
 	length, err := strconv.ParseInt(minLength, 10, 0)
 	if err != nil {
 		return nil, err
@@ -168,7 +168,7 @@ func minLengthValidation(minLength string, kind reflect.Kind) (Interface, error)
 }
 
 // formatValidation creates an interface based on the options
-func formatValidation(options string, kind reflect.Kind) (Interface, error) {
+func formatValidation(options string, _ reflect.Kind) (Interface, error) {
 	if strings.ToLower(options) == "email" {
 		return &formatStringValidation{
 			pattern:     emailRegex,
@@ -192,7 +192,7 @@ func formatValidation(options string, kind reflect.Kind) (Interface, error) {
 }
 
 // stringEqualsStringValidation creates an interface based on the field name
-func stringEqualsStringValidation(fieldName string, kind reflect.Kind) (Interface, error) {
+func stringEqualsStringValidation(fieldName string, _ reflect.Kind) (Interface, error) {
 	return &stringEqualsString{
 		targetFieldName: fieldName,
 	}, nil

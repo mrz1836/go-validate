@@ -18,7 +18,7 @@ type intValueValidation struct {
 }
 
 // Validate is for the intValueValidation type and will compare the integer value (min/max)
-func (i *intValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (i *intValueValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
 
 	// Compare the value to see if it is convertible to type int64
 	var compareValue int64
@@ -74,7 +74,7 @@ type uintValueValidation struct {
 }
 
 // Validate is for the uintValueValidation type and will compare the unsigned integer value (min/max)
-func (u *uintValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (u *uintValueValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
 
 	// Compare the value to see if it is convertible to type int64
 	var compareValue uint64
@@ -130,7 +130,7 @@ type floatValueValidation struct {
 }
 
 // Validate is for the floatValueValidation type and will compare the float value (min/max)
-func (f *floatValueValidation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (f *floatValueValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
 
 	// Compare the value to see if it is convertible to type int64
 	var compareValue float64

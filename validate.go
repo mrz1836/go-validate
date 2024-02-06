@@ -67,7 +67,7 @@ func (v *Validation) FieldName() string {
 }
 
 // Validate determines if the value is valid. The value nil is returned if it is valid
-func (v *Validation) Validate(value interface{}, obj reflect.Value) *ValidationError {
+func (v *Validation) Validate(_ interface{}, _ reflect.Value) *ValidationError {
 	return &ValidationError{
 		Key:     v.fieldName,
 		Message: "validation not implemented",
