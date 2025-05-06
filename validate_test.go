@@ -176,6 +176,31 @@ func ExampleValidationError_Error() {
 	// Output: Gender must be no more than 10 characters
 }
 
+// TestValidation_ValidateFunc tests the Validate method of the Validation struct
+func TestValidation_ValidateFunc(t *testing.T) {
+	// Create a Validation instance with a field name
+	v := &Validation{fieldName: "testField"}
+
+	// Call the Validate method
+	result := v.Validate(nil, reflect.Value{})
+
+	// Assert that the result is not nil
+	if result == nil {
+		t.Fatalf("expected a ValidationError, got nil")
+	}
+
+	// Assert that the Key is correct
+	if result.Key != "testField" {
+		t.Errorf("expected Key to be 'testField', got %q", result.Key)
+	}
+
+	// Assert that the Message is correct
+	expectedMessage := "validation not implemented"
+	if result.Message != expectedMessage {
+		t.Errorf("expected Message to be %q, got %q", expectedMessage, result.Message)
+	}
+}
+
 // Tests that are still needed for full package coverage
 // todo:  TestMap_AddValidation(t *testing.T)
 // todo:  TestMap_IsValid(t *testing.T)
