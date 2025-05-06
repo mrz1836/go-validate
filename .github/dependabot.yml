@@ -1,4 +1,4 @@
-# Basic dependabot.yml to update gomod and Github Actions
+# Basic dependabot.yml to update gomod and GitHub Actions
 
 version: 2
 updates:
@@ -6,7 +6,7 @@ updates:
     target-branch: "master"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       # Check for npm updates at 9am UTC (5am EST)
       time: "10:00"
     reviewers:
