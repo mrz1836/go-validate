@@ -2,6 +2,8 @@
 # ---------------------------
 # General
 # ---------------------------
+version: 2
+
 before:
   hooks:
     - make all
@@ -19,7 +21,13 @@ changelog:
 # Builder
 # ---------------------------
 builds:
-  - skip: true
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    skip: true
 
 # ---------------------------
 # Github Release
