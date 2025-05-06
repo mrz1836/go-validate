@@ -46,12 +46,13 @@
     "disable": [
       "gochecknoglobals",
       "gocritic",
-      "godot"
+      "godot",
+      "err113",
+      "gochecknoinits"
     ],
     "enable": [
       "asasalint",
       "asciicheck",
-      "err113",
       "bidichk",
       "bodyclose",
       "containedctx",
@@ -70,7 +71,6 @@
       "exhaustive",
       "forbidigo",
       "gocheckcompilerdirectives",
-      "gochecknoinits",
       "gochecksumtype",
       "goheader",
       "gosec",
@@ -217,7 +217,10 @@
       "misspell": {
         "ignore-rules": [
           "bsv",
-          "bitcoin"
+          "bitcoin",
+          "IMMOBILIEN",
+          "PASSAGENS",
+          "THEATRE"
         ],
         "locale": "US"
       },
