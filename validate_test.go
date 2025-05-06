@@ -12,7 +12,7 @@ var (
 	invalidNumericTypes []reflect.Kind
 )
 
-// init load the default test data
+// init loads the default test data
 func init() {
 
 	// Build the invalid numeric types
@@ -36,7 +36,8 @@ func init() {
 // TestValidationMap_Atomicity
 func TestValidationMap_Atomicity(_ *testing.T) {
 	vm := Map{}
-	typ := reflect.TypeOf(vm) // todo: go vet: call of reflect.TypeOf copies lock value: govalidation.Map contains sync.Map contains sync.Mutex
+	// typ := reflect.TypeOf(vm)
+	typ := reflect.TypeOf(&vm) // todo: go vet: call of reflect.TypeOf copies lock value: govalidation.Map contains sync.Map contains sync.Mutex
 	wg1 := sync.WaitGroup{}
 	wg1.Add(1)
 	wg2 := sync.WaitGroup{}
@@ -130,7 +131,7 @@ func TestValidationError_Error(t *testing.T) {
 		Message: "the_message",
 	}
 
-	// test if correct
+	// test it if correct
 	errorResponse := newError.Error()
 	if errorResponse != newError.Key+" "+newError.Message {
 		t.Fatal("Error response was not `key message` as expected", errorResponse)
@@ -152,7 +153,7 @@ func TestValidationErrors_Error(t *testing.T) {
 	sliceOfErrors := ValidationErrors{}
 	sliceOfErrors = append(sliceOfErrors, newError, newError2)
 
-	// test if correct
+	// test it if correct
 	errorResponse := sliceOfErrors.Error()
 	if errorResponse != newError.Key+" "+newError.Message+" and 1 other errors" {
 		t.Fatal("Error response was not `key message` as expected", errorResponse)
@@ -168,7 +169,7 @@ func ExampleValidationError_Error() {
 	}
 
 	var p Person
-	p.Gender = "This is invalid!" // Will fail since its > 10 characters
+	p.Gender = "This is invalid!" // Will fail since it's > 10 characters
 
 	_, errs := IsValid(p)
 	fmt.Println(errs[0].Error())

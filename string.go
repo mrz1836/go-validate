@@ -120,7 +120,7 @@ func (s *stringEqualsString) Validate(value interface{}, obj reflect.Value) *Val
 		}
 	}
 
-	// Set field name
+	// Set the field name
 	compareField := obj.FieldByName(s.targetFieldName)
 
 	// Try to set to string
@@ -198,7 +198,7 @@ func stringEqualsStringValidation(fieldName string, _ reflect.Kind) (Interface, 
 	}, nil
 }
 
-// init add the string validations when this package is loaded
+// init adds the string validations when this package is loaded
 func init() {
 
 	// Max length validation is len(string) < X

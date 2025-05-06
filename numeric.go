@@ -168,7 +168,7 @@ func (f *floatValueValidation) Validate(value interface{}, _ reflect.Value) *Val
 
 // minValueValidation creates an interface based on the "kind" type
 func minValueValidation(minValue string, kind reflect.Kind) (Interface, error) {
-	switch kind {
+	switch kind { //nolint:exhaustive // this is not needed as we are using fallthrough
 	case reflect.Int:
 		fallthrough
 	case reflect.Int8:
@@ -224,7 +224,7 @@ func minValueValidation(minValue string, kind reflect.Kind) (Interface, error) {
 
 // maxValueValidation creates an interface based on the "kind" type
 func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
-	switch kind {
+	switch kind { //nolint:exhaustive // this is not needed as we are using fallthrough
 	case reflect.Int:
 		fallthrough
 	case reflect.Int8:
@@ -278,7 +278,7 @@ func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
 	}
 }
 
-// init add the numeric validations when this package is loaded
+// init adds the numeric validations when this package is loaded
 func init() {
 
 	// Min validation is where X cannot be less than Y

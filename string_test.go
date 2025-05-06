@@ -10,7 +10,7 @@ import (
 // Generic string struct and function tests
 //
 
-// TestMaxLengthValidation - series of different tests
+// TestMaxLengthValidation - a series of different tests
 func TestMaxLengthValidation(t *testing.T) {
 
 	// Test invalid types
@@ -51,7 +51,7 @@ func TestMaxLengthValidation(t *testing.T) {
 	}
 }
 
-// TestMinLengthValidation - series of different tests
+// TestMinLengthValidation - a series of different tests
 func TestMinLengthValidation(t *testing.T) {
 
 	// Test invalid types
@@ -92,7 +92,7 @@ func TestMinLengthValidation(t *testing.T) {
 	}
 }
 
-// TestFormatValidation - series of different tests
+// TestFormatValidation - a series of different tests
 func TestFormatValidation(t *testing.T) {
 
 	// Test invalid types
@@ -221,7 +221,7 @@ func ExampleIsValid_maxLength() {
 	}
 
 	var p Person
-	p.Gender = "This is invalid!" // Will fail since its > 10 characters
+	p.Gender = "This is invalid!" // Will fail since it's > 10 characters
 
 	ok, errs := IsValid(p)
 	fmt.Println(ok, errs)
@@ -313,7 +313,7 @@ func ExampleIsValid_minLength() {
 	}
 
 	var p Person
-	// Will fail since its < 1 characters
+	// Will fail since it's < 1 character
 
 	ok, errs := IsValid(p)
 	fmt.Println(ok, errs)
@@ -324,7 +324,7 @@ func ExampleIsValid_minLength() {
 // Test format, regex
 //
 
-// TestFormatEmail tests email format (invalid and valid formats)
+// TestFormatEmail tests an email format (invalid and valid formats)
 func TestFormatEmail(t *testing.T) {
 
 	type testModel struct {
@@ -393,7 +393,7 @@ func TestFormatEmail(t *testing.T) {
 
 }
 
-// TestFormatEmailAcceptedTLDs tests email format (all accepted TLDs)
+// TestFormatEmailAcceptedTLDs tests an email format (all accepted TLDs)
 func TestFormatEmailAcceptedTLDs(t *testing.T) {
 
 	type testModel struct {

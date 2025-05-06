@@ -10,7 +10,7 @@ import (
 // Generic numeric struct and function tests
 //
 
-// TestMinValueValidation - series of different tests
+// TestMinValueValidation - a series of different tests
 func TestMinValueValidation(t *testing.T) {
 
 	// Test invalid types
@@ -73,7 +73,7 @@ func TestMinValueValidation(t *testing.T) {
 	}
 }
 
-// TestMaxValueValidation - series of different tests
+// TestMaxValueValidation - a series of different tests
 func TestMaxValueValidation(t *testing.T) {
 
 	// Test invalid types

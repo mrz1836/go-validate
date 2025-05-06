@@ -2,7 +2,7 @@ package validate
 
 import "fmt"
 
-// ValidationError is key and message of the corresponding error
+// ValidationError is the key and message of the corresponding error
 type ValidationError struct {
 
 	// Key is the Field name, key name
@@ -12,7 +12,7 @@ type ValidationError struct {
 	Message string
 }
 
-// ValidationError returns a string of key + message
+// ValidationError returns a string of a key + a message
 func (v *ValidationError) Error() string {
 	return v.Key + " " + v.Message
 }

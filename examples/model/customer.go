@@ -1,10 +1,10 @@
 /*
-Package main is an example of using validate in a basic model (validating data before persisting into a database)
+Package main is an example of using the "validate package" in a basic model (validating data before persisting into a database)
 */
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/mrz1836/go-validate"
 )
@@ -30,10 +30,10 @@ func (c *Customer) Valid() (bool, []validate.ValidationError) {
 	_, errs := validate.IsValid(*c)
 
 	//
-	// Customize: errs (you can add/remove your own errs)
+	// Customize: errs (you can add/remove your own errors)
 	//
 
-	// Showing use of a public validation method (extra validations outside of the struct built-in validations)
+	// Showing use of a public validation method (extra validations outside the struct built-in validations)
 	ok, err := validate.IsValidSocial(c.SocialSecurityNumber)
 	if !ok && err != nil {
 		errs = append(errs, validate.ValidationError{
@@ -57,7 +57,7 @@ func init() {
 // main example (just an example of validating a model's data before persisting into a database)
 func main() {
 
-	// Start with some model & data
+	// Start with some model and data
 	customer := &Customer{
 		Age:                  21,
 		Balance:              1.00,
@@ -70,12 +70,12 @@ func main() {
 		SocialSecurityNumber: "212126768",
 	}
 
-	// Validate the model - Run before saving into database
+	// Validate the model - Run before saving into a database
 	_, errs := customer.Valid()
 	if errs != nil {
-		fmt.Printf("Customer validation failed! %+v", errs)
+		log.Printf("Customer validation failed! %+v", errs)
 	} else {
-		fmt.Println("Customer validation succeed!")
+		log.Println("Customer validation succeed!")
 	}
 
 	// customer.Save() // Now save to a database

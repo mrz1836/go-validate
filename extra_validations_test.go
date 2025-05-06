@@ -362,7 +362,7 @@ func TestIsValidEmailErrorResponses(t *testing.T) {
 	_, err = IsValidEmail(email, true)
 
 	// email domain invalid/cannot receive mail: lookup gmail.conn on 169.254.169.254:53: no such host
-	// if err.Error() != "email domain invalid/cannot receive mail: lookup gmail.conn: no such host"  {
+	// if err.Error() != "email domain invalid/cannot receive mail: lookup gmail.conn: no such host" {
 	if err != nil && !strings.Contains(err.Error(), "email domain invalid/cannot receive mail:") {
 		t.Fatal("Error response was not as expected - Value: " + err.Error())
 	}
@@ -412,7 +412,7 @@ func TestIsValidEnum(t *testing.T) {
 		t.Fatal("This should have passed - value is valid", testEnumValue, testAcceptedValues, err)
 	}
 
-	// Empty valid not allowed
+	// Empty valid is not allowed
 	testEnumValue = ""
 	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); ok {
 		t.Fatal("This should have failed - can be empty flag", testEnumValue, testAcceptedValues, err)
@@ -483,7 +483,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
-	// Country code not accepted
+	// Country code is not accepted
 	countryCode = "+32"
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
@@ -672,7 +672,7 @@ func TestIsValidDNSName(t *testing.T) {
 		{"[::1]", false},
 		{"50.50.50.50", false},
 		{"localhost.localdomain.intern:65535", false},
-		{"漢字汉字", false},
+		{"漢字汉字", false}, //nolint:gosmopolitan // ignore for now
 		{"www.jubfvq1v3p38i51622y0dvmdk1mymowjyeu26gbtw9andgynj1gg8z3msb1kl5z6906k846pj3sulm4kiyk82ln5teqj9nsht59opr0cs5ssltx78lfyvml19lfq1wp4usbl0o36cmiykch1vywbttcus1p9yu0669h8fj4ll7a6bmop505908s1m83q2ec2qr9nbvql2589adma3xsq2o38os2z3dmfh2tth4is4ixyfasasasefqwe4t2ub2fz1rme.de", false},
 	}
 

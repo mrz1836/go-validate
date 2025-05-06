@@ -74,7 +74,7 @@ func (v *Validation) Validate(_ interface{}, _ reflect.Value) *ValidationError {
 	}
 }
 
-// Map is an atomic validation map and when two sets happen at the same time, the latest that started wins.
+// Map is an atomic validation map, and when two sets happen at the same time, the latest that started wins.
 type Map struct {
 	validator               sync.Map // map[reflect.Type][]Interface
 	validationNameToBuilder sync.Map // map[string]func(string, reflect.Kind) (Interface, error)
@@ -94,7 +94,7 @@ func (m *Map) set(k reflect.Type, v []Interface) {
 	m.validator.Store(k, v)
 }
 
-// AddValidation registers the validation specified by key to the known
+// AddValidation registers the validation specified by a key to the known
 // validations. If more than one validation registers with the same key, the
 // last one will become the validation for that key.
 func (m *Map) AddValidation(key string, fn func(string, reflect.Kind) (Interface, error)) {
@@ -175,7 +175,7 @@ func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 	return len(errors) == 0, errors
 }
 
-// AddValidation registers the validation specified by key to the known
+// AddValidation registers the validation specified by a key to the known
 // validations. If more than one validation registers with the same key, the
 // last one will become the validation for that key
 // using DefaultMap.

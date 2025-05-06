@@ -61,7 +61,7 @@ var (
 	}
 
 	// dnsRegEx is the regex for a DNS name
-	dnsRegEx = regexp.MustCompile(`^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[._]?$`)
+	dnsRegEx = regexp.MustCompile(`^([a-zA-Z0-9_][a-zA-Z0-9_-]{0,62})(\.[a-zA-Z0-9_][a-zA-Z0-9_-]{0,62})*[._]?$`)
 )
 
 // IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values
@@ -73,10 +73,10 @@ func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (
 		return
 	}
 
-	// Check that the value is an allowed value (case insensitive)
+	// Check that the value is an allowed value (case-insensitive)
 	for _, value := range *allowedValues {
 
-		// Compare both in lowercase
+		// Compare both in the lowercase
 		if strings.EqualFold(enum, value) {
 			success = true
 			return
@@ -98,7 +98,7 @@ func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
 	}
 
 	// Validate first using regex
-	if !emailRegex.Match([]byte(email)) {
+	if !emailRegex.MatchString(email) {
 		err = fmt.Errorf("email is not a valid address format")
 		return
 	}
@@ -229,7 +229,7 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 	// Sanitize the code
 	countryCode = string(numericRegExp.ReplaceAll([]byte(countryCode), []byte("")))
 
-	// Country code not accepted
+	// Country code is not accepted
 	if ok, _ := IsValidEnum(countryCode, &acceptedCountryCodes, false); !ok {
 		err = fmt.Errorf("country code %s is not accepted", countryCode)
 		return
@@ -329,19 +329,19 @@ func IsValidIP(ipAddress string) bool {
 	return net.ParseIP(ipAddress) != nil
 }
 
-// IsValidIPv4 check if the string is an IP version 4.
+// IsValidIPv4 check if the string is IP version 4.
 func IsValidIPv4(ipAddress string) bool {
 	return net.ParseIP(ipAddress) != nil && strings.Contains(ipAddress, ".")
 }
 
-// IsValidIPv6 check if the string is an IP version 6.
+// IsValidIPv6 check if the string is IP version 6.
 func IsValidIPv6(ipAddress string) bool {
 	return net.ParseIP(ipAddress) != nil && strings.Contains(ipAddress, ":")
 }
 
 // IsValidDNSName will validate the given string as a DNS name
 func IsValidDNSName(dnsName string) bool {
-	if dnsName == "" || len(strings.Replace(dnsName, ".", "", -1)) > 255 {
+	if dnsName == "" || len(strings.ReplaceAll(dnsName, ".", "")) > 255 {
 		return false
 	}
 	return !IsValidIP(dnsName) && dnsRegEx.MatchString(dnsName)
