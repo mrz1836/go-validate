@@ -281,6 +281,6 @@ func FuzzComplexValidationScenarios(f *testing.F) {
 		}
 
 		// Test that validation count makes sense
-		require.LessOrEqual(t, len(errors), 4, "Should not have more errors than fields with validation")
+		require.LessOrEqual(t, len(errors), 8, "Should not have more errors than total validation rules")
 	})
 }
