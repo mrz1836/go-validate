@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 // emailRegex is common regular expressions
@@ -111,7 +112,6 @@ type stringEqualsString struct {
 
 // Validate is for the stringEqualsString type and will test the given field's value and compare
 func (s *stringEqualsString) Validate(value interface{}, obj reflect.Value) *ValidationError {
-
 	strValue, ok := value.(string)
 	if !ok {
 		return &ValidationError{
@@ -177,7 +177,6 @@ func formatValidation(options string, _ reflect.Kind) (Interface, error) {
 	} else if strings.Contains(options, "regexp:") {
 		patternStr := options[strings.Index(options, ":")+1:]
 		pattern, err := regexp.Compile(patternStr)
-
 		if err != nil {
 			return nil, &ValidationError{Key: "regexp:", Message: err.Error()}
 		}
@@ -198,18 +197,21 @@ func stringEqualsStringValidation(fieldName string, _ reflect.Kind) (Interface, 
 	}, nil
 }
 
-// init adds the string validations when this package is loaded
-func init() {
+var stringValidationsOnce sync.Once //nolint:gochecknoglobals // Validation registration synchronization
 
-	// Max length validation is len(string) < X
-	AddValidation("max_length", maxLengthValidation)
+// RegisterStringValidations registers all string validations
+func RegisterStringValidations() {
+	stringValidationsOnce.Do(func() {
+		// Max length validation is len(string) < X
+		AddValidation("max_length", maxLengthValidation)
 
-	// Min length validation is len(string) > X
-	AddValidation("min_length", minLengthValidation)
+		// Min length validation is len(string) > X
+		AddValidation("min_length", minLengthValidation)
 
-	// Format validation uses a given regular expression to match
-	AddValidation("format", formatValidation)
+		// Format validation uses a given regular expression to match
+		AddValidation("format", formatValidation)
 
-	// Compare validation uses another field to compare
-	AddValidation("compare", stringEqualsStringValidation)
+		// Compare validation uses another field to compare
+		AddValidation("compare", stringEqualsStringValidation)
+	})
 }

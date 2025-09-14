@@ -4,110 +4,88 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-const testPhone = "234-234-2345"
-const testMxCountryCode = "+52"
-const emailInvalidFormatError = "email is not a valid address format"
+const (
+	testPhone               = "234-234-2345"
+	testMxCountryCode       = "+52"
+	emailInvalidFormatError = "email is not a valid address format"
+)
 
 // TestIsValidSocial testing the social security number (invalid and valid)
 func TestIsValidSocial(t *testing.T) {
-
-	var ok bool
-	var err error
-
-	testSocialNumber := "000-00-0000" // All zeros
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
+	tests := []struct {
+		name     string
+		social   string
+		expected bool
+		desc     string
+	}{
+		{"all zeros", "000-00-0000", false, "All zeros"},
+		{"not enough digits", "434-43-433", false, "Not enough digits"},
+		{"too many digits", "434-43-4334444", false, "Too many digits"},
+		{"starts with 666", "666-00-0000", false, "Starts with 666"},
+		{"first section zeros", "000-12-1235", false, "First section zeros"},
+		{"middle section zeros", "888-00-1235", false, "Middle section zeros"},
+		{"last section zeros", "888-14-0000", false, "Last section zeros"},
+		{"valid with dashes", "434-43-4334", true, "Valid"},
+		{"valid without dashes 1", "323126767", true, "Valid"},
+		{"valid without dashes 2", "212126768", true, "Valid"},
 	}
 
-	testSocialNumber = "434-43-433" // Not enough digits
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "434-43-4334444" // Too many digits
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "666-00-0000" // Starts with 666
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "000-12-1235" // First section zeros
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "888-00-1235" // Middle section zeros
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "888-14-0000" // Last section zeros
-	if ok, err = IsValidSocial(testSocialNumber); ok {
-		t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ok, err := IsValidSocial(tt.social)
+			if tt.expected {
+				assert.True(t, ok, "Social test failed when it should have passed: %s", tt.social)
+				assert.NoError(t, err)
+			} else {
+				assert.False(t, ok, "Social test passed when it should have failed: %s", tt.social)
+			}
+		})
 	}
 
 	// Test all blacklisted socials
-	for _, ssn := range blacklistedSocials {
-		if ok, err = IsValidSocial(ssn); ok {
-			t.Fatal("Social test passed when it should have failed.", testSocialNumber, err)
+	t.Run("blacklisted socials", func(t *testing.T) {
+		for _, ssn := range blacklistedSocials {
+			ok, _ := IsValidSocial(ssn)
+			assert.False(t, ok, "Blacklisted social should be invalid: %s", ssn)
 		}
-	}
-
-	testSocialNumber = "434-43-4334" // Valid
-	if ok, err = IsValidSocial(testSocialNumber); !ok {
-		t.Fatal("Social test failed when it should have passed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "323126767" // Valid
-	if ok, err = IsValidSocial(testSocialNumber); !ok {
-		t.Fatal("Social test failed when it should have passed.", testSocialNumber, err)
-	}
-
-	testSocialNumber = "212126768" // Valid
-	if ok, err = IsValidSocial(testSocialNumber); !ok {
-		t.Fatal("Social test failed when it should have passed.", testSocialNumber, err)
-	}
+	})
 }
 
 // TestIsValidSocialErrorResponses test the error responses
 func TestIsValidSocialErrorResponses(t *testing.T) {
-	var err error
-
-	testSocialNumber := "" // Empty
-	if _, err = IsValidSocial(testSocialNumber); err != nil && err.Error() != "social is empty" {
-		t.Fatal("Error response was not as expected - Value: " + err.Error())
+	tests := []struct {
+		name          string
+		social        string
+		expectedError string
+	}{
+		{"empty", "", "social is empty"},
+		{"not long enough", "2123", "social is not nine digits in length"},
+		{"all zeros", "000-00-0000", "social section was found invalid (cannot be 000 or 666)"},
+		{"invalid pattern", "1234-1-2342", "social does not match the regex pattern"},
+		{"invalid section", "000-00-2345", "social section was found invalid (cannot be 000 or 666)"},
 	}
 
-	testSocialNumber = "2123" // Not long enough
-	if _, err = IsValidSocial(testSocialNumber); err != nil && err.Error() != "social is not nine digits in length" {
-		t.Fatal("Error response was not as expected - Value: " + err.Error())
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := IsValidSocial(tt.social)
+			require.Error(t, err)
+			assert.Equal(t, tt.expectedError, err.Error())
+		})
 	}
 
-	testSocialNumber = "000-00-0000" // All zeros
-	if _, err = IsValidSocial(testSocialNumber); err != nil && err.Error() != "social section was found invalid (cannot be 000 or 666)" {
-		t.Fatal("Error response was not as expected - Value: " + err.Error())
-	}
-
-	testSocialNumber = "1234-1-2342" // Invalid Pattern
-	if _, err = IsValidSocial(testSocialNumber); err != nil && err.Error() != "social does not match the regex pattern" {
-		t.Fatal("Error response was not as expected - Value: " + err.Error())
-	}
-
-	testSocialNumber = "000-00-2345" // Invalid section
-	if _, err = IsValidSocial(testSocialNumber); err != nil && err.Error() != "social section was found invalid (cannot be 000 or 666)" {
-		t.Fatal("Error response was not as expected - Value: " + err.Error())
-	}
-
-	for _, ssn := range blacklistedSocials { // Blacklisted
-		if _, err = IsValidSocial(ssn); err != nil && err.Error() != "social was found to be blacklisted" {
-			t.Fatal("Error response was not as expected - Value: " + err.Error())
+	// Test blacklisted socials
+	t.Run("blacklisted socials", func(t *testing.T) {
+		for _, ssn := range blacklistedSocials {
+			_, err := IsValidSocial(ssn)
+			require.Error(t, err)
+			assert.Equal(t, "social was found to be blacklisted", err.Error())
 		}
-	}
+	})
 }
 
 // ExampleIsValidSocial_invalid example of an invalid social response
@@ -134,8 +112,7 @@ func BenchmarkIsValidSocial(b *testing.B) {
 }
 
 // TestIsValidEmail testing the email validation
-func TestIsValidEmail(t *testing.T) {
-
+func TestIsValidEmail(t *testing.T) { //nolint:gocognit // Test function complexity acceptable
 	var success bool
 
 	email := "test"
@@ -393,7 +370,6 @@ func BenchmarkIsValidEmail(b *testing.B) {
 
 // TestIsValidEnum testing the enum value in an accepted list of values
 func TestIsValidEnum(t *testing.T) {
-
 	var ok bool
 	var err error
 
@@ -402,7 +378,7 @@ func TestIsValidEnum(t *testing.T) {
 	testAcceptedValues := []string{"123"}
 	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); ok {
 		t.Fatal("This should have failed - value is not found", testEnumValue, testAcceptedValues, err)
-	} else if err != nil && err.Error() != "value "+testEnumValue+" is not allowed" {
+	} else if err != nil && err.Error() != "value is not allowed: "+testEnumValue {
 		t.Fatal("error message was not as expected", err.Error())
 	}
 
@@ -430,7 +406,6 @@ func TestIsValidEnum(t *testing.T) {
 	if ok, err = IsValidEnum(testEnumValue, &testAcceptedValues, false); !ok {
 		t.Fatal("This should have passed - can be empty flag", testEnumValue, testAcceptedValues, err)
 	}
-
 }
 
 // ExampleIsValidEnum_invalid example of an invalid enum
@@ -438,7 +413,7 @@ func ExampleIsValidEnum_invalid() {
 	testAcceptedValues := []string{"123"}
 	ok, err := IsValidEnum("1", &testAcceptedValues, false) // Invalid
 	fmt.Println(ok, err)
-	// Output: false value 1 is not allowed
+	// Output: false value is not allowed: 1
 }
 
 // ExampleIsValidEnum_valid example of an valid enum
@@ -459,8 +434,7 @@ func BenchmarkIsValidEnum(b *testing.B) {
 }
 
 // TestIsValidPhoneNumber testing the phone value
-func TestIsValidPhoneNumber(t *testing.T) {
-
+func TestIsValidPhoneNumber(t *testing.T) { //nolint:gocognit // Test function complexity acceptable
 	var ok bool
 	var err error
 
@@ -488,7 +462,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "country code 32 is not accepted" {
+	} else if err != nil && err.Error() != "country code is not accepted: 32" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -536,7 +510,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "phone number NPA cannot start with 1" {
+	} else if err != nil && err.Error() != "phone number NPA cannot start with specified digit: 1" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -546,7 +520,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "phone number NPA cannot start with 0" {
+	} else if err != nil && err.Error() != "phone number NPA cannot start with specified digit: 0" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -555,7 +529,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, testMxCountryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, testMxCountryCode, err)
-	} else if err != nil && err.Error() != "phone number NPA cannot start with 1" {
+	} else if err != nil && err.Error() != "phone number NPA cannot start with specified digit: 1" {
 		t.Fatal("error message was not as expected", phone, testMxCountryCode, err.Error())
 	}
 
@@ -564,7 +538,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, testMxCountryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, testMxCountryCode, err)
-	} else if err != nil && err.Error() != "phone number NPA cannot start with 0" {
+	} else if err != nil && err.Error() != "phone number NPA cannot start with specified digit: 0" {
 		t.Fatal("error message was not as expected", phone, testMxCountryCode, err.Error())
 	}
 
@@ -574,7 +548,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "phone number NPA cannot start with 555" {
+	} else if err != nil && err.Error() != "phone number NPA cannot start with specified digit: 555" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -584,7 +558,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "phone number NXX cannot start with 1" {
+	} else if err != nil && err.Error() != "phone number NXX cannot be specified digits: cannot start with 1" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -594,7 +568,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "phone number NXX cannot start with 0" {
+	} else if err != nil && err.Error() != "phone number NXX cannot be specified digits: cannot start with 0" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -604,7 +578,7 @@ func TestIsValidPhoneNumber(t *testing.T) {
 
 	if ok, err = IsValidPhoneNumber(phone, countryCode); ok {
 		t.Fatal("This should have failed - phone is invalid for USA", phone, countryCode, err)
-	} else if err != nil && err.Error() != "phone number NXX cannot be X11" {
+	} else if err != nil && err.Error() != "phone number NXX cannot be specified digits: cannot be X11" {
 		t.Fatal("error message was not as expected", phone, countryCode, err.Error())
 	}
 
@@ -645,7 +619,7 @@ func BenchmarkIsValidPhoneNumber(b *testing.B) {
 func TestIsValidDNSName(t *testing.T) {
 	t.Parallel()
 
-	var tests = []struct {
+	tests := []struct {
 		param    string
 		expected bool
 	}{
@@ -710,7 +684,7 @@ func TestIsValidIP(t *testing.T) {
 	t.Parallel()
 
 	// Without version
-	var tests = []struct {
+	tests := []struct {
 		param    string
 		expected bool
 	}{
@@ -797,7 +771,7 @@ func BenchmarkIsValidIP(b *testing.B) {
 // TestIsValidHost will test a hostname
 func TestIsValidHost(t *testing.T) {
 	t.Parallel()
-	var tests = []struct {
+	tests := []struct {
 		param    string
 		expected bool
 	}{
@@ -817,7 +791,6 @@ func TestIsValidHost(t *testing.T) {
 			t.Errorf("Expected IsValidHost(%q) to be %v, got %v", test.param, test.expected, actual)
 		}
 	}
-
 }
 
 // ExampleIsValidHost_invalid example of an invalid host

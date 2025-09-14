@@ -3,6 +3,7 @@ package validate
 import (
 	"reflect"
 	"strconv"
+	"sync"
 )
 
 // intValueValidation type used for integer values
@@ -19,7 +20,6 @@ type intValueValidation struct {
 
 // Validate is for the intValueValidation type and will compare the integer value (min/max)
 func (i *intValueValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
-
 	// Compare the value to see if it is convertible to type int64
 	var compareValue int64
 	switch value := value.(type) {
@@ -62,7 +62,6 @@ func (i *intValueValidation) Validate(value interface{}, _ reflect.Value) *Valid
 
 // uintValueValidation type used for unsigned integer values
 type uintValueValidation struct {
-
 	// Validation is the validation interface
 	Validation
 
@@ -75,7 +74,6 @@ type uintValueValidation struct {
 
 // Validate is for the uintValueValidation type and will compare the unsigned integer value (min/max)
 func (u *uintValueValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
-
 	// Compare the value to see if it is convertible to type int64
 	var compareValue uint64
 	switch value := value.(type) {
@@ -118,7 +116,6 @@ func (u *uintValueValidation) Validate(value interface{}, _ reflect.Value) *Vali
 
 // floatValueValidation type used for float values
 type floatValueValidation struct {
-
 	// Validation is the validation interface
 	Validation
 
@@ -131,7 +128,6 @@ type floatValueValidation struct {
 
 // Validate is for the floatValueValidation type and will compare the float value (min/max)
 func (f *floatValueValidation) Validate(value interface{}, _ reflect.Value) *ValidationError {
-
 	// Compare the value to see if it is convertible to type int64
 	var compareValue float64
 	switch value := value.(type) {
@@ -278,12 +274,15 @@ func maxValueValidation(maxValue string, kind reflect.Kind) (Interface, error) {
 	}
 }
 
-// init adds the numeric validations when this package is loaded
-func init() {
+var numericValidationsOnce sync.Once //nolint:gochecknoglobals // Validation registration synchronization
 
-	// Min validation is where X cannot be less than Y
-	AddValidation("min", minValueValidation)
+// RegisterNumericValidations registers all numeric validations
+func RegisterNumericValidations() {
+	numericValidationsOnce.Do(func() {
+		// Min validation is where X cannot be less than Y
+		AddValidation("min", minValueValidation)
 
-	// Max validation is where X cannot be greater than Y
-	AddValidation("max", maxValueValidation)
+		// Max validation is where X cannot be greater than Y
+		AddValidation("max", maxValueValidation)
+	})
 }

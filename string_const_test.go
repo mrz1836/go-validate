@@ -1,7 +1,8 @@
 package validate
 
 // TopLevelDomains is from ICANN for all TLDs that should be accepted
-var TopLevelDomains = []string{
+// Global test data for shared use across test functions - acceptable pattern for tests
+var TopLevelDomains = []string{ //nolint:gochecknoglobals // Test data - acceptable pattern
 	"AAA",
 	"AARP",
 	"ABARTH",
@@ -614,7 +615,7 @@ var TopLevelDomains = []string{
 	"IMAMAT",
 	"IMDB",
 	"IMMO",
-	"IMMOBILIEN",
+	"IMMOBILIEN", //nolint:misspell // German word, not a misspelling
 	"IN",
 	"INC",
 	"INDUSTRIES",
@@ -940,7 +941,7 @@ var TopLevelDomains = []string{
 	"PARTNERS",
 	"PARTS",
 	"PARTY",
-	"PASSAGENS",
+	"PASSAGENS", //nolint:misspell // Portuguese word, not a misspelling
 	"PAY",
 	"PCCW",
 	"PE",
@@ -1221,7 +1222,7 @@ var TopLevelDomains = []string{
 	"TH",
 	"THD",
 	"THEATER",
-	"THEATRE",
+	"THEATRE", //nolint:misspell // British spelling, not a misspelling
 	"TIAA",
 	"TICKETS",
 	"TIENDA",

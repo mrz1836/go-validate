@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 //
@@ -12,128 +15,83 @@ import (
 
 // TestMaxLengthValidation - a series of different tests
 func TestMaxLengthValidation(t *testing.T) {
-
 	// Test invalid types
-	var err error
-
-	// Fail if string submitted or Parse int fails
-	_, err = maxLengthValidation("foo", reflect.Int)
-	if err == nil {
-		t.Fatal("Expected to fail - foo is a string and not a number")
-	}
+	_, err := maxLengthValidation("foo", reflect.Int)
+	require.Error(t, err, "Expected to fail - foo is a string and not a number")
 
 	// Test making an interface
 	maxInterface, err := maxLengthValidation("10", reflect.Int)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
+	require.NoError(t, err)
 
 	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := maxInterface.Validate("this should fail", testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail, 8 < 10")
-	}
+	require.NotNil(t, errs, "Expected to fail")
 
 	// Test converting a string
 	var invalidSlice []int
 	errs = maxInterface.Validate(invalidSlice, testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail, value is not of type string and MaxLengthValidation only accepts strings")
-	}
+	require.NotNil(t, errs, "Expected to fail, value is not of type string and MaxLengthValidation only accepts strings")
 
 	// Test converting an unsigned int
 	var invalid uint64
 	errs = maxInterface.Validate(invalid, testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail, value is not of type string and MaxLengthValidation only accepts strings")
-	}
+	require.NotNil(t, errs, "Expected to fail, value is not of type string and MaxLengthValidation only accepts strings")
 }
 
 // TestMinLengthValidation - a series of different tests
 func TestMinLengthValidation(t *testing.T) {
-
 	// Test invalid types
-	var err error
-
-	// Fail if string submitted or Parse int fails
-	_, err = minLengthValidation("foo", reflect.Int)
-	if err == nil {
-		t.Fatal("Expected to fail - foo is a string and not a number")
-	}
+	_, err := minLengthValidation("foo", reflect.Int)
+	require.Error(t, err, "Expected to fail - foo is a string and not a number")
 
 	// Test making an interface
 	minInterface, err := minLengthValidation("10", reflect.Int)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
+	require.NoError(t, err)
 
 	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := minInterface.Validate("this", testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail", "10", "this")
-	}
+	require.NotNil(t, errs, "Expected to fail")
 
 	// Test converting a string
 	var invalidSlice []int
 	errs = minInterface.Validate(invalidSlice, testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail, value is not of type string and MinLengthValidation only accepts strings")
-	}
+	require.NotNil(t, errs, "Expected to fail, value is not of type string and MinLengthValidation only accepts strings")
 
 	// Test converting an unsigned int
 	var invalid uint64
 	errs = minInterface.Validate(invalid, testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail, value is not of type string and MinLengthValidation only accepts strings")
-	}
+	require.NotNil(t, errs, "Expected to fail, value is not of type string and MinLengthValidation only accepts strings")
 }
 
 // TestFormatValidation - a series of different tests
 func TestFormatValidation(t *testing.T) {
-
 	// Test invalid types
-	var err error
-
-	// Fail if string submitted or Parse int fails
-	_, err = formatValidation("doesNotExist", reflect.String)
-	if err == nil {
-		t.Fatal("Expected to fail - foo is a string and not a number")
-	}
+	_, err := formatValidation("doesNotExist", reflect.String)
+	require.Error(t, err, "Expected to fail - format validation does not exist")
 
 	// Test making an interface
 	formatInterface, err := formatValidation("email", reflect.String)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
+	require.NoError(t, err)
 
 	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := formatInterface.Validate("this works?", testVal)
-	if errs == nil {
-		t.Fatal("Expected error, value is not email")
-	}
+	require.NotNil(t, errs, "Expected error, value is not email")
 
 	errs = formatInterface.Validate("this@", testVal)
-	if errs == nil {
-		t.Fatal("Expected error, value is not email")
-	}
+	require.NotNil(t, errs, "Expected error, value is not email")
 
 	errs = formatInterface.Validate("this@domain.com", testVal)
-	if errs != nil {
-		t.Fatal("Email is valid but failed")
-	}
+	require.Nil(t, errs, "Email is valid but should not fail")
 
 	var invalidValue []int
 	errs = formatInterface.Validate(invalidValue, testVal)
-	if errs == nil {
-		t.Fatal("Expected error, value is not string")
-	}
-
+	require.NotNil(t, errs, "Expected error, value is not string")
 }
 
 //
@@ -142,7 +100,6 @@ func TestFormatValidation(t *testing.T) {
 
 // TestMaxLengthValid tests max length (valid length of characters)
 func TestMaxLengthValid(t *testing.T) {
-
 	type testModel struct {
 		Value string `validation:"max_length=5"`
 	}
@@ -170,13 +127,8 @@ func TestMaxLengthInvalid(t *testing.T) {
 	}
 
 	ok, errs := IsValid(model)
-	if ok {
-		t.Fatal("Max length should have failed")
-	}
-
-	if len(errs) == 0 {
-		t.Fatalf("Max length errs should have 1 item not: %d", len(errs))
-	}
+	assert.False(t, ok, "Max length should have failed")
+	require.NotEmpty(t, errs, "Max length errs should have at least 1 item")
 }
 
 // TestMaxLengthWrongType tests to make sure only valid types
@@ -214,7 +166,6 @@ func BenchmarkTestMaxLength(b *testing.B) {
 
 // ExampleIsValid_MaxLength is an example for max length validation (max)
 func ExampleIsValid_maxLength() {
-
 	type Person struct {
 		// Gender must not be longer than 10 characters
 		Gender string `validation:"max_length=10"`
@@ -234,7 +185,6 @@ func ExampleIsValid_maxLength() {
 
 // TestMinLengthValid tests min length (valid length of characters)
 func TestMinLengthValid(t *testing.T) {
-
 	type testModel struct {
 		Value string `validation:"min_length=5"`
 	}
@@ -306,7 +256,6 @@ func BenchmarkTestMinLength(b *testing.B) {
 
 // ExampleIsValid_MinLength is an example for min length validation (min)
 func ExampleIsValid_minLength() {
-
 	type Person struct {
 		// Gender must be > 1 character
 		Gender string `validation:"min_length=1"`
@@ -326,7 +275,6 @@ func ExampleIsValid_minLength() {
 
 // TestFormatEmail tests an email format (invalid and valid formats)
 func TestFormatEmail(t *testing.T) {
-
 	type testModel struct {
 		Value string `validation:"format=email"`
 	}
@@ -390,12 +338,10 @@ func TestFormatEmail(t *testing.T) {
 	}
 
 	// All TLD tests are in: TestFormatEmailAcceptedTLDs
-
 }
 
 // TestFormatEmailAcceptedTLDs tests an email format (all accepted TLDs)
 func TestFormatEmailAcceptedTLDs(t *testing.T) {
-
 	type testModel struct {
 		Value string `validation:"format=email"`
 	}
@@ -432,7 +378,6 @@ func BenchmarkTestFormatEmail(b *testing.B) {
 
 // ExampleIsValid_FormatEmail is an example for format email validation
 func ExampleIsValid_formatEmail() {
-
 	type Person struct {
 		// Email must be in valid email format
 		Email string `validation:"format=email"`
@@ -492,7 +437,6 @@ func BenchmarkTestFormatRegEx(b *testing.B) {
 
 // ExampleIsValid_FormatRegEx is an example for format regex validation
 func ExampleIsValid_formatRegEx() {
-
 	type Person struct {
 		// Phone must be in valid phone regex format
 		Phone string `validation:"format=regexp:[0-9]+"`
@@ -512,7 +456,6 @@ func ExampleIsValid_formatRegEx() {
 
 // TestCompareStringValid tests compare string (valid comparison)
 func TestCompareStringValid(t *testing.T) {
-
 	type testModel struct {
 		Value        string `validation:"compare=ValueCompare"`
 		ValueCompare string
@@ -533,7 +476,6 @@ func TestCompareStringValid(t *testing.T) {
 
 // TestCompareStringInValid tests compare string (invalid comparison)
 func TestCompareStringInValid(t *testing.T) {
-
 	type testModel struct {
 		Value        string `validation:"compare=ValueCompare"`
 		ValueCompare string
@@ -593,7 +535,6 @@ func BenchmarkTestCompareString(b *testing.B) {
 
 // ExampleIsValid_CompareString is an example for compare string validation
 func ExampleIsValid_compareString() {
-
 	type User struct {
 		// Password should match confirmation on submission
 		Password             string `validation:"compare=PasswordConfirmation"`

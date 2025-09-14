@@ -4,7 +4,6 @@ import "fmt"
 
 // ValidationError is the key and message of the corresponding error
 type ValidationError struct {
-
 	// Key is the Field name, key name
 	Key string
 
@@ -22,7 +21,6 @@ type ValidationErrors []ValidationError
 
 // ValidationError returns the list of errors from the slice of errors
 func (v ValidationErrors) Error() (errors string) {
-
 	// No errors?
 	if len(v) == 0 {
 		return

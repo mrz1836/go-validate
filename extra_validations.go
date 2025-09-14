@@ -1,6 +1,7 @@
 package validate
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"regexp"
@@ -12,10 +13,12 @@ const (
 	socialBasicRawRegex = `^\d{3}-\d{2}-\d{4}$`
 )
 
+// Package-level variables for validation data.
+// These are global by design to provide shared validation data across the package.
 var (
 
 	// blacklistedSocials known blacklisted socials (exclude automatically)
-	blacklistedSocials = []string{
+	blacklistedSocials = []string{ //nolint:gochecknoglobals // Shared validation data
 		"123-45-6789",
 		"219-09-9999",
 		"078-05-1120",
@@ -44,7 +47,8 @@ var (
 	numericRegExp = regexp.MustCompile(`[^0-9]`)
 
 	// blacklistedDomains known blacklisted domains for email addresses
-	blacklistedDomains = []string{
+	// Global for shared access across validation functions
+	blacklistedDomains = []string{ //nolint:gochecknoglobals // Shared validation data
 		"aol.con",     // Does not exist, but valid TLD in regex
 		"example.com", // Invalid domain - used for testing but should not work in production
 		"gmail.con",   // Does not exist, but valid TLD in regex
@@ -54,7 +58,8 @@ var (
 	}
 
 	// acceptedCountryCodes is the countries this phone number validation can currently accept
-	acceptedCountryCodes = []string{
+	// Global for shared access across validation functions
+	acceptedCountryCodes = []string{ //nolint:gochecknoglobals // Shared validation data
 		"1",  // USA and CAN
 		"52", // Mexico
 		// todo: support more countries in phone number validation (@mrz)
@@ -66,7 +71,6 @@ var (
 
 // IsValidEnum validates an enum given the required parameters and tests if the supplied value is valid from accepted values
 func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (success bool, err error) {
-
 	// Empty is true and no value given?
 	if emptyValueAllowed && len(enum) == 0 {
 		success = true
@@ -75,7 +79,6 @@ func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (
 
 	// Check that the value is an allowed value (case-insensitive)
 	for _, value := range *allowedValues {
-
 		// Compare both in the lowercase
 		if strings.EqualFold(enum, value) {
 			success = true
@@ -84,36 +87,35 @@ func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (
 	}
 
 	// We must have an error
-	err = fmt.Errorf("value %s is not allowed", enum)
-	return
+	err = fmt.Errorf("%w: %s", ErrEnumValueNotAllowed, enum)
+	return success, err
 }
 
 // IsValidEmail validate an email address using regex, checking name and host, and even MX record check
 func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
-
 	// Minimum / Maximum sizes
 	if len(email) < 5 || len(email) > 254 {
-		err = fmt.Errorf("email length is invalid")
-		return
+		err = ErrEmailLengthInvalid
+		return success, err
 	}
 
 	// Validate first using regex
 	if !emailRegex.MatchString(email) {
-		err = fmt.Errorf("email is not a valid address format")
-		return
+		err = ErrEmailFormatInvalid
+		return success, err
 	}
 
 	// Find the @ sign (redundant with regex being first)
 	at := strings.LastIndex(email, "@")
 	if at <= 0 || at > len(email)-3 {
-		err = fmt.Errorf("email is missing the @ sign")
-		return
+		err = ErrEmailMissingAtSign
+		return success, err
 	}
 
 	// More than one at sign?
 	if strings.Count(email, "@") > 1 {
-		err = fmt.Errorf("email contains more than one @ sign")
-		return
+		err = ErrEmailMultipleAtSigns
+		return success, err
 	}
 
 	// Split the user and host
@@ -122,50 +124,51 @@ func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
 
 	// User cannot be more than 64 characters
 	if len(user) > 64 {
-		err = fmt.Errorf("email length is invalid")
-		return
+		err = ErrEmailLengthInvalid
+		return success, err
 	}
 
 	// Invalid domains
 	// Check banned/blacklisted numbers
 	if ok, _ := IsValidEnum(host, &blacklistedDomains, false); ok {
-		err = fmt.Errorf("email domain is not accepted")
-		return
+		err = ErrEmailDomainNotAccepted
+		return success, err
 	}
 
 	// Validate the host
 	if ok := IsValidHost(host); !ok {
-		err = fmt.Errorf("email domain is not a valid host")
-		return
+		err = ErrEmailDomainInvalidHost
+		return success, err
 	}
 
 	// Check for mx record or A record
 	if mxCheck {
-		if _, err = net.LookupMX(host); err != nil {
-			if _, err = net.LookupIP(host); err != nil {
+		ctx := context.Background()
+		resolver := &net.Resolver{}
+		if _, err = resolver.LookupMX(ctx, host); err != nil {
+			if _, err = resolver.LookupIPAddr(ctx, host); err != nil {
 				// Only fail if both MX and A records are missing - any of the
 				// two is enough for an email to be deliverable
-				err = fmt.Errorf("email domain invalid/cannot receive mail: " + err.Error())
-				return
+				err = fmt.Errorf("%w: %w", ErrEmailDomainCannotReceive, err)
+				return success, err
 			}
 		}
 	}
 
 	// All good
 	success = true
-	return
+	return success, err
 }
 
 // IsValidSocial validates the USA social security number using ATS rules
 func IsValidSocial(social string) (success bool, err error) {
-
 	// Sanitize
 	social = strings.TrimSpace(social)
 
 	// No value?
 	if len(social) == 0 {
-		err = fmt.Errorf("social is empty")
-		return
+		err = ErrSocialEmpty
+		return success, err
 	}
 
 	// Determine if it is missing hyphens
@@ -176,8 +179,8 @@ func IsValidSocial(social string) (success bool, err error) {
 
 		// We do NOT have 9 digits
 		if len(social) != 9 {
-			err = fmt.Errorf("social is not nine digits in length")
-			return
+			err = ErrSocialLengthInvalid
+			return success, err
 		}
 
 		// Break it up
@@ -191,8 +194,8 @@ func IsValidSocial(social string) (success bool, err error) {
 
 	// Check the basics
 	if match, _ := regexp.MatchString(socialBasicRawRegex, social); !match {
-		err = fmt.Errorf("social does not match the regex pattern")
-		return
+		err = ErrSocialRegexMismatch
+		return success, err
 	}
 
 	// Break into three parts
@@ -202,28 +205,25 @@ func IsValidSocial(social string) (success bool, err error) {
 
 	// Split the first section (not 000 or 666)
 	if firstPart == "000" || firstPart == "666" || secondPart == "00" || thirdPart == "0000" {
-		err = fmt.Errorf("social section was found invalid (cannot be 000 or 666)")
-		return
+		err = ErrSocialSectionInvalid
+		return success, err
 	}
 
 	// Check banned/blacklisted numbers
 	if ok, _ := IsValidEnum(social, &blacklistedSocials, false); ok {
-		err = fmt.Errorf("social was found to be blacklisted")
-		return
+		err = ErrSocialBlacklisted
+		return success, err
 	}
 
 	// All good!
 	success = true
-	return
+	return success, err
 }
 
-// IsValidPhoneNumber validates a given phone number and country code
-func IsValidPhoneNumber(phone string, countryCode string) (success bool, err error) {
-
-	// No country code or country code is greater than expected
+// validateCountryCode validates and sanitizes the country code
+func validateCountryCode(countryCode string) (string, error) {
 	if len(countryCode) == 0 || len(countryCode) > 3 {
-		err = fmt.Errorf("country code length is invalid")
-		return
+		return "", ErrCountryCodeLengthInvalid
 	}
 
 	// Sanitize the code
@@ -231,92 +231,98 @@ func IsValidPhoneNumber(phone string, countryCode string) (success bool, err err
 
 	// Country code is not accepted
 	if ok, _ := IsValidEnum(countryCode, &acceptedCountryCodes, false); !ok {
-		err = fmt.Errorf("country code %s is not accepted", countryCode)
-		return
+		return "", fmt.Errorf("%w: %s", ErrCountryCodeNotAccepted, countryCode)
+	}
+
+	return countryCode, nil
+}
+
+// validateUSACanadaPhone validates USA/Canada phone numbers (country code 1)
+func validateUSACanadaPhone(phone string) error {
+	if len(phone) != 10 {
+		return ErrPhoneMustBeTenDigits
+	}
+
+	// Break up the phone number into NPA-NXX-XXXX
+	npa := phone[0:3]
+	nxx := phone[3:6]
+	firstDigitOfNpa := npa[0:1]
+	firstDigitOfNxx := nxx[0:1]
+	secondThirdDigitOfNxx := nxx[1:3]
+
+	// NPA Cannot start with 1 or 0
+	if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
+		return fmt.Errorf("%w: %s", ErrPhoneNPAInvalidStart, firstDigitOfNpa)
+	}
+
+	// NPA Cannot contain 555 as leading value
+	if npa == "555" {
+		return fmt.Errorf("%w: %s", ErrPhoneNPAInvalidStart, npa)
+	}
+
+	// NXX Cannot start with 1 or 0
+	if firstDigitOfNxx == "1" || firstDigitOfNxx == "0" {
+		return fmt.Errorf("%w: %s", ErrPhoneNXXInvalidDigits, "cannot start with "+firstDigitOfNxx)
+	}
+
+	// NXX cannot be N11
+	if secondThirdDigitOfNxx == "11" {
+		return fmt.Errorf("%w: %s", ErrPhoneNXXInvalidDigits, "cannot be X"+secondThirdDigitOfNxx)
+	}
+
+	return nil
+}
+
+// validateMexicoPhone validates Mexico phone numbers (country code 52)
+func validateMexicoPhone(phone string) error {
+	// Validate the proper length
+	if len(phone) != 8 && len(phone) != 10 { // 2002 mexico had 8-digit numbers and went to 10 digits
+		return ErrPhoneMustBeEightOrTen
+	}
+
+	// Break up the phone number into NPA-NXX-XXXX
+	npa := phone[0:3]
+	firstDigitOfNpa := npa[0:1]
+
+	// NPA Cannot start with 1 or 0
+	if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
+		return fmt.Errorf("%w: %s", ErrPhoneNPAInvalidStart, firstDigitOfNpa)
+	}
+
+	return nil
+}
+
+// IsValidPhoneNumber validates a given phone number and country code
+func IsValidPhoneNumber(phone, countryCode string) (success bool, err error) {
+	// Validate and sanitize country code
+	countryCode, err = validateCountryCode(countryCode)
+	if err != nil {
+		return false, err
 	}
 
 	// No phone number
 	if len(phone) == 0 {
-		err = fmt.Errorf("phone number length is invalid")
-		return
+		return false, ErrPhoneLengthInvalid
 	}
 
 	// Sanitize the phone
 	phone = string(numericRegExp.ReplaceAll([]byte(phone), []byte("")))
 
-	// Phone number format does not match the country code
+	// Phone number format validation by country code
 	switch countryCode {
 	case "1": // USA and CAN
-
-		// Validate the proper length
-		if len(phone) != 10 {
-			err = fmt.Errorf("phone number must be ten digits")
-			return
+		if err := validateUSACanadaPhone(phone); err != nil {
+			return false, err
 		}
-
-		// Break up the phone number into NPA-NXX-XXXX
-		npa := phone[0:3]
-		nxx := phone[3:6]
-		firstDigitOfNpa := npa[0:1]
-		firstDigitOfNxx := nxx[0:1]
-		secondThirdDigitOfNxx := nxx[1:3]
-
-		// Basic USA/CAN rule can be found: https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Modern_plan
-
-		// NPA Cannot start with 1 or 0
-		if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
-			err = fmt.Errorf("phone number NPA cannot start with " + firstDigitOfNpa)
-			return
-		}
-
-		// NPA Cannot contain 555 as leading value
-		if npa == "555" {
-			err = fmt.Errorf("phone number NPA cannot start with " + npa)
-			return
-		}
-
-		// NXX Cannot start with 1 or 0
-		if firstDigitOfNxx == "1" || firstDigitOfNxx == "0" {
-			err = fmt.Errorf("phone number NXX cannot start with " + firstDigitOfNxx)
-			return
-		}
-
-		// NXX cannot be N11
-		if secondThirdDigitOfNxx == "11" {
-			err = fmt.Errorf("phone number NXX cannot be X" + secondThirdDigitOfNxx)
-			return
-		}
-
 	case "52": // Mexico
-
-		// Rules found so far: https://en.wikipedia.org/wiki/Telephone_numbers_in_Mexico
-
-		// Break up the phone number into NPA-NXX-XXXX
-		npa := phone[0:3]
-		firstDigitOfNpa := npa[0:1]
-
-		// Validate the proper length
-		if len(phone) != 8 && len(phone) != 10 { // 2002 mexico had 8-digit numbers and went to 10 digits
-			err = fmt.Errorf("phone number must be either eight or ten digits")
-			return
+		if err := validateMexicoPhone(phone); err != nil {
+			return false, err
 		}
-
-		// NPA Cannot start with 1 or 0
-		if firstDigitOfNpa == "1" || firstDigitOfNpa == "0" {
-			err = fmt.Errorf("phone number NPA cannot start with " + firstDigitOfNpa)
-			return
-		}
-
-		// todo: validate MX number following Mexico's phone number system (not sure if there are more requirements) (@mrz)
-
 	default:
-		err = fmt.Errorf("country code %s is not accepted", countryCode)
-		return
+		return false, fmt.Errorf("%w: %s", ErrCountryCodeNotAccepted, countryCode)
 	}
 
-	// All good
-	success = true
-	return
+	return true, nil
 }
 
 // IsValidHost checks if the string is a valid IP (both v4 and v6) or a valid DNS name
@@ -331,7 +337,8 @@ func IsValidIP(ipAddress string) bool {
 
 // IsValidIPv4 check if the string is IP version 4.
 func IsValidIPv4(ipAddress string) bool {
-	return net.ParseIP(ipAddress) != nil && strings.Contains(ipAddress, ".")
+	ip := net.ParseIP(ipAddress)
+	return ip != nil && ip.To4() != nil && !strings.Contains(ipAddress, ":")
 }
 
 // IsValidIPv6 check if the string is IP version 6.

@@ -4,7 +4,14 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
+
+func TestMain(m *testing.M) {
+	InitValidations()
+	m.Run()
+}
 
 //
 // Generic numeric struct and function tests
@@ -12,47 +19,39 @@ import (
 
 // TestMinValueValidation - a series of different tests
 func TestMinValueValidation(t *testing.T) {
-
 	// Test invalid types
-	var err error
 	for i := 0; i < len(invalidNumericTypes); i++ {
-		_, err = minValueValidation("10", invalidNumericTypes[i])
-		if err == nil {
-			t.Fatal("Expected error - cannot use: ", invalidNumericTypes[i])
-		}
+		_, err := minValueValidation("10", invalidNumericTypes[i])
+		require.Error(t, err, "Expected error - cannot use: %v", invalidNumericTypes[i])
 	}
 
-	// Fail if string submitted or Parse int fails
-	_, err = minValueValidation("foo", reflect.Int)
-	if err == nil {
-		t.Fatal("Expected to fail - foo is a string and not a number")
+	// Test invalid string inputs
+	tests := []struct {
+		name        string
+		value       string
+		reflectType reflect.Kind
+	}{
+		{"invalid int", "foo", reflect.Int},
+		{"invalid uint", "foo", reflect.Uint64},
+		{"invalid float", "foo", reflect.Float32},
 	}
 
-	// Fail if string submitted or Parse uint fails
-	_, err = minValueValidation("foo", reflect.Uint64)
-	if err == nil {
-		t.Fatal("Expected to fail - foo is a string and not a number")
-	}
-
-	// Fail if string submitted or Parse float fails
-	_, err = minValueValidation("foo", reflect.Float32)
-	if err == nil {
-		t.Fatal("Expected to fail - foo is a string and not a number")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := minValueValidation(tt.value, tt.reflectType)
+			require.Error(t, err, "Expected to fail - %s is not a number", tt.value)
+		})
 	}
 
 	// Test making an interface
 	minInterface, err := minValueValidation("10", reflect.Int)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
+	require.NoError(t, err)
 
 	// Test running the validate method
 	var testInt int32 = 1
 	testVal := reflect.ValueOf(testInt)
 	errs := minInterface.Validate(8, testVal)
-	if errs == nil {
-		t.Fatal("Expected to fail, 8 < 10")
-	}
+	require.NotNil(t, errs, "Expected to fail, 8 < 10")
 
 	// Test converting a string
 	errs = minInterface.Validate("ddd", testVal)
@@ -75,7 +74,6 @@ func TestMinValueValidation(t *testing.T) {
 
 // TestMaxValueValidation - a series of different tests
 func TestMaxValueValidation(t *testing.T) {
-
 	// Test invalid types
 	var err error
 	for i := 0; i < len(invalidNumericTypes); i++ {
@@ -222,7 +220,6 @@ func BenchmarkTestMaxFloatValue(b *testing.B) {
 
 // ExampleIsValid_MinInt is an example for Int Value validation (min)
 func ExampleIsValid_minInt() {
-
 	type Product struct {
 		// Quantity must more than 1
 		Quantity int8 `validation:"min=1"`
@@ -238,7 +235,6 @@ func ExampleIsValid_minInt() {
 
 // ExampleIsValid_MinFloat is an example for Float Value validation (min)
 func ExampleIsValid_minFloat() {
-
 	type Product struct {
 		// Price must more than 0.01
 		Price float32 `validation:"min=0.01"`
@@ -254,7 +250,6 @@ func ExampleIsValid_minFloat() {
 
 // ExampleIsValid_MaxInt is an example for Int Value validation (max)
 func ExampleIsValid_maxInt() {
-
 	type Product struct {
 		// Quantity must more than 1 but less than 99
 		Quantity int8 `validation:"min=1 max=99"`
@@ -270,7 +265,6 @@ func ExampleIsValid_maxInt() {
 
 // ExampleIsValid_MaxFloat is an example for Float Value validation (max)
 func ExampleIsValid_maxFloat() {
-
 	type Product struct {
 		// Price must more than 0.01 but less than 999.99
 		Price float32 `validation:"min=0.01 max=999.99"`
@@ -576,7 +570,6 @@ func TestMaxValueInt8Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueInt8Negative tests max value on int8
@@ -597,7 +590,6 @@ func TestMaxValueInt8Negative(t *testing.T) {
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
-
 }
 
 // TestMaxValueInt16Positive tests max value on int16
@@ -618,7 +610,6 @@ func TestMaxValueInt16Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueInt16Negative tests max value on int16
@@ -639,7 +630,6 @@ func TestMaxValueInt16Negative(t *testing.T) {
 	if !ok {
 		t.Fatal("Expected valid as -40 is less than max -20", errs)
 	}
-
 }
 
 // TestMaxValueInt32Positive tests max value on int32
@@ -660,7 +650,6 @@ func TestMaxValueInt32Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueInt32Negative tests max value on int32
@@ -701,7 +690,6 @@ func TestMaxValueInt64Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueInt64Negative tests max value on int64
@@ -742,7 +730,6 @@ func TestMaxValueIntPositive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueIntNegative tests max value on int
@@ -1022,7 +1009,6 @@ func TestMaxValueUint8Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueUint8Negative tests max value on uint8
@@ -1063,7 +1049,6 @@ func TestMaxValueUint16Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueUint16Negative tests max value on uint16
@@ -1104,7 +1089,6 @@ func TestMaxValueUint32Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueUint32Negative tests max value on uint32
@@ -1145,7 +1129,6 @@ func TestMaxValueUint64Positive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueUint64Negative tests max value on uint64
@@ -1186,7 +1169,6 @@ func TestMaxValueUintPositive(t *testing.T) {
 	if ok {
 		t.Fatal("Expected failure as value is > max value", errs)
 	}
-
 }
 
 // TestMaxValueUintNegative tests max value on uint

@@ -11,11 +11,11 @@ import (
 )
 
 // DefaultMap is the default validation map used to tell if a struct is valid.
-var DefaultMap = Map{}
+// Global by design to provide a shared default instance across the package.
+var DefaultMap = Map{} //nolint:gochecknoglobals // Default package-level validation map
 
 // Interface specifies the necessary methods a validation must implement to be compatible with this package
 type Interface interface {
-
 	// SetFieldIndex stores the index of the field
 	SetFieldIndex(index int)
 
@@ -35,7 +35,6 @@ type Interface interface {
 // Validation is an implementation of an Interface and can be used to provide basic functionality
 // to a new validation type through an anonymous field
 type Validation struct {
-
 	// Name of the validation
 	Name string
 
@@ -80,20 +79,6 @@ type Map struct {
 	validationNameToBuilder sync.Map // map[string]func(string, reflect.Kind) (Interface, error)
 }
 
-// get will get the validator interface
-func (m *Map) get(k reflect.Type) []Interface {
-	v, ok := m.validator.Load(k)
-	if !ok {
-		return []Interface{}
-	}
-	return v.([]Interface)
-}
-
-// set will store the validator interface
-func (m *Map) set(k reflect.Type, v []Interface) {
-	m.validator.Store(k, v)
-}
-
 // AddValidation registers the validation specified by a key to the known
 // validations. If more than one validation registers with the same key, the
 // last one will become the validation for that key.
@@ -103,7 +88,6 @@ func (m *Map) AddValidation(key string, fn func(string, reflect.Kind) (Interface
 
 // IsValid will either store the builder interfaces or run the IsValid based on the reflection object type
 func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
-
 	// Get the object's value and type
 	objectValue := reflect.ValueOf(object)
 	objectType := reflect.TypeOf(object)
@@ -118,46 +102,7 @@ func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 
 	// Do we have some validations?
 	if len(validations) == 0 {
-		var err error
-
-		// Loop the fields and decrement through the loop
-		for i := objectType.NumField() - 1; i >= 0; i-- {
-			field := objectType.Field(i)
-			validationTag := field.Tag.Get("validation")
-
-			// Do we have a validation tag?
-			if len(validationTag) > 0 {
-				validationComponent := strings.Split(validationTag, " ")
-
-				// Loop each validation component
-				for _, validationSpec := range validationComponent {
-					component := strings.Split(validationSpec, "=")
-					if len(component) != 2 {
-						log.Fatalln("invalid validation specification:", objectType.Name(), field.Name, validationSpec)
-					}
-
-					// Create the validation
-					var validation Interface
-					if builder, ok := m.validationNameToBuilder.Load(component[0]); ok && builder != nil {
-						fn := builder.(func(string, reflect.Kind) (Interface, error))
-						validation, err = fn(component[1], field.Type.Kind())
-
-						if err != nil {
-							log.Fatalln("error creating validation:", objectType.Name(), field.Name, validationSpec, err)
-						}
-					} else {
-						log.Fatalln("unknown validation named:", component[0])
-					}
-
-					// Store the other properties and append to validations
-					validation.SetFieldName(field.Name)
-					validation.SetFieldIndex(i)
-					validations = append(validations, validation)
-				}
-			}
-		}
-
-		// Set the validations
+		validations = m.buildValidations(objectType)
 		m.set(objectType, validations)
 	}
 
@@ -173,6 +118,66 @@ func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 
 	// Return flag and errors
 	return len(errors) == 0, errors
+}
+
+// get will get the validator interface
+func (m *Map) get(k reflect.Type) []Interface {
+	v, ok := m.validator.Load(k)
+	if !ok {
+		return []Interface{}
+	}
+	return v.([]Interface)
+}
+
+// set will store the validator interface
+func (m *Map) set(k reflect.Type, v []Interface) {
+	m.validator.Store(k, v)
+}
+
+// buildValidations constructs validations for a given object type
+func (m *Map) buildValidations(objectType reflect.Type) []Interface {
+	var validations []Interface
+	var err error
+
+	// Loop the fields and decrement through the loop
+	for i := objectType.NumField() - 1; i >= 0; i-- {
+		field := objectType.Field(i)
+		validationTag := field.Tag.Get("validation")
+
+		// Do we have a validation tag?
+		if len(validationTag) == 0 {
+			continue
+		}
+
+		validationComponent := strings.Split(validationTag, " ")
+
+		// Loop each validation component
+		for _, validationSpec := range validationComponent {
+			component := strings.Split(validationSpec, "=")
+			if len(component) != 2 {
+				log.Fatalln("invalid validation specification:", objectType.Name(), field.Name, validationSpec)
+			}
+
+			// Create the validation
+			var validation Interface
+			if builder, ok := m.validationNameToBuilder.Load(component[0]); ok && builder != nil {
+				fn := builder.(func(string, reflect.Kind) (Interface, error))
+				validation, err = fn(component[1], field.Type.Kind())
+				if err != nil {
+					log.Fatalln("error creating validation:", objectType.Name(), field.Name, validationSpec, err)
+				}
+			} else {
+				log.Fatalln("unknown validation named:", component[0])
+			}
+
+			// Store the other properties and append to validations
+			validation.SetFieldName(field.Name)
+			validation.SetFieldIndex(i)
+			validations = append(validations, validation)
+		}
+	}
+
+	return validations
 }
 
 // AddValidation registers the validation specified by a key to the known

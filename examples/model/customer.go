@@ -25,7 +25,6 @@ type Customer struct {
 
 // Valid is a custom method for the model that will run all built-in validations and also run any custom validations
 func (c *Customer) Valid() (bool, []validate.ValidationError) {
-
 	// Run all validations off the struct configuration
 	_, errs := validate.IsValid(*c)
 
@@ -46,17 +45,10 @@ func (c *Customer) Valid() (bool, []validate.ValidationError) {
 	return len(errs) == 0, errs
 }
 
-// Add your custom validations
-func init() {
-
-	// Add your own custom validations
-	//
-	//
-}
+// Add your custom validations here using AddValidation() function calls if needed
 
 // main example (just an example of validating a model's data before persisting into a database)
 func main() {
-
 	// Start with some model and data
 	customer := &Customer{
 		Age:                  21,

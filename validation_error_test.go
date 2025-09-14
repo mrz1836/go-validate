@@ -1,8 +1,12 @@
 package validate
 
-import "testing"
+import (
+	"testing"
 
-func TestValidationErrors_Error_NoErrors(t *testing.T) {
+	"github.com/stretchr/testify/assert"
+)
+
+func TestValidationErrorsErrorNoErrors(t *testing.T) {
 	// Create an empty ValidationErrors slice
 	var v ValidationErrors
 
@@ -10,7 +14,5 @@ func TestValidationErrors_Error_NoErrors(t *testing.T) {
 	result := v.Error()
 
 	// Assert that the result is an empty string
-	if result != "" {
-		t.Errorf("expected empty string, got %q", result)
-	}
+	assert.Empty(t, result)
 }
