@@ -149,7 +149,7 @@ func IsValidEmail(email string, mxCheck bool) (success bool, err error) {
 			if _, err = resolver.LookupIPAddr(ctx, host); err != nil {
 				// Only fail if both MX and A records are missing - any of the
 				// two is enough for an email to be deliverable
-				err = fmt.Errorf("%w: %w", ErrEmailDomainCannotReceive, err)
+				err = fmt.Errorf("%w: %s", ErrEmailDomainCannotReceive, err.Error())
 				return success, err
 			}
 		}
