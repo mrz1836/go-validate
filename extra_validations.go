@@ -74,7 +74,7 @@ func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (
 	// Empty is true and no value given?
 	if emptyValueAllowed && len(enum) == 0 {
 		success = true
-		return
+		return success, err
 	}
 
 	// Check that the value is an allowed value (case-insensitive)
@@ -82,7 +82,7 @@ func IsValidEnum(enum string, allowedValues *[]string, emptyValueAllowed bool) (
 		// Compare both in the lowercase
 		if strings.EqualFold(enum, value) {
 			success = true
-			return
+			return success, err
 		}
 	}
 

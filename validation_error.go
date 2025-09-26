@@ -23,7 +23,7 @@ type ValidationErrors []ValidationError
 func (v ValidationErrors) Error() (errors string) {
 	// No errors?
 	if len(v) == 0 {
-		return
+		return errors
 	}
 
 	// Get the first error
@@ -34,5 +34,5 @@ func (v ValidationErrors) Error() (errors string) {
 		errors += fmt.Sprintf(" and %d other errors", len(v)-1)
 	}
 
-	return
+	return errors
 }
