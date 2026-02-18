@@ -537,7 +537,7 @@ func BenchmarkTestCompareString(b *testing.B) {
 func ExampleIsValid_compareString() {
 	type User struct {
 		// Password should match confirmation on submission
-		Password             string `validation:"compare=PasswordConfirmation"`
+		Password             string `validation:"compare=PasswordConfirmation"` //nolint:gosec // test struct demonstrating password comparison validation
 		PasswordConfirmation string
 	}
 
