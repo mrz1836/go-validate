@@ -127,7 +127,7 @@ func TestValidationErrorsError(t *testing.T) {
 		Message: "the_message2",
 	}
 
-	sliceOfErrors := ValidationErrors{}
+	sliceOfErrors := make(ValidationErrors, 0, 2)
 	sliceOfErrors = append(sliceOfErrors, newError, newError2)
 
 	// test it if correct
