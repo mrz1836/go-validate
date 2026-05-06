@@ -19,7 +19,7 @@ var invalidNumericTypes = []reflect.Kind{ //nolint:gochecknoglobals // Test data
 	reflect.Complex64,
 	reflect.Func,
 	reflect.Map,
-	reflect.Ptr,
+	reflect.Pointer,
 	reflect.Slice,
 	reflect.String,
 	reflect.Struct,

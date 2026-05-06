@@ -96,7 +96,7 @@ func (m *Map) IsValid(object interface{}) (bool, []ValidationError) {
 	validations := m.get(objectType)
 
 	// If we are a pointer and not nil, run IsValid on it's interface
-	if objectValue.Kind() == reflect.Ptr && !objectValue.IsNil() {
+	if objectValue.Kind() == reflect.Pointer && !objectValue.IsNil() {
 		return IsValid(objectValue.Elem().Interface())
 	}
 
